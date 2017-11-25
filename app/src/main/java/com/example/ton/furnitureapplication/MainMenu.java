@@ -1,6 +1,7 @@
 package com.example.ton.furnitureapplication;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,11 +24,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import resource.CreateFile;
 
-public class MainMenu extends AppCompatActivity {
+public class MainMenu extends Activity {
     //@BindView(R.id.changeLang_btn) Button changeLang_btn;
     //@BindView(R.id.canvasView) FrameLayout canvas;
-    @BindView(R.id.basic_info_block)
-    LinearLayout basicInfoBlock;
+    @BindView(R.id.basic_info_block) LinearLayout basicInfoBlock;
     ImageView mainPic;
     int headerImage = 1001;
     File file;

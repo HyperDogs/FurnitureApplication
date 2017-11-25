@@ -18,7 +18,10 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import Model.TBUserLoginModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     //DB
     SQLiteDatabase mDb;
     DatabaseHelper mHelper;
+    ArrayList<TBUserLoginModel> loginUser = null;
+    Cursor mCursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,11 +75,17 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             usernameTxt = username.getText().toString();
             passwordTxt = password.getText().toString();
+
             if (usernameTxt.matches("") || passwordTxt.matches("")){
+
                 Toast.makeText(MainActivity.this,"กรุณากรอกข้อมูลให้ครบ",Toast.LENGTH_LONG).show();
-            }else if (usernameTxt.matches("Admin") || passwordTxt.matches("password")) {
+            }else {
+                if (mHelper.checkUserLogin(usernameTxt,passwordTxt)){
                 Intent i = new Intent(MainActivity.this, MainMenu.class);
                 startActivity(i);
+                }else {
+                    Toast.makeText(MainActivity.this,"Username หรือ Password ผิด",Toast.LENGTH_LONG).show();
+                }
             }
 
 
