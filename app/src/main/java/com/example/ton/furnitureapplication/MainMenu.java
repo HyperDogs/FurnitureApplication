@@ -52,26 +52,6 @@ public class MainMenu extends AppCompatActivity {
         onCreate(null);*/
 
         mainPic = (ImageView)findViewById(R.id.product_photo_imv);
-        //ขออนุญาติ
-        Dexter.initialize(MainMenu.this);
-        Dexter.checkPermissions(new MultiplePermissionsListener() {
-            @Override
-            public void onPermissionsChecked(MultiplePermissionsReport report) {
-                List<PermissionGrantedResponse> permissionGrantedResponses = report.getGrantedPermissionResponses();
-
-                for(PermissionGrantedResponse grantedResponse : permissionGrantedResponses)
-                {
-                    grantedResponse.getPermissionName();
-                }
-
-                report.areAllPermissionsGranted();
-            }
-
-            @Override
-            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                token.continuePermissionRequest();
-            }
-        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         //ver Btn
         mainPic.setOnClickListener(onClickTakePic);
 
