@@ -170,6 +170,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 userLogins.add(userLoginModel);
             }
         }
+
         cursor.close();
         database.close();
         return userLogins;
