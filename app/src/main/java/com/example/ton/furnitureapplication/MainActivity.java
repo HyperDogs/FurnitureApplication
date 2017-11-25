@@ -2,6 +2,8 @@ package com.example.ton.furnitureapplication;
 
 import android.Manifest;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     Button loginBth;
     EditText username,password;
     String usernameTxt,passwordTxt;
+    //DB
+    SQLiteDatabase mDb;
+    DatabaseHelper mHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
                 token.continuePermissionRequest();
             }
         }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        //SQLite
+        mHelper = new DatabaseHelper(MainActivity.this);
+        mDb = mHelper.getWritableDatabase();
+
+
 
     }
 
