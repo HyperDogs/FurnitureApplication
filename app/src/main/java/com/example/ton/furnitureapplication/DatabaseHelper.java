@@ -2,8 +2,11 @@ package com.example.ton.furnitureapplication;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
 
 import Model.TBUserLoginModel;
 
@@ -47,6 +50,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_REMOTEADDR + " VARCHAR(15) "
                 + ")";
         db.execSQL(CREATE_USERLOGIN_TABLE);
+        db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_USERLOGINID + ", " + COL_NAME + ", " + COL_PASS + " ) VALUES ('1', 'admin', 'admin');");
+
     }
 
     @Override
@@ -141,5 +146,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database = this.getReadableDatabase();
         database.execSQL("delete from " + TABLE_USERLOGIN + " where " + COL_USERLOGINID + " = '" + userLogin.getUlUserLoginId() + "'");
         database.close();
+    }
+
+    public ArrayList<TBUserLoginModel> getAllRecords() {
+        database = this.getReadableDatabase();
+        Cursor cursor = database.query(TABLE_USERLOGIN, null, null, null, null, null, null);
+        ArrayList<TBUserLoginModel> userLogins = new ArrayList<TBUserLoginModel>();
+        TBUserLoginModel userLoginModel;
+        if (cursor.getCount() > 0) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                cursor.moveToNext();
+                userLoginModel = new TBUserLoginModel();
+                userLoginModel.setUlUserLoginId(cursor.getString(0));
+                userLoginModel.setUlName(cursor.getString(1));
+                userLoginModel.setUlPass(cursor.getString(2));
+                userLoginModel.setUlDesc(cursor.getString(3));
+                userLoginModel.setUlGroupId(cursor.getString(4));
+                userLoginModel.setUlStatus(cursor.getString(5));
+                userLoginModel.setUlEmployeeId(cursor.getString(6));
+                userLoginModel.setUlBranchId(cursor.getString(7));
+                userLoginModel.setUlSetPermission(cursor.getString(8));
+                userLoginModel.setUlRemoteAddr(cursor.getString(9));
+                userLogins.add(userLoginModel);
+            }
+        }
+        cursor.close();
+        database.close();
+        return userLogins;
     }
 }
