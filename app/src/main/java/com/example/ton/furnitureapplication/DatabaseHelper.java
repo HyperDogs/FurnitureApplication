@@ -170,9 +170,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 userLogins.add(userLoginModel);
             }
         }
-
         cursor.close();
         database.close();
         return userLogins;
+    }
+
+    public boolean checkUserLogin(String userName, String passWord){
+        boolean result = false;
+        database = this.getReadableDatabase();
+        String whereClause = "ulName = ? AND ulPass = ?";
+        String[] whereArgs = new String[] {
+                userName,
+                passWord
+        };
+        Cursor cursor = database.query(TABLE_USERLOGIN, null, whereClause, whereArgs, null, null, null);
+        if(cursor.getCount() > 0){
+            result = true;
+        }
+        return result;
     }
 }
