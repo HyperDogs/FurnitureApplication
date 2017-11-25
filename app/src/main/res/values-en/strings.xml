@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="product_lb">PRODUCT PHOTO</string>
+    <string name="basic_info_lb">BASIC INFORMATION</string>
+    <string name="change_lang_btn">Change Language</string>
+
+    <string name="date">Date</string>
+    <string name="customer_no">Customer No</string>
+    <string name="item_no">Item No</string>
+    <string name="color_no">Color No</string>
+    <string name="co_no">Co No</string>
+    <string name="inspector">Inspector</string>
+
+    <string name="update">Update</string>
+</resources>

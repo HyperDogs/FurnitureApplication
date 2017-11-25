@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="product_lb">สินค้า</string>
+    <string name="basic_info_lb">ข้อมูลเบื้องต้น</string>
+    <string name="change_lang_btn">เปลี่ยนภาษา</string>
+
+    <string name="date">วันที่</string>
+    <string name="customer_no">รหัสลูกค้า</string>
+    <string name="item_no">รหัสสินค้า</string>
+    <string name="color_no">รหัสสี</string>
+    <string name="co_no">รหัสเอกสาร</string>
+    <string name="inspector">ผู้จัดทำ</string>
+
+    <string name="update">อัพเดต</string>
+</resources>
