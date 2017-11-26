@@ -70,11 +70,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_BRANCHID + " VARCHAR(10), "
                 + COL_SETPERMISSION + " CHAR(1), "
                 + COL_REMOTEADDR + " VARCHAR(15) "
-                + ")";
-        db.execSQL(CREATE_USERLOGIN_TABLE);
-        db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_USERLOGINID + ", " + COL_NAME + ", " + COL_PASS + " ) VALUES ('1', 'admin', 'admin');");
-
-        String CREATE_MENUINSPECT_TABLE = "CREATE TABLE " + TABLE_MANUINSPECT + "("
+                + ") ";
+        CREATE_USERLOGIN_TABLE += "CREATE TABLE " + TABLE_MANUINSPECT + "("
                 + COL_DOCCODE  + " CHAR(4) PRIMARY KEY, "
                 + COL_DOCUMENT + " VARCHAR(20), "
                 + COL_DOCUMENTNO + " INTEGER, "
@@ -94,7 +91,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_IMAGEPATH + " VARCHAR(220), "
                 + COL_IMAGEBLOB + " VARCHAR(50) "
                 + ")";
-        //db.execSQL(CREATE_MENUINSPECT_TABLE);
+        db.execSQL(CREATE_USERLOGIN_TABLE);
+        db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_USERLOGINID + ", " + COL_NAME + ", " + COL_PASS + " ) VALUES ('1', 'admin', 'admin');");
     }
 
     @Override

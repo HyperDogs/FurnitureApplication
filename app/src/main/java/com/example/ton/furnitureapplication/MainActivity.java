@@ -1,6 +1,7 @@
 package com.example.ton.furnitureapplication;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,7 +24,7 @@ import java.util.List;
 
 import Model.TBUserLoginModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     Button loginBth;
     EditText username,password;
@@ -37,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loginBth = (Button)findViewById(R.id.loginBtn);
-        username = (EditText)findViewById(R.id.usernameEdt);
-        password = (EditText)findViewById(R.id.passwordEdt);
-        loginBth.setOnClickListener(doLogin);
+        //loginBth = (Button)findViewById(R.id.loginBtn);
+        //username = (EditText)findViewById(R.id.usernameEdt);
+        //password = (EditText)findViewById(R.id.passwordEdt);
+        //loginBth.setOnClickListener(doLogin);
 
         //ขออนุญาติ
         Dexter.initialize(MainActivity.this);
