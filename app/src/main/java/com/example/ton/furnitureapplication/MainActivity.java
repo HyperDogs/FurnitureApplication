@@ -38,36 +38,12 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //loginBth = (Button)findViewById(R.id.loginBtn);
-        //username = (EditText)findViewById(R.id.usernameEdt);
-        //password = (EditText)findViewById(R.id.passwordEdt);
-        //loginBth.setOnClickListener(doLogin);
-
-        //ขออนุญาติ
-        Dexter.initialize(MainActivity.this);
-        Dexter.checkPermissions(new MultiplePermissionsListener() {
-            @Override
-            public void onPermissionsChecked(MultiplePermissionsReport report) {
-                List<PermissionGrantedResponse> permissionGrantedResponses = report.getGrantedPermissionResponses();
-
-                for(PermissionGrantedResponse grantedResponse : permissionGrantedResponses)
-                {
-                    grantedResponse.getPermissionName();
-                }
-
-                report.areAllPermissionsGranted();
-            }
-
-            @Override
-            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                token.continuePermissionRequest();
-            }
-        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        //SQLite
-        mHelper = new DatabaseHelper(MainActivity.this);
-        mDb = mHelper.getWritableDatabase();
-
-
+        loginBth = (Button)findViewById(R.id.loginBtn);
+        username = (EditText)findViewById(R.id.usernameEdt);
+        password = (EditText)findViewById(R.id.passwordEdt);
+        loginBth.setOnClickListener(doLogin);
+        accessPermission();
+        createDB();
 
     }
 
@@ -93,6 +69,35 @@ public class MainActivity extends Activity {
 
         }
     };
+    private void createDB(){
+        //SQLite
+        mHelper = new DatabaseHelper(MainActivity.this);
+        mDb = mHelper.getWritableDatabase();
+    }
+
+    private void accessPermission(){
+        //ขออนุญาติ
+        Dexter.initialize(MainActivity.this);
+        Dexter.checkPermissions(new MultiplePermissionsListener() {
+            @Override
+            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                List<PermissionGrantedResponse> permissionGrantedResponses = report.getGrantedPermissionResponses();
+
+                for(PermissionGrantedResponse grantedResponse : permissionGrantedResponses)
+                {
+                    grantedResponse.getPermissionName();
+                }
+
+                report.areAllPermissionsGranted();
+            }
+
+            @Override
+            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                token.continuePermissionRequest();
+            }
+        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+    }
 
 
 }

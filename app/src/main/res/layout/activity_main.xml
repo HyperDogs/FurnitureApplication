@@ -15,7 +15,7 @@
         android:layout_height="49dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="97dp"
+        android:layout_marginBottom="65dp"
         android:background="@drawable/round"
         android:text="Login" />
 
@@ -30,5 +30,31 @@
         android:layout_marginRight="50dp"
         android:layout_marginTop="95dp"
         android:src="@drawable/mainlogo" />
+
+    <EditText
+        android:id="@+id/usernameEdt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/passwordEdt"
+        android:layout_alignStart="@+id/passwordEdt"
+        android:layout_centerVertical="true"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:textColorHint="#FFFFFF" />
+
+    <EditText
+        android:id="@+id/passwordEdt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/usernameEdt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#FFFFFF"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textColorHint="#FFFFFF" />
 
 </RelativeLayout>
