@@ -94,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_IMAGEPATH + " VARCHAR(220), "
                 + COL_IMAGEBLOB + " VARCHAR(50) "
                 + ")";
-        db.execSQL(CREATE_MENUINSPECT_TABLE);
+        //db.execSQL(CREATE_MENUINSPECT_TABLE);
     }
 
     @Override
