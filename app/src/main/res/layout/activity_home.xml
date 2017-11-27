@@ -29,8 +29,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/basicinfo"
+                    android:layout_toRightOf="@+id/basicinfo">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/imageButton2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_print" />
+
+                        <ImageButton
+                            android:id="@+id/imageButton"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:src="@android:drawable/ic_menu_send" />
+
+                        <ImageButton
+                            android:id="@+id/imageButton1"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:src="@android:drawable/ic_menu_save" />
+                    </LinearLayout>
+                </FrameLayout>
+
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/mainpic"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
@@ -39,101 +71,82 @@
                     app:srcCompat="@drawable/example" />
 
                 <FrameLayout
-                    android:layout_width="120dp"
+                    android:id="@+id/basicinfo"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/imageView2"
-                    android:layout_toRightOf="@+id/imageView2"
-                    android:id="@+id/frameLayout">
+                    android:layout_toEndOf="@+id/mainpic"
+                    android:layout_toRightOf="@+id/mainpic">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="130dp"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:paddingLeft="5dp">
 
                         <TextView
                             android:id="@+id/textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:layout_marginBottom="-6dp" />
 
                         <TextView
                             android:id="@+id/textView7"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:paddingTop="4dp"
+                            android:text="@string/date"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/textView6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:paddingTop="4dp"
+                            android:text="@string/cus_no"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/textView5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:paddingTop="4dp"
+                            android:text="@string/item_no"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/textView4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:paddingTop="4dp"
+                            android:text="@string/color_no"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/textView3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:paddingTop="4dp"
+                            android:text="@string/co_no"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/textView2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="TextView" />
+                            android:paddingTop="4dp"
+                            android:text="@string/inspector"
+                            android:textColor="#FFFFFF"
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </FrameLayout>
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/frameLayout"
-                    android:layout_toRightOf="@+id/frameLayout">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <Button
-                            android:id="@+id/button"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Button" />
-
-                        <Button
-                            android:id="@+id/button3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Button" />
-
-                        <Button
-                            android:id="@+id/button6"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Button" />
-                    </LinearLayout>
-                </FrameLayout>
             </RelativeLayout>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
