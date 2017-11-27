@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import Model.ManuInspectModel;
 import Model.TBUserLoginModel;
@@ -52,6 +51,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_CONO = "mpCoNo";
     public static final String COL_IMAGEPATH = "mpImagePath";
     public static final String COL_IMAGEBLOB = "mpImageBlob";
+    public static final String COL_LASTSENDBYMAIL = "mpLastSendBymail";
+    public static final String COL_LASTSENDMAILBYUSERNO = "mpLastSendmailByUserNo";
+    public static final String COL_LASTSENDMAILBYUSERNAME = "mpLastSendmailByUserName";
+    public static final String COL_LASTSENDMAILDATE = "mpLastSendmailDate";
+    public static final String COL_LASTSENDMAILTIME = "mpLastSendmailTime";
+    public static final String COL_LASTMODIFYDATE = "mpLastModifyDate";
+    public static final String COL_LASTMODIFYTIME = "mpLastModifyTime";
+    public static final String COL_LASTMODIFYBYUSERNO = "mpLastModifyByUserNo";
+    public static final String COL_LASTMODIFYBYUSERNAME = "mpLastModifyByUserName";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -89,7 +97,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_COLORNAME + " VARCHAR(100), "
                 + COL_CONO + " VARCHAR(50), "
                 + COL_IMAGEPATH + " VARCHAR(220), "
-                + COL_IMAGEBLOB + " VARCHAR(50) "
+                + COL_IMAGEBLOB + " VARCHAR(50), "
+                + COL_LASTSENDBYMAIL + " VARCHAR(220), "
+                + COL_LASTSENDMAILBYUSERNO + " VARCHAR(20), "
+                + COL_LASTSENDMAILBYUSERNAME + " VARCHAR(20), "
+                + COL_LASTSENDMAILDATE + " DATETIME, "
+                + COL_LASTSENDMAILTIME + " CHAR(6), "
+                + COL_LASTMODIFYDATE + " DATETIME, "
+                + COL_LASTMODIFYTIME + " CHAR(6), "
+                + COL_LASTMODIFYBYUSERNO + " VARCHAR(20), "
+                + COL_LASTMODIFYBYUSERNAME + " VARCHAR(50) "
                 + ")";
         db.execSQL(CREATE_USERLOGIN_TABLE);
         db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_USERLOGINID + ", " + COL_NAME + ", " + COL_PASS + " ) VALUES ('1', 'admin', 'admin');");
@@ -199,6 +216,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_CONO, manuInspect.getMpCoNo());
         contentValues.put(COL_IMAGEPATH, manuInspect.getMpImagePath());
         contentValues.put(COL_IMAGEBLOB, manuInspect.getMpImageBlob());
+        contentValues.put(COL_LASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
+        contentValues.put(COL_LASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
+        contentValues.put(COL_LASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
+        contentValues.put(COL_LASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
+        contentValues.put(COL_LASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
+        contentValues.put(COL_LASTMODIFYDATE, manuInspect.getMpLastModifyDate());
+        contentValues.put(COL_LASTMODIFYTIME, manuInspect.getMpLastModifyTime());
+        contentValues.put(COL_LASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
+        contentValues.put(COL_LASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
         database.insert(TABLE_MANUINSPECT, null, contentValues);
         database.close();
     }
@@ -223,6 +249,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_CONO, manuInspect.getMpCoNo());
         contentValues.put(COL_IMAGEPATH, manuInspect.getMpImagePath());
         contentValues.put(COL_IMAGEBLOB, manuInspect.getMpImageBlob());
+        contentValues.put(COL_LASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
+        contentValues.put(COL_LASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
+        contentValues.put(COL_LASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
+        contentValues.put(COL_LASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
+        contentValues.put(COL_LASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
+        contentValues.put(COL_LASTMODIFYDATE, manuInspect.getMpLastModifyDate());
+        contentValues.put(COL_LASTMODIFYTIME, manuInspect.getMpLastModifyTime());
+        contentValues.put(COL_LASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
+        contentValues.put(COL_LASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
         database.update(TABLE_MANUINSPECT, contentValues, COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? ", new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument()});
         database.close();
     }
@@ -260,6 +295,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 manuInspectModel.setMpCoNo(cursor.getString(15));
                 manuInspectModel.setMpImagePath(cursor.getString(16));
                 manuInspectModel.setMpImageBlob(cursor.getString(17));
+                manuInspectModel.setMpLastSendBymail(cursor.getString(18));
+                manuInspectModel.setMpLastSendmailByUserNo(cursor.getString(19));
+                manuInspectModel.setMpLastSendmailByUserName(cursor.getString(20));
+                manuInspectModel.setMpLastSendmailDate(cursor.getString(21));
+                manuInspectModel.setMpLastSendmailTime(cursor.getString(22));
+                manuInspectModel.setMpLastModifyDate(cursor.getString(23));
+                manuInspectModel.setMpLastModifyTime(cursor.getString(24));
+                manuInspectModel.setMpLastModifyByUserNo(cursor.getString(25));
+                manuInspectModel.setMpLastModifyByUserName(cursor.getString(26));
                 manuInspects.add(manuInspectModel);
             }
         }
