@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.ton.furnitureapplication.info"
+    tools:showIn="@layout/activity_info">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/date" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text=":"
+            android:textColor="@color/colorHeader"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/date_edt"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#000000"
+            android:editable="false"
+            android:focusable="false"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/colorHeader"
+            android:textColorHint="#000000"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cus_no" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text=":"
+            android:textColor="@color/colorHeader"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/customer_no_edt"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#000000"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/colorHeader"
+            android:textColorHighlight="#000000"
+            android:textColorHint="#000000"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/product_lb" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text=":"
+            android:textColor="@color/colorHeader"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/item_no_edt"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#000000"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/colorHeader"
+            android:textColorHighlight="#000000"
+            android:textColorHint="#000000"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/color_no" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text=":"
+            android:textColor="@color/colorHeader"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/color_no_edt"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#000000"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/colorHeader"
+            android:textColorHighlight="#000000"
+            android:textColorHint="#000000"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/co_no" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text=":"
+            android:textColor="@color/colorHeader"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/co_no_edt"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#000000"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/colorHeader"
+            android:textColorHighlight="#000000"
+            android:textColorHint="#000000"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/inspector" />
+
+        <TextView
+            android:layout_width="20dp"
+            android:layout_height="50dp"
+            android:gravity="center_vertical"
+            android:text=":"
+            android:textColor="@color/colorHeader"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/inspector_edt"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#000000"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/colorHeader"
+            android:textColorHighlight="#000000"
+            android:textColorHint="#000000"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:paddingLeft="40dp">
+
+        <Button
+            android:id="@+id/update_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Button" />
+    </LinearLayout>
+</LinearLayout>

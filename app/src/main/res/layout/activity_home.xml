@@ -79,6 +79,7 @@
                     android:layout_toRightOf="@+id/mainpic">
 
                     <LinearLayout
+                        android:id="@+id/info"
                         android:layout_width="130dp"
                         android:layout_height="match_parent"
                         android:orientation="vertical"

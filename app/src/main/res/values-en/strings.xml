@@ -6,6 +6,7 @@
 
     <string name="date">Date</string>
     <string name="customer_no">Customer No</string>
+    <string name="cus_no">Customer No</string>
     <string name="item_no">Item No</string>
     <string name="color_no">Color No</string>
     <string name="co_no">Co No</string>

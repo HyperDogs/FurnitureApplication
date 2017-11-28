@@ -52,8 +52,8 @@ public class MainMenu extends Activity {
 
     @OnClick(R.id.basic_info_block)
     public void changeLanguage_onClick() {
-        Intent basicInfo = new Intent(MainMenu.this, BasicInfoActivity.class);
-        startActivity(basicInfo);
+        /*Intent basicInfo = new Intent(MainMenu.this, BasicInfoActivity.class);
+        startActivity(basicInfo);*/
     }
 
 

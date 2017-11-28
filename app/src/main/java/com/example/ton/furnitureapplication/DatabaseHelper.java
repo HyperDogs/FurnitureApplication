@@ -67,6 +67,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        createTABLE_USERLOGIN(db);
+        createTABLE_MANUINSPECT(db);
+
+
+       }
+    private void createTABLE_USERLOGIN(SQLiteDatabase db){
         String CREATE_USERLOGIN_TABLE = "CREATE TABLE " + TABLE_USERLOGIN + "("
                 + COL_USERLOGINID + " CHAR(10) PRIMARY KEY, "
                 + COL_NAME + " VARCHAR(20), "
@@ -79,7 +85,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_SETPERMISSION + " CHAR(1), "
                 + COL_REMOTEADDR + " VARCHAR(15) "
                 + ") ";
-        CREATE_USERLOGIN_TABLE += "CREATE TABLE " + TABLE_MANUINSPECT + "("
+        db.execSQL(CREATE_USERLOGIN_TABLE);
+        db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_USERLOGINID + ", " + COL_NAME + ", " + COL_PASS + " ) VALUES ('1', 'admin', 'admin');");
+    }
+    private void createTABLE_MANUINSPECT(SQLiteDatabase db){
+        String CREATE_UMANUINSPECT_TABLE = " CREATE TABLE " + TABLE_MANUINSPECT + "("
                 + COL_DOCCODE  + " CHAR(4) PRIMARY KEY, "
                 + COL_DOCUMENT + " VARCHAR(20), "
                 + COL_DOCUMENTNO + " INTEGER, "
@@ -107,9 +117,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_LASTMODIFYTIME + " CHAR(6), "
                 + COL_LASTMODIFYBYUSERNO + " VARCHAR(20), "
                 + COL_LASTMODIFYBYUSERNAME + " VARCHAR(50) "
-                + ")";
-        db.execSQL(CREATE_USERLOGIN_TABLE);
-        db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_USERLOGINID + ", " + COL_NAME + ", " + COL_PASS + " ) VALUES ('1', 'admin', 'admin');");
+                + ") ";
+        db.execSQL(CREATE_UMANUINSPECT_TABLE);
     }
 
     @Override

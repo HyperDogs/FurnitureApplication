@@ -1,7 +1,6 @@
 package com.example.ton.furnitureapplication;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -16,19 +15,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class Home extends AppCompatActivity {
     private int headerImage = 1001;
     private File file;
     private Uri uri;
-    private FrameLayout basicInfo;
+    private LinearLayout basicInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,14 +63,14 @@ public class Home extends AppCompatActivity {
         //Header
         mainPic = (ImageView) findViewById(R.id.mainpic);
         mainPic.setOnClickListener(onClickTakePic);
-        basicInfo = (FrameLayout) findViewById(R.id.basicinfo);
+        basicInfo = (LinearLayout) findViewById(R.id.info);
         basicInfo.setOnClickListener(onClickBasicInfo);
     }
     private  View.OnClickListener onClickBasicInfo = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(Home.this,BasicInfoActivity.class);
-            startActivity(intent);
+            Intent i = new Intent(Home.this,info.class);
+            startActivity(i);
 
         }
     };
