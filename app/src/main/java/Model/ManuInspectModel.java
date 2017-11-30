@@ -9,10 +9,10 @@ import java.util.Date;
 public class ManuInspectModel {
     private String mpDocCode;
     private String mpDocument;
-    private int mpDocumentNo;
+    private String mpDocumentNo;
     private String mpDocBranch;
     private String mpDocSeq;
-    private Date mpDocDate;
+    private String mpDocDate;
     private String mpDocTime;
     private String mpEmployeeNo;
     private String mpEmployeeName;
@@ -51,11 +51,11 @@ public class ManuInspectModel {
         this.mpDocument = mpDocument;
     }
 
-    public int getMpDocumentNo() {
+    public String getMpDocumentNo() {
         return mpDocumentNo;
     }
 
-    public void setMpDocumentNo(int mpDocumentNo) {
+    public void setMpDocumentNo(String mpDocumentNo) {
         this.mpDocumentNo = mpDocumentNo;
     }
 
@@ -75,11 +75,11 @@ public class ManuInspectModel {
         this.mpDocSeq = mpDocSeq;
     }
 
-    public Date getMpDocDate() {
+    public String getMpDocDate() {
         return mpDocDate;
     }
 
-    public void setMpDocDate(Date mpDocDate) {
+    public void setMpDocDate(String mpDocDate) {
         this.mpDocDate = mpDocDate;
     }
 

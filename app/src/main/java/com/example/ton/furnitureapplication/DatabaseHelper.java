@@ -287,11 +287,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void updateManuInspect(ManuInspectModel manuInspect) {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_DOCUMENT, manuInspect.getMpDocument());
-        contentValues.put(COL_DOCUMENTNO, manuInspect.getMpDocumentNo());
-        contentValues.put(COL_DOCBRANCH, manuInspect.getMpDocBranch());
-        contentValues.put(COL_DOCSEQ, manuInspect.getMpDocSeq());
-        contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate().toString());
+        contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate());
         contentValues.put(COL_DOCTIME, manuInspect.getMpDocTime());
         contentValues.put(COL_EMPLOYEENO, manuInspect.getMpEmployeeNo());
         contentValues.put(COL_EMPLOYEENAME, manuInspect.getMpEmployeeNo());
@@ -313,13 +309,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_LASTMODIFYTIME, manuInspect.getMpLastModifyTime());
         contentValues.put(COL_LASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
         contentValues.put(COL_LASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
-        database.update(TABLE_MANUINSPECT, contentValues, COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? ", new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument()});
+        database.update(TABLE_MANUINSPECT, contentValues,
+                COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? AND " + COL_DOCUMENTNO + " = ? AND " + COL_DOCBRANCH + " = ? AND " + COL_DOCSEQ + " = ? ",
+                new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), manuInspect.getMpDocumentNo(), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
         database.close();
     }
 
     public void deleteManuInspect(ManuInspectModel manuInspect) {
         database = this.getReadableDatabase();
-        database.delete(TABLE_MANUINSPECT, COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? ", new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument()});
+        database.delete(TABLE_MANUINSPECT,
+                COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? AND " + COL_DOCUMENTNO + " = ? AND " + COL_DOCBRANCH + " = ? AND " + COL_DOCSEQ + " = ? ",
+                new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), manuInspect.getMpDocumentNo(), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
         database.close();
     }
 
@@ -334,10 +334,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 manuInspectModel = new ManuInspectModel();
                 manuInspectModel.setMpDocCode(cursor.getString(0));
                 manuInspectModel.setMpDocument(cursor.getString(1));
-                manuInspectModel.setMpDocumentNo(cursor.getInt(2));
+                manuInspectModel.setMpDocumentNo(cursor.getString(2));
                 manuInspectModel.setMpDocBranch(cursor.getString(3));
                 manuInspectModel.setMpDocSeq(cursor.getString(4));
-                //manuInspectModel.setMpDocDate(cursor.getString(5));
+                manuInspectModel.setMpDocDate(cursor.getString(5));
                 manuInspectModel.setMpDocTime(cursor.getString(6));
                 manuInspectModel.setMpEmployeeNo(cursor.getString(7));
                 manuInspectModel.setMpEmployeeName(cursor.getString(8));
@@ -395,9 +395,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void updateManuInspectImage(ManuInspectImageModel manuInspectImage) {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_MPGDOCUMENTNO, manuInspectImage.getMpgDocumentno());
-        contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
-        contentValues.put(COL_MPGDOCSEQ, manuInspectImage.getMpgDocSeq());
         contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
         contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
         contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
@@ -411,13 +408,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
         contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
         contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
-        database.update(TABLE_MANUINSPECTIMAGE, contentValues, COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? ", new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument()});
+        database.update(TABLE_MANUINSPECTIMAGE, contentValues,
+                COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? AND " + COL_MPGDOCSEQ + " = ? ",
+                new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), manuInspectImage.getMpgDocumentno(), manuInspectImage.getMpgDocBranch(), manuInspectImage.getMpgDocSeq()});
         database.close();
     }
 
     public void deleteManuInspectImage(ManuInspectImageModel manuInspectImage) {
         database = this.getReadableDatabase();
-        database.delete(TABLE_MANUINSPECTIMAGE, COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? ", new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument()});
+        database.delete(TABLE_MANUINSPECTIMAGE,
+                COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? AND " + COL_MPGDOCSEQ + " = ? ",
+                new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), manuInspectImage.getMpgDocumentno(), manuInspectImage.getMpgDocBranch(), manuInspectImage.getMpgDocSeq()});
         database.close();
     }
 
