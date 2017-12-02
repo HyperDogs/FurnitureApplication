@@ -8,9 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 
+import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
 import Model.TBUserLoginModel;
-
+//hi
 /**
  * Created by marisalom on 25/11/2017.
  */
@@ -21,6 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String TABLE_USERLOGIN = "TBUserLogin";
     public static final String TABLE_MANUINSPECT = "ManuInspect";
+    public static final String TABLE_MANUINSPECTIMAGE = "ManuInspectImage";
 
     public static final String COL_USERLOGINID = "ulUserLoginId";
     public static final String COL_NAME = "ulName";
@@ -61,6 +63,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_LASTMODIFYBYUSERNO = "mpLastModifyByUserNo";
     public static final String COL_LASTMODIFYBYUSERNAME = "mpLastModifyByUserName";
 
+    public static final String COL_MPGDOCCODE = "mpgDocCode";
+    public static final String COL_MPGDOCUMENT = "mgeDocument";
+    public static final String COL_MPGDOCUMENTNO = "mpgDocumentno";
+    public static final String COL_MPGDOCBRANCH = "mpgDocBranch";
+    public static final String COL_MPGDOCSEQ = "mpgDocSeq";
+    public static final String COL_MPGCAUSE = "mpgCause";
+    public static final String COL_MPGSOLUTION = "mpgSolution";
+    public static final String COL_MPGMEMO = "mpgMemo";
+    public static final String COL_MPGIMAGEPATH = "mpgImagePath";
+    public static final String COL_MPGIMAGEBLOB = "mpgImageBlob";
+    public static final String COL_MPGCAUSEBYEMPLOYEENO = "mpgCauseByEmployeeNo";
+    public static final String COL_MPGCAUSEBYEMPLOYEENAME = "mpgCauseByEmployeeName";
+    public static final String COL_MPGSOLUTIONBYEMPLOYEENO = "mpgSolutionByEmployeeNo";
+    public static final String COL_MPGSOLUTIONBYEMPLOYEENAME = "mpgSolutionByEmployeeName";
+    public static final String COL_MPGLASTMODIFYDATE = "mpgLastModifyDate";
+    public static final String COL_MPGLASTMODIFYTIME = "mpgLastModifyTime";
+    public static final String COL_MPGLASTMODIFYBYUSERNO = "mpgLastModifyByUserNo";
+    public static final String COL_MPGLASTMODIFYBYUSERNAME = "mpgLastModifyByUserName";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -69,9 +90,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         createTABLE_USERLOGIN(db);
         createTABLE_MANUINSPECT(db);
+        createTABLE_MANUINSPECTIMAGE(db);
+    }
 
-
-       }
     private void createTABLE_USERLOGIN(SQLiteDatabase db){
         String CREATE_USERLOGIN_TABLE = "CREATE TABLE " + TABLE_USERLOGIN + "("
                 + COL_USERLOGINID + " CHAR(10) PRIMARY KEY, "
@@ -93,7 +114,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_DOCCODE  + " CHAR(4) PRIMARY KEY, "
                 + COL_DOCUMENT + " VARCHAR(20), "
                 + COL_DOCUMENTNO + " INTEGER, "
-                + COL_DOCBRANCH + " CHAR(5) "
+                + COL_DOCBRANCH + " CHAR(5), "
                 + COL_DOCSEQ + " INTEGER, "
                 + COL_DOCDATE + " DATETIME, "
                 + COL_DOCTIME + " CHAR(6), "
@@ -121,10 +142,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_UMANUINSPECT_TABLE);
     }
 
+    private void createTABLE_MANUINSPECTIMAGE(SQLiteDatabase db){
+        String CREATE_UMANUINSPECTIMAGE_TABLE = " CREATE TABLE " + TABLE_MANUINSPECTIMAGE + "("
+                + COL_MPGDOCCODE  + " CHAR(4) PRIMARY KEY, "
+                + COL_MPGDOCUMENT + " VARCHAR(20), "
+                + COL_MPGDOCUMENTNO + " INTEGER, "
+                + COL_MPGDOCBRANCH + " CHAR(5), "
+                + COL_MPGDOCSEQ + " INTEGER, "
+                + COL_MPGCAUSE + " INTEGER, "
+                + COL_MPGSOLUTION + " VARCHAR(220), "
+                + COL_MPGMEMO + " VARCHAR(220), "
+                + COL_MPGIMAGEPATH + " VARCHAR(220), "
+                + COL_MPGIMAGEBLOB + " VARCHAR(50), "
+                + COL_MPGCAUSEBYEMPLOYEENO + " VARCHAR(20), "
+                + COL_MPGCAUSEBYEMPLOYEENAME + " VARCHAR(50), "
+                + COL_MPGSOLUTIONBYEMPLOYEENO + " VARCHAR(20), "
+                + COL_MPGSOLUTIONBYEMPLOYEENAME + " VARCHAR(50), "
+                + COL_MPGLASTMODIFYDATE + " DATETIME, "
+                + COL_MPGLASTMODIFYTIME + " CHAR(6), "
+                + COL_MPGLASTMODIFYBYUSERNO + " VARCHAR(20), "
+                + COL_MPGLASTMODIFYBYUSERNAME + " VARCHAR(50) "
+                + ") ";
+        db.execSQL(CREATE_UMANUINSPECTIMAGE_TABLE);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_USERLOGIN);
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_MANUINSPECT);
+        db.execSQL("DROP TABLE IF EXISTS " +TABLE_MANUINSPECTIMAGE);
         onCreate(db);
     }
 
@@ -241,11 +287,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void updateManuInspect(ManuInspectModel manuInspect) {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_DOCUMENT, manuInspect.getMpDocument());
-        contentValues.put(COL_DOCUMENTNO, manuInspect.getMpDocumentNo());
-        contentValues.put(COL_DOCBRANCH, manuInspect.getMpDocBranch());
-        contentValues.put(COL_DOCSEQ, manuInspect.getMpDocSeq());
-        contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate().toString());
+        contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate());
         contentValues.put(COL_DOCTIME, manuInspect.getMpDocTime());
         contentValues.put(COL_EMPLOYEENO, manuInspect.getMpEmployeeNo());
         contentValues.put(COL_EMPLOYEENAME, manuInspect.getMpEmployeeNo());
@@ -267,13 +309,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_LASTMODIFYTIME, manuInspect.getMpLastModifyTime());
         contentValues.put(COL_LASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
         contentValues.put(COL_LASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
-        database.update(TABLE_MANUINSPECT, contentValues, COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? ", new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument()});
+        database.update(TABLE_MANUINSPECT, contentValues,
+                COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? AND " + COL_DOCUMENTNO + " = ? AND " + COL_DOCBRANCH + " = ? AND " + COL_DOCSEQ + " = ? ",
+                new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), manuInspect.getMpDocumentNo(), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
         database.close();
     }
 
     public void deleteManuInspect(ManuInspectModel manuInspect) {
         database = this.getReadableDatabase();
-        database.delete(TABLE_MANUINSPECT, COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? ", new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument()});
+        database.delete(TABLE_MANUINSPECT,
+                COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? AND " + COL_DOCUMENTNO + " = ? AND " + COL_DOCBRANCH + " = ? AND " + COL_DOCSEQ + " = ? ",
+                new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), manuInspect.getMpDocumentNo(), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
         database.close();
     }
 
@@ -288,10 +334,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 manuInspectModel = new ManuInspectModel();
                 manuInspectModel.setMpDocCode(cursor.getString(0));
                 manuInspectModel.setMpDocument(cursor.getString(1));
-                manuInspectModel.setMpDocumentNo(cursor.getInt(2));
+                manuInspectModel.setMpDocumentNo(cursor.getString(2));
                 manuInspectModel.setMpDocBranch(cursor.getString(3));
                 manuInspectModel.setMpDocSeq(cursor.getString(4));
-                //manuInspectModel.setMpDocDate(cursor.getString(5));
+                manuInspectModel.setMpDocDate(cursor.getString(5));
                 manuInspectModel.setMpDocTime(cursor.getString(6));
                 manuInspectModel.setMpEmployeeNo(cursor.getString(7));
                 manuInspectModel.setMpEmployeeName(cursor.getString(8));
@@ -319,5 +365,95 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return manuInspects;
+    }
+
+    public void insertManuInspectImage(ManuInspectImageModel manuInspectImage){
+        database = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_MPGDOCCODE, manuInspectImage.getMpgDoccode());
+        contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDoccode());
+        contentValues.put(COL_MPGDOCUMENTNO, manuInspectImage.getMpgDocumentno());
+        contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
+        contentValues.put(COL_MPGDOCSEQ, manuInspectImage.getMpgDocSeq());
+        contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
+        contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
+        contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
+        contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
+        contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
+        contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
+        contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
+        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
+        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
+        contentValues.put(COL_MPGLASTMODIFYDATE, manuInspectImage.getMpgLastModifyDate());
+        contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
+        contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
+        contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
+        database.insert(TABLE_MANUINSPECTIMAGE, null, contentValues);
+        database.close();
+    }
+
+    public void updateManuInspectImage(ManuInspectImageModel manuInspectImage) {
+        database = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
+        contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
+        contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
+        contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
+        contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
+        contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
+        contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
+        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
+        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
+        contentValues.put(COL_MPGLASTMODIFYDATE, manuInspectImage.getMpgLastModifyDate());
+        contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
+        contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
+        contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
+        database.update(TABLE_MANUINSPECTIMAGE, contentValues,
+                COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? AND " + COL_MPGDOCSEQ + " = ? ",
+                new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), manuInspectImage.getMpgDocumentno(), manuInspectImage.getMpgDocBranch(), manuInspectImage.getMpgDocSeq()});
+        database.close();
+    }
+
+    public void deleteManuInspectImage(ManuInspectImageModel manuInspectImage) {
+        database = this.getReadableDatabase();
+        database.delete(TABLE_MANUINSPECTIMAGE,
+                COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? AND " + COL_MPGDOCSEQ + " = ? ",
+                new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), manuInspectImage.getMpgDocumentno(), manuInspectImage.getMpgDocBranch(), manuInspectImage.getMpgDocSeq()});
+        database.close();
+    }
+
+    public ArrayList<ManuInspectImageModel> getAllManuInspectImage() {
+        database = this.getReadableDatabase();
+        Cursor cursor = database.query(TABLE_MANUINSPECTIMAGE, null, null, null, null, null, null);
+        ArrayList<ManuInspectImageModel> manuInspectImages = new ArrayList<ManuInspectImageModel>();
+        ManuInspectImageModel manuInspectImageModel;
+        if (cursor.getCount() > 0) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                cursor.moveToNext();
+                manuInspectImageModel = new ManuInspectImageModel();
+                manuInspectImageModel.setMpgDoccode(cursor.getString(0));
+                manuInspectImageModel.setMpgDocument(cursor.getString(1));
+                manuInspectImageModel.setMpgDocumentno(cursor.getString(2));
+                manuInspectImageModel.setMpgDocBranch(cursor.getString(3));
+                manuInspectImageModel.setMpgDocSeq(cursor.getString(4));
+                manuInspectImageModel.setMpgCause(cursor.getString(5));
+                manuInspectImageModel.setMpgSolution(cursor.getString(6));
+                manuInspectImageModel.setMpgMemo(cursor.getString(7));
+                manuInspectImageModel.setMpgImagePath(cursor.getString(8));
+                manuInspectImageModel.setMpgImageBlob(cursor.getString(9));
+                manuInspectImageModel.setMpgCauseByEmployeeNo(cursor.getString(10));
+                manuInspectImageModel.setMpgCauseByEmployeeName(cursor.getString(11));
+                manuInspectImageModel.setMpgSolutionByEmployeeNo(cursor.getString(12));
+                manuInspectImageModel.setMpgSolutionByEmployeeName(cursor.getString(13));
+                manuInspectImageModel.setMpgLastModifyDate(cursor.getString(14));
+                manuInspectImageModel.setMpgLastModifyTime(cursor.getString(15));
+                manuInspectImageModel.setMpgLastModifyByUserNo(cursor.getString(16));
+                manuInspectImageModel.setMpgLastModifyByUserName(cursor.getString(17));
+                manuInspectImages.add(manuInspectImageModel);
+            }
+        }
+        cursor.close();
+        database.close();
+        return manuInspectImages;
     }
 }
