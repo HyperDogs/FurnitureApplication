@@ -1,6 +1,7 @@
 package com.example.ton.furnitureapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,6 +66,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext,"is position "+position,Toast.LENGTH_SHORT).show();
+                Intent previewImg = new Intent(mContext,PreveiwImage.class);
+                mContext.startActivity(previewImg);
             }
         });
 
