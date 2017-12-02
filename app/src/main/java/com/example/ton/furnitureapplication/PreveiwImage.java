@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.squareup.picasso.Picasso;
 
 import java.security.Guard;
@@ -29,9 +31,14 @@ public class PreveiwImage extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-        preview = (ImageView)findViewById(R.id.previewImg);
-        //Glide.with(PreveiwImage.this).load(R.drawable.example).into(preview);
-        Picasso.with(PreveiwImage.this).load(R.drawable.example).fit().centerCrop().into(preview);
+
+        SubsamplingScaleImageView imageView = (SubsamplingScaleImageView)findViewById(R.id.previewImg);
+        imageView.setImage(ImageSource.resource(R.drawable.example));
+
+       // preview = (ImageView)findViewById(R.id.previewImg);
+       // Glide.with(PreveiwImage.this).load(R.drawable.example).into(preview);
+       // Glide.with(PreveiwImage.this).load(R.drawable.example).fi
+       // Picasso.with(PreveiwImage.this).load(R.drawable.example).fit().centerCrop().into(preview);
 
 
     }
