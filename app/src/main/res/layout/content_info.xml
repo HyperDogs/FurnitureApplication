@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/date" />
+            android:text="@string/dateInfo" />
 
         <TextView
             android:layout_width="20dp"
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/cus_no" />
+            android:text="@string/cus_noInfo" />
 
         <TextView
             android:layout_width="20dp"
@@ -91,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/product_lb" />
+            android:text="@string/item_noInfo" />
 
         <TextView
             android:layout_width="20dp"
@@ -125,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/color_no" />
+            android:text="@string/color_noInfo" />
 
         <TextView
             android:layout_width="20dp"
@@ -159,7 +159,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/co_no" />
+            android:text="@string/co_noInfo" />
 
         <TextView
             android:layout_width="20dp"
@@ -193,7 +193,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/inspector" />
+            android:text="@string/inspectorInfo" />
 
         <TextView
             android:layout_width="20dp"

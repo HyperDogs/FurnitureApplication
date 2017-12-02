@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.TBUserLoginModel;
+import resource.AsyncTaskLogin;
 
 public class MainActivity extends Activity {
 
@@ -58,12 +59,8 @@ public class MainActivity extends Activity {
                 startActivity(a);
                 Toast.makeText(MainActivity.this,"กรุณากรอกข้อมูลให้ครบ",Toast.LENGTH_LONG).show();
             }else {
-                if (mHelper.checkUserLogin(usernameTxt,passwordTxt)){
-                Intent i = new Intent(MainActivity.this, MainMenu.class);
-                startActivity(i);
-                }else {
-                    Toast.makeText(MainActivity.this,"Username หรือ Password ผิด",Toast.LENGTH_LONG).show();
-                }
+                AsyncTaskLogin atlLogin = new AsyncTaskLogin(MainActivity.this,usernameTxt,passwordTxt);
+                atlLogin.execute();
             }
 
 

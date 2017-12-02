@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -42,7 +44,8 @@ public class Home extends AppCompatActivity {
     private File file;
     private Uri uri;
     private LinearLayout basicInfo;
-
+    private TextView dateV,cusNoV,itemV,colorV,coV,inspV;
+    private BasicInfomation basicInfomation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +62,31 @@ public class Home extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         prepareAlbums();
+        //adapter.
+
+        //onClick
+
+
 
         //Header
         mainPic = (ImageView) findViewById(R.id.mainpic);
         mainPic.setOnClickListener(onClickTakePic);
         basicInfo = (LinearLayout) findViewById(R.id.info);
         basicInfo.setOnClickListener(onClickBasicInfo);
+
+        //InfoHeader
+        dateV = (TextView)findViewById(R.id.dateV);
+        cusNoV = (TextView)findViewById(R.id.cusNoV);
+        itemV = (TextView)findViewById(R.id.itemV);
+        colorV = (TextView)findViewById(R.id.colorV);
+        coV = (TextView)findViewById(R.id.coV);
+        inspV = (TextView)findViewById(R.id.inspV);
+        dateV.setText(basicInfomation.getFileHeader_date());
+        cusNoV.setText(basicInfomation.getFileHeader_customerNo());
+        itemV.setText(basicInfomation.getFileHeader_itemNo());
+        colorV.setText(basicInfomation.getFileHeader_colorNo());
+        coV.setText(basicInfomation.getFileHeader_coNo());
+        inspV.setText(basicInfomation.getFileHeader_inspector());
     }
     private  View.OnClickListener onClickBasicInfo = new View.OnClickListener() {
         @Override
@@ -122,7 +144,7 @@ public class Home extends AppCompatActivity {
                     scrollRange = appBarLayout.getTotalScrollRange();
                 }
                 if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbar.setTitle(getString(R.string.app_name));
+                    collapsingToolbar.setTitle("");
                     isShow = true;
                 } else if (isShow) {
                     collapsingToolbar.setTitle(" ");
@@ -133,7 +155,7 @@ public class Home extends AppCompatActivity {
     }
     private void prepareAlbums() {
 
-        Album b = new Album();
+        Album b;
         String coverStr = "Test";
         int[] cover = new int[100];
         for (int i=0;i<cover.length;i++){

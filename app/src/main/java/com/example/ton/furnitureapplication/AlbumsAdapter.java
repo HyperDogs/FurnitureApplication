@@ -41,6 +41,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     public AlbumsAdapter(Context mContext, List<Album> albumList) {
         this.mContext = mContext;
         this.albumList = albumList;
+
     }
 
     @Override
@@ -52,31 +53,42 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Album album = albumList.get(position);
         holder.title.setText(album.getName());
-        holder.count.setText(album.getNumOfSongs() + " songs");
+        holder.count.setText(album.getNumOfSongs()+"");
+
 
         // loading album cover using Glide library
         Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
+        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext,"is position "+position,Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.overflow);
+                showPopupMenu(holder.overflow,position);
             }
         });
+
+
+
     }
 
     /**
      * Showing popup menu when tapping on 3 dots
      */
-    private void showPopupMenu(View view) {
+    private void showPopupMenu(View view,int position) {
         // inflate menu
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_album, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener());
+        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
         popup.show();
     }
 
@@ -84,18 +96,20 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
      * Click listener for popup menu items
      */
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+        private int positionCard;
 
-        public MyMenuItemClickListener() {
+        public MyMenuItemClickListener(int position) {
+            positionCard = position;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.action_add_favourite:
-                    Toast.makeText(mContext, "Add to favourite", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Position is :"+positionCard, Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.action_play_next:
-                    Toast.makeText(mContext, "Play next", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Play next"+positionCard, Toast.LENGTH_SHORT).show();
                     return true;
                 default:
             }

@@ -4,12 +4,22 @@
     <string name="basic_info_lb">ข้อมูลเบื้องต้น</string>
     <string name="change_lang_btn">เปลี่ยนภาษา</string>
 
+    <string name="dateInfo">วันที่ :</string>
+    <string name="cus_noInfo">รหัสลูกค้า :</string>
+    <string name="item_noInfo">รหัสสินค้า :</string>
+    <string name="color_noInfo">รหัสสี :</string>
+    <string name="co_noInfo">รหัสเอกสาร :</string>
+    <string name="inspectorInfo">ผู้จัดทำ :</string>
+
     <string name="date">วันที่ :</string>
     <string name="cus_no">รหัสลูกค้า :</string>
     <string name="item_no">รหัสสินค้า :</string>
     <string name="color_no">รหัสสี :</string>
     <string name="co_no">รหัสเอกสาร :</string>
     <string name="inspector">ผู้จัดทำ :</string>
+
+
+    <string name="alertInfo">กรุณากรอกข้อมูลให้ครบ</string>
 
     <string name="update">อัพเดต</string>
 </resources>
