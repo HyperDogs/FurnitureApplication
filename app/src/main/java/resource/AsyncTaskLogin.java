@@ -63,7 +63,7 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
 
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                    dialog.dismiss();
+                        progressDialog.dismiss();
 
                     if (LOGIN_STATUS == true) {
                         /// ให้ไปยังหน้าหลัก
