@@ -39,7 +39,7 @@ public class Home extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AlbumsAdapter adapter;
     private List<Album> albumList;
-    private  ImageView mainPic;
+    private  ImageView mainPic,listFurnitureBtn;
     private int headerImage = 1001;
     private File file;
     private Uri uri;
@@ -62,9 +62,6 @@ public class Home extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         prepareAlbums();
-        //adapter.
-
-        //onClick
 
 
 
@@ -73,6 +70,8 @@ public class Home extends AppCompatActivity {
         mainPic.setOnClickListener(onClickTakePic);
         basicInfo = (LinearLayout) findViewById(R.id.info);
         basicInfo.setOnClickListener(onClickBasicInfo);
+        listFurnitureBtn = (ImageView) findViewById(R.id.listFunitueBtn);
+        listFurnitureBtn.setOnClickListener(onClickListFurniture);
 
         //InfoHeader
         dateV = (TextView)findViewById(R.id.dateV);
@@ -88,6 +87,13 @@ public class Home extends AppCompatActivity {
         coV.setText(basicInfomation.getFileHeader_coNo());
         inspV.setText(basicInfomation.getFileHeader_inspector());
     }
+    private View.OnClickListener onClickListFurniture = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent listFuniture = new Intent(Home.this,ListFurniture.class);
+            startActivity(listFuniture);
+        }
+    };
     private  View.OnClickListener onClickBasicInfo = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

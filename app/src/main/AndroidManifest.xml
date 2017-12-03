@@ -46,6 +46,10 @@
         <activity
             android:name=".PreveiwImage"
             android:label="@string/title_activity_preveiw_image"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ListFurniture"
+            android:label="@string/title_activity_list_furniture"
             android:theme="@style/AppTheme"></activity>
     </application>
 
