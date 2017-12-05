@@ -79,7 +79,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.overflow,position);
+                showPopupMenu(holder.overflow, position);
             }
         });
 
@@ -105,6 +105,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
         private int positionCard;
         private  String m_Text;
+        Album album;
 
         public MyMenuItemClickListener(int position) {
             positionCard = position;
@@ -117,20 +118,27 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                     Toast.makeText(mContext, "Position is :"+positionCard, Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.action_play_next:
+                    album = albumList.get(positionCard);
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                     builder.setTitle("Title");
 
-// Set up the input
+                    // Set up the input
                     final EditText input = new EditText(mContext);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    input.setText(album.getName());
                     builder.setView(input);
 
-// Set up the buttons
+                    // Set up the buttons
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             m_Text = input.getText().toString();
+                            album.setName(m_Text);
+                            albumList.set(positionCard, album);
+                            Home.updateView();
+                            Toast.makeText(mContext, "Input text is : "+m_Text, Toast.LENGTH_SHORT).show();
+
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -141,7 +149,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                     });
 
                     builder.show();
-                    Toast.makeText(mContext, "Play next"+positionCard, Toast.LENGTH_SHORT).show();
+
+                    //Toast.makeText(mContext, "Play next"+positionCard, Toast.LENGTH_SHORT).show();
                     return true;
                 default:
             }

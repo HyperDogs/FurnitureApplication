@@ -36,7 +36,7 @@ import resource.CreateFile;
 public class Home extends AppCompatActivity  {
 
     private RecyclerView recyclerView;
-    private AlbumsAdapter adapter;
+    private static AlbumsAdapter adapter;
     private List<Album> albumList;
     private  ImageView mainPic,listFurnitureBtn;
     private int headerImage = 1001;
@@ -141,7 +141,9 @@ public class Home extends AppCompatActivity  {
 
         }
     };
-
+    public static void updateView(){
+        adapter.notifyDataSetChanged();
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
