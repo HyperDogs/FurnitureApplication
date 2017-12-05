@@ -28,6 +28,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
 
     private Context mContext;
     private List<Album> albumList;
+    private Album album;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count;
@@ -59,19 +60,59 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Album album = albumList.get(position);
+        album = albumList.get(position);
         holder.title.setText(album.getName());
         holder.count.setText(album.getNumOfSongs()+"");
 
 
         // loading album cover using Glide library
         Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
+        //กดที่รูป
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(mContext,"is position "+position,Toast.LENGTH_SHORT).show();
                 Intent previewImg = new Intent(mContext,PreveiwImage.class);
                 mContext.startActivity(previewImg);
+            }
+        });
+        //กดที่Text
+        holder.title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Album album1 = albumList.get(position);
+                Toast.makeText(mContext,"Position alert"+position,Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("Title");
+
+                // Set up the input
+                final EditText input = new EditText(mContext);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setText(position+"");
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        album1.setName(input.getText().toString());
+                        albumList.set(position, album1);
+                        Home.updateView();
+                        Toast.makeText(mContext,"Position alert"+position,Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
             }
         });
 
@@ -104,8 +145,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
      */
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
         private int positionCard;
-        private  String m_Text;
-        Album album;
 
         public MyMenuItemClickListener(int position) {
             positionCard = position;
@@ -118,38 +157,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                     Toast.makeText(mContext, "Position is :"+positionCard, Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.action_play_next:
-                    album = albumList.get(positionCard);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                    builder.setTitle("Title");
-
-                    // Set up the input
-                    final EditText input = new EditText(mContext);
-                    // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                    input.setInputType(InputType.TYPE_CLASS_TEXT);
-                    input.setText(album.getName());
-                    builder.setView(input);
-
-                    // Set up the buttons
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            m_Text = input.getText().toString();
-                            album.setName(m_Text);
-                            albumList.set(positionCard, album);
-                            Home.updateView();
-                            Toast.makeText(mContext, "Input text is : "+m_Text, Toast.LENGTH_SHORT).show();
-
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    });
-
-                    builder.show();
-
                     //Toast.makeText(mContext, "Play next"+positionCard, Toast.LENGTH_SHORT).show();
                     return true;
                 default:
