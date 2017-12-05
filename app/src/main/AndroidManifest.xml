@@ -49,7 +49,7 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".ListFurniture"
-            android:label="@string/title_activity_list_furniture"
+            android:label=""
             android:theme="@style/AppTheme"></activity>
     </application>
 

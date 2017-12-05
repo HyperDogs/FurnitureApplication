@@ -1,14 +1,18 @@
 package com.example.ton.furnitureapplication;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -100,6 +104,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
      */
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
         private int positionCard;
+        private  String m_Text;
 
         public MyMenuItemClickListener(int position) {
             positionCard = position;
@@ -112,6 +117,30 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                     Toast.makeText(mContext, "Position is :"+positionCard, Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.action_play_next:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("Title");
+
+// Set up the input
+                    final EditText input = new EditText(mContext);
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    builder.setView(input);
+
+// Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            m_Text = input.getText().toString();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
                     Toast.makeText(mContext, "Play next"+positionCard, Toast.LENGTH_SHORT).show();
                     return true;
                 default:
