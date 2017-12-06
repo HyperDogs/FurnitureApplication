@@ -48,7 +48,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
-            count = (TextView) view.findViewById(R.id.count);
+            //count = (TextView) view.findViewById(R.id.count);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             overflow = (ImageView) view.findViewById(R.id.overflow);
         }
@@ -73,7 +73,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         album = albumList.get(position);
         holder.title.setText(album.getName());
-        holder.count.setText(album.getNumOfSongs()+"");
+        //holder.count.setText(album.getNumOfSongs()+"");
 
 
         if(AlbumDetail.DETAIL_BITMAP[position] != null) {
@@ -86,6 +86,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
 
         // loading album cover using Glide library
         Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
+
         //กดที่รูป
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +128,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                         album1.setName(input.getText().toString());
                         albumList.set(position, album1);
                         Toast.makeText(mContext,"Position alert"+position,Toast.LENGTH_SHORT).show();
+                        Home.updateView();
 
                     }
                 });

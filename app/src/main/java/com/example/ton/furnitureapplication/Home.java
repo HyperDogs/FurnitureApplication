@@ -140,7 +140,7 @@ public class Home extends AppCompatActivity  {
     private View.OnClickListener onClickListFurniture = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent listFuniture = new Intent(Home.this,ListFurniture.class);
+            Intent listFuniture = new Intent(Home.this,Allfile.class);
             startActivity(listFuniture);
         }
     };
@@ -165,7 +165,7 @@ public class Home extends AppCompatActivity  {
         }
     };
 
-    public void updateView(){
+    public static void updateView(){
         adapter.notifyDataSetChanged();
     }
 
@@ -222,7 +222,7 @@ public class Home extends AppCompatActivity  {
         String coverStr = "Test";
         int[] cover = new int[100];
         for (int i=0;i<cover.length;i++){
-            cover[i] = R.drawable.example;
+            cover[i] = R.drawable.camera;
             b = new Album(coverStr,i,cover[i]);
             albumList.add(b);
         }

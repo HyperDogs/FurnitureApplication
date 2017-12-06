@@ -50,6 +50,10 @@
         <activity
             android:name=".ListFurniture"
             android:label=""
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Allfile"
+            android:label="@string/title_activity_allfile"
             android:theme="@style/AppTheme"></activity>
     </application>
 

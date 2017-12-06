@@ -5,4 +5,8 @@
     <string name="action_play_next">Add Text</string>
     <string name="title_activity_info">info</string>
     <string name="title_activity_preveiw_image">PreveiwImage</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_allfile">Allfile</string>
 </resources>

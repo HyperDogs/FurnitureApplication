@@ -35,7 +35,7 @@ public class PreveiwImage extends AppCompatActivity {
        // preview = (ImageView)findViewById(R.id.previewImg);
        // Glide.with(PreveiwImage.this).load(R.drawable.example).into(preview);
        // Glide.with(PreveiwImage.this).load(R.drawable.example).fi
-       // Picasso.with(PreveiwImage.this).load(R.drawable.example).fit().centerCrop().into(preview);
+       //z Picasso.with(PreveiwImage.this).load(R.drawable.example).fit().centerCrop().into(preview);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
