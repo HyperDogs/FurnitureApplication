@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
     SQLiteDatabase mDb;
     DatabaseHelper mHelper;
     ArrayList<TBUserLoginModel> loginUser = null;
+
     Cursor mCursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +63,9 @@ public class MainActivity extends Activity {
                 AsyncTaskLogin atlLogin = new AsyncTaskLogin(MainActivity.this,usernameTxt,passwordTxt);
                 atlLogin.execute();
             }
-
-
         }
     };
+
     private void createDB(){
         //SQLite
         mHelper = new DatabaseHelper(MainActivity.this);

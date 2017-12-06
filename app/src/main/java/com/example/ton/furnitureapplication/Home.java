@@ -1,11 +1,9 @@
 package com.example.ton.furnitureapplication;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,21 +16,21 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import resource.BitmapManager;
 import resource.CreateFile;
 
 public class Home extends AppCompatActivity  {
@@ -61,6 +59,11 @@ public class Home extends AppCompatActivity  {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(2000);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
         // Extend the Callback class
         ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
             //and in your imlpementaion of
@@ -161,27 +164,32 @@ public class Home extends AppCompatActivity  {
 
         }
     };
-    public static void updateView(){
+
+    public void updateView(){
         adapter.notifyDataSetChanged();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+
         if (requestCode == headerImage && resultCode == RESULT_OK) {
             try {
                 Bitmap bitmap  = BitmapFactory.decodeFile(file.getPath());
-                Picasso.with(Home.this).load(getImageUri(Home.this,bitmap)).fit().centerCrop().into(mainPic);
+                Picasso.with(Home.this).load(Utility.getImageUri(Home.this,bitmap)).fit().centerCrop().into(mainPic);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            Log.d("POSITION : ",String.valueOf(requestCode));
+            Bitmap bitmap = BitmapManager.decode(AlbumDetail.DETAIL_FILE.getPath(), 300, 350);
+            AlbumDetail.DETAIL_BITMAP[requestCode] = bitmap;
+            updateView();
+            //Picasso.with(Home.this).load(getImageUri(Home.this,bitmap)).fit().centerCrop().into(mainPic);
         }
     }
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
+
     private void initCollapsingToolbar() {
         final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(" ");

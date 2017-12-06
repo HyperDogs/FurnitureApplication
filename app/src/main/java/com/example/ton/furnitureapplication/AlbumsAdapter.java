@@ -1,9 +1,15 @@
 package com.example.ton.furnitureapplication;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -18,17 +24,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.List;
 
-/**
- * Created by Ravi Tamada on 18/05/16.
- */
+import resource.CreateFile;
+
+import static android.app.Activity.RESULT_OK;
+
 public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHolder> {
 
     private Context mContext;
     private List<Album> albumList;
     private Album album;
+    private File file;
+    private Uri uri;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count;
@@ -65,15 +76,31 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
         holder.count.setText(album.getNumOfSongs()+"");
 
 
+        if(AlbumDetail.DETAIL_BITMAP[position] != null) {
+            Picasso.with(mContext).load(Utility.getImageUri(mContext, AlbumDetail.DETAIL_BITMAP[position]))
+                    .fit().centerCrop().into(holder.thumbnail);
+            holder.overflow.setVisibility(View.VISIBLE);
+        } else {
+            holder.overflow.setVisibility(View.GONE);
+        }
+
         // loading album cover using Glide library
         Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
         //กดที่รูป
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext,"is position "+position,Toast.LENGTH_SHORT).show();
-                Intent previewImg = new Intent(mContext,PreveiwImage.class);
-                mContext.startActivity(previewImg);
+                if(AlbumDetail.DETAIL_BITMAP[position] != null){
+                    Intent fullSizeIMG = new Intent(mContext,PreveiwImage.class);
+                    fullSizeIMG.putExtra("IMG_INDEX",position);
+                    mContext.startActivity(fullSizeIMG);
+                } else {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    AlbumDetail.DETAIL_FILE= CreateFile.createUnique();
+                    uri = FileProvider.getUriForFile(mContext,BuildConfig.APPLICATION_ID + ".provider",AlbumDetail.DETAIL_FILE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                    ((Activity) mContext).startActivityForResult(intent, position);
+                }
             }
         });
         //กดที่Text
@@ -99,7 +126,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
 
                         album1.setName(input.getText().toString());
                         albumList.set(position, album1);
-                        Home.updateView();
                         Toast.makeText(mContext,"Position alert"+position,Toast.LENGTH_SHORT).show();
 
                     }
@@ -120,7 +146,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.overflow, position);
+                showPopupMenu(holder.overflow, position, holder.thumbnail, holder.overflow);
             }
         });
 
@@ -131,12 +157,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     /**
      * Showing popup menu when tapping on 3 dots
      */
-    private void showPopupMenu(View view,int position) {
+    private void showPopupMenu(View view,int position, ImageView detailThumbnail, ImageView detailOverflow) {
         // inflate menu
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_album, popup.getMenu());
-        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position));
+        popup.setOnMenuItemClickListener(new MyMenuItemClickListener(position, detailThumbnail, detailOverflow));
         popup.show();
     }
 
@@ -145,28 +171,47 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
      */
     class MyMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
         private int positionCard;
+        private ImageView mDetailThumnail, mDetailOverflow;
 
-        public MyMenuItemClickListener(int position) {
+        public MyMenuItemClickListener(int position, ImageView detailThumbnail, ImageView detailOverflow) {
             positionCard = position;
+            this.mDetailThumnail = detailThumbnail;
+            this.mDetailOverflow = detailOverflow;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.action_add_favourite:
-                    Toast.makeText(mContext, "Position is :"+positionCard, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    AlbumDetail.DETAIL_FILE= CreateFile.createUnique();
+                    uri = FileProvider.getUriForFile(mContext,BuildConfig.APPLICATION_ID + ".provider",AlbumDetail.DETAIL_FILE);
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                    ((Activity) mContext).startActivityForResult(intent, positionCard);
                     return true;
                 case R.id.action_play_next:
                     //Toast.makeText(mContext, "Play next"+positionCard, Toast.LENGTH_SHORT).show();
+                    AlbumDetail.DETAIL_BITMAP[positionCard] = null;
+                    Glide.with(mContext).load(album.getThumbnail()).into(mDetailThumnail);
+                    mDetailOverflow.setVisibility(View.GONE);
                     return true;
                 default:
             }
             return false;
         }
+
+
     }
+
+    public void startActivityForResult(Intent intent, int positionCard) {
+        Toast.makeText(mContext, "Play next"+positionCard, Toast.LENGTH_SHORT).show();
+    }
+
+
 
     @Override
     public int getItemCount() {
         return albumList.size();
     }
+
 }
