@@ -222,7 +222,7 @@ public class Home extends AppCompatActivity  {
         String coverStr = "Test";
         int[] cover = new int[100];
         for (int i=0;i<cover.length;i++){
-            cover[i] = R.drawable.camera;
+            cover[i] = R.drawable.camera2;
             b = new Album(coverStr,i,cover[i]);
             albumList.add(b);
         }

@@ -63,23 +63,31 @@
                     </LinearLayout>
                 </FrameLayout>
 
-                <ImageView
-                    android:id="@+id/mainpic"
+                <LinearLayout
+                    android:id="@+id/mainpic_bg"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="wrap_content"                    
+                    android:background="@drawable/border"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/textView4"
-                    android:background="@drawable/border"
-                    app:srcCompat="@drawable/camera01" />
+                    android:layout_below="@+id/textView4">
 
+                    <ImageView
+                        android:id="@+id/mainpic"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.5"
+                        app:srcCompat="@drawable/camera01" />
+
+                </LinearLayout>
                 <FrameLayout
                     android:id="@+id/basicinfo"
                     android:layout_width="160dp"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/textView4"
-                    android:layout_toEndOf="@+id/mainpic"
-                    android:layout_toRightOf="@+id/mainpic">
+                    android:layout_toEndOf="@+id/mainpic_bg"
+                    android:background="@drawable/border"
+                    android:layout_toRightOf="@+id/mainpic_bg">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -89,9 +97,9 @@
                             android:id="@+id/info"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/border"
+                            
                             android:orientation="vertical"
-                            android:paddingLeft="5dp">
+                            android:paddingLeft="8dp">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
