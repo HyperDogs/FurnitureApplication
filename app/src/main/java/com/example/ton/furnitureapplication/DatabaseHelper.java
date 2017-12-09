@@ -111,9 +111,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     private void createTABLE_MANUINSPECT(SQLiteDatabase db){
         String CREATE_UMANUINSPECT_TABLE = " CREATE TABLE " + TABLE_MANUINSPECT + "("
-                + COL_DOCCODE  + " CHAR(4) PRIMARY KEY, "
+                + COL_DOCCODE  + " CHAR(4), "
                 + COL_DOCUMENT + " VARCHAR(20), "
-                + COL_DOCUMENTNO + " INTEGER, "
+                + COL_DOCUMENTNO + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_DOCBRANCH + " CHAR(5), "
                 + COL_DOCSEQ + " INTEGER, "
                 + COL_DOCDATE + " DATETIME, "
@@ -311,15 +311,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_LASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
         database.update(TABLE_MANUINSPECT, contentValues,
                 COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? AND " + COL_DOCUMENTNO + " = ? AND " + COL_DOCBRANCH + " = ? AND " + COL_DOCSEQ + " = ? ",
-                new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), manuInspect.getMpDocumentNo(), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
-        database.close();
-    }
-
-    public void deleteManuInspect(ManuInspectModel manuInspect) {
-        database = this.getReadableDatabase();
-        database.delete(TABLE_MANUINSPECT,
-                COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? AND " + COL_DOCUMENTNO + " = ? AND " + COL_DOCBRANCH + " = ? AND " + COL_DOCSEQ + " = ? ",
-                new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), manuInspect.getMpDocumentNo(), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
+                new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), String.valueOf(manuInspect.getMpDocumentNo()), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
         database.close();
     }
 
@@ -334,7 +326,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 manuInspectModel = new ManuInspectModel();
                 manuInspectModel.setMpDocCode(cursor.getString(0));
                 manuInspectModel.setMpDocument(cursor.getString(1));
-                manuInspectModel.setMpDocumentNo(cursor.getString(2));
+                manuInspectModel.setMpDocumentNo(cursor.getInt(2));
                 manuInspectModel.setMpDocBranch(cursor.getString(3));
                 manuInspectModel.setMpDocSeq(cursor.getString(4));
                 manuInspectModel.setMpDocDate(cursor.getString(5));

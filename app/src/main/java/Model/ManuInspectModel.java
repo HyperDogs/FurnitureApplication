@@ -9,7 +9,7 @@ import java.util.Date;
 public class ManuInspectModel {
     private String mpDocCode;
     private String mpDocument;
-    private String mpDocumentNo;
+    private int mpDocumentNo;
     private String mpDocBranch;
     private String mpDocSeq;
     private String mpDocDate;
@@ -34,6 +34,7 @@ public class ManuInspectModel {
     private String mpLastModifyTime;
     private String mpLastModifyByUserNo;
     private String mpLastModifyByUserName;
+    private ManuInspectImageModel manuInspectImageModel;
 
     public String getMpDocCode() {
         return mpDocCode;
@@ -51,11 +52,11 @@ public class ManuInspectModel {
         this.mpDocument = mpDocument;
     }
 
-    public String getMpDocumentNo() {
+    public int getMpDocumentNo() {
         return mpDocumentNo;
     }
 
-    public void setMpDocumentNo(String mpDocumentNo) {
+    public void setMpDocumentNo(int mpDocumentNo) {
         this.mpDocumentNo = mpDocumentNo;
     }
 
@@ -249,5 +250,13 @@ public class ManuInspectModel {
 
     public void setMpLastModifyByUserName(String mpLastModifyByUserName) {
         this.mpLastModifyByUserName = mpLastModifyByUserName;
+    }
+
+    public ManuInspectImageModel getManuInspectImageModel() {
+        return manuInspectImageModel;
+    }
+
+    public void setManuInspectImageModel(ManuInspectImageModel manuInspectImageModel) {
+        this.manuInspectImageModel = manuInspectImageModel;
     }
 }
