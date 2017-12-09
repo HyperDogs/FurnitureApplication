@@ -30,7 +30,7 @@ public class PreveiwImage extends AppCompatActivity {
 
 
         SubsamplingScaleImageView imageView = (SubsamplingScaleImageView)findViewById(R.id.previewImg);
-        imageView.setImage(ImageSource.bitmap(AlbumDetail.DETAIL_BITMAP[imgIndex]));
+        imageView.setImage(ImageSource.bitmap(Album.DETAIL_BITMAP[imgIndex]));
 
        // preview = (ImageView)findViewById(R.id.previewImg);
        // Glide.with(PreveiwImage.this).load(R.drawable.example).into(preview);

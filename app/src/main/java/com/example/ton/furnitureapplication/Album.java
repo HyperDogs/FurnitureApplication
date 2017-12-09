@@ -1,5 +1,9 @@
 package com.example.ton.furnitureapplication;
 
+import android.graphics.Bitmap;
+
+import java.io.File;
+
 /**
  * Created by Lincoln on 18/05/16.
  */
@@ -7,6 +11,8 @@ public class Album {
     private String name;
     private int numOfSongs;
     private int thumbnail;
+    public static File DETAIL_FILE;
+    public static Bitmap[] DETAIL_BITMAP = new Bitmap[100];
 
     public Album() {
     }
@@ -40,4 +46,5 @@ public class Album {
     public void setThumbnail(int thumbnail) {
         this.thumbnail = thumbnail;
     }
+
 }

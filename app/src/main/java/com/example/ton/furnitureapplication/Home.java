@@ -183,8 +183,8 @@ public class Home extends AppCompatActivity  {
             }
         } else {
             Log.d("POSITION : ",String.valueOf(requestCode));
-            Bitmap bitmap = BitmapManager.decode(AlbumDetail.DETAIL_FILE.getPath(), 300, 350);
-            AlbumDetail.DETAIL_BITMAP[requestCode] = bitmap;
+            Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 300, 350);
+            Album.DETAIL_BITMAP[requestCode] = bitmap;
             updateView();
             //Picasso.with(Home.this).load(getImageUri(Home.this,bitmap)).fit().centerCrop().into(mainPic);
         }

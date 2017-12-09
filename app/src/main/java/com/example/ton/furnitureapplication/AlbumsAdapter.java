@@ -76,8 +76,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
         //holder.count.setText(album.getNumOfSongs()+"");
 
 
-        if(AlbumDetail.DETAIL_BITMAP[position] != null) {
-            Picasso.with(mContext).load(Utility.getImageUri(mContext, AlbumDetail.DETAIL_BITMAP[position]))
+        if(Album.DETAIL_BITMAP[position] != null) {
+            Picasso.with(mContext).load(Utility.getImageUri(mContext, Album.DETAIL_BITMAP[position]))
                     .fit().centerCrop().into(holder.thumbnail);
             holder.overflow.setVisibility(View.VISIBLE);
         } else {
@@ -91,14 +91,14 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(AlbumDetail.DETAIL_BITMAP[position] != null){
+                if(Album.DETAIL_BITMAP[position] != null){
                     Intent fullSizeIMG = new Intent(mContext,PreveiwImage.class);
                     fullSizeIMG.putExtra("IMG_INDEX",position);
                     mContext.startActivity(fullSizeIMG);
                 } else {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    AlbumDetail.DETAIL_FILE= CreateFile.createUnique();
-                    uri = FileProvider.getUriForFile(mContext,BuildConfig.APPLICATION_ID + ".provider",AlbumDetail.DETAIL_FILE);
+                    Album.DETAIL_FILE= CreateFile.createUnique();
+                    uri = FileProvider.getUriForFile(mContext,BuildConfig.APPLICATION_ID + ".provider",Album.DETAIL_FILE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                     ((Activity) mContext).startActivityForResult(intent, position);
                 }
@@ -186,14 +186,14 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             switch (menuItem.getItemId()) {
                 case R.id.action_add_favourite:
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    AlbumDetail.DETAIL_FILE= CreateFile.createUnique();
-                    uri = FileProvider.getUriForFile(mContext,BuildConfig.APPLICATION_ID + ".provider",AlbumDetail.DETAIL_FILE);
+                    Album.DETAIL_FILE= CreateFile.createUnique();
+                    uri = FileProvider.getUriForFile(mContext,BuildConfig.APPLICATION_ID + ".provider",Album.DETAIL_FILE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                     ((Activity) mContext).startActivityForResult(intent, positionCard);
                     return true;
                 case R.id.action_play_next:
                     //Toast.makeText(mContext, "Play next"+positionCard, Toast.LENGTH_SHORT).show();
-                    AlbumDetail.DETAIL_BITMAP[positionCard] = null;
+                    Album.DETAIL_BITMAP[positionCard] = null;
                     Glide.with(mContext).load(album.getThumbnail()).into(mDetailThumnail);
                     mDetailOverflow.setVisibility(View.GONE);
                     return true;
