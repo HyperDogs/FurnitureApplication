@@ -160,17 +160,29 @@ public class Home extends AppCompatActivity  {
         @Override
         public void onClick(View v) {
             if (bitmap != null){
-                //Header
-                manuInspectModel.setMpDocCode("IN01");
-                manuInspectModel.setMpDocument(getDeviceImei(Home.this));
-                manuInspectModel.setMpDocBranch("01");
-                manuInspectModel.setMpDocSeq("1");
-                manuInspectModel.setMpDocDate(basicInfomation.getFileHeader_date());
-                manuInspectModel.setMpCustomerNo(basicInfomation.getFileHeader_colorNo());
-                manuInspectModel.setMpItemNo(basicInfomation.getFileHeader_itemNo());
-                manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
-                manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
-                manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
+                if (!basicInfomation.getFileHeader_date().equals("")
+                        || !basicInfomation.getFileHeader_customerNo().equals("")
+                        || !basicInfomation.getFileHeader_itemNo().equals("")
+                        || !basicInfomation.getFileHeader_colorNo().equals("")
+                        || !basicInfomation.getFileHeader_coNo().equals("")
+                        || !basicInfomation.getFileHeader_inspector().equals("")) {
+
+                    //Header
+                    manuInspectModel.setMpDocCode("IN01");
+                    manuInspectModel.setMpDocument(getDeviceImei(Home.this));
+                    manuInspectModel.setMpDocBranch("01");
+                    manuInspectModel.setMpDocSeq("1");
+                    manuInspectModel.setMpDocDate(basicInfomation.getFileHeader_date());
+                    manuInspectModel.setMpCustomerNo(basicInfomation.getFileHeader_customerNo());
+                    manuInspectModel.setMpItemNo(basicInfomation.getFileHeader_itemNo());
+                    manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
+                    manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
+                    manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
+                    //DatabaseHelper dbHelper = new DatabaseHelper();
+                    //dbHelper.insertManuInspect(manuInspectModel);
+                }else {
+                    Toast.makeText(Home.this,"กรณากรอกข้อมูลสินค้าให้ครบถ้วน",Toast.LENGTH_SHORT).show();
+                }
 
             }else{
                 Toast.makeText(Home.this,"กรุณาใส่ข้อมูลให้ครบถ้วนก่อนบันทึก",Toast.LENGTH_LONG).show();
