@@ -180,6 +180,7 @@ public class Home extends AppCompatActivity  {
                     manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
                     //DatabaseHelper dbHelper = new DatabaseHelper();
                     //dbHelper.insertManuInspect(manuInspectModel);
+                    //
                 }else {
                     Toast.makeText(Home.this,"กรณากรอกข้อมูลสินค้าให้ครบถ้วน",Toast.LENGTH_SHORT).show();
                 }
