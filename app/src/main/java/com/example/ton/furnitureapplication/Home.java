@@ -178,9 +178,9 @@ public class Home extends AppCompatActivity  {
                     manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
                     manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
                     manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
-                    //DatabaseHelper dbHelper = new DatabaseHelper();
-                    //dbHelper.insertManuInspect(manuInspectModel);
-                    //
+                    DatabaseHelper dbHelper = new DatabaseHelper(Home.this);
+                    dbHelper.insertManuInspect(manuInspectModel);
+
                 }else {
                     Toast.makeText(Home.this,"กรณากรอกข้อมูลสินค้าให้ครบถ้วน",Toast.LENGTH_SHORT).show();
                 }
