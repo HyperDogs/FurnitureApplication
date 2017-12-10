@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by marisalom on 25/11/2017.
@@ -35,6 +36,7 @@ public class ManuInspectModel {
     private String mpLastModifyByUserNo;
     private String mpLastModifyByUserName;
     private ManuInspectImageModel manuInspectImageModel;
+    private List<ManuInspectImageModel> manuInspectImageModelList;
 
     public String getMpDocCode() {
         return mpDocCode;
@@ -258,5 +260,13 @@ public class ManuInspectModel {
 
     public void setManuInspectImageModel(ManuInspectImageModel manuInspectImageModel) {
         this.manuInspectImageModel = manuInspectImageModel;
+    }
+
+    public List<ManuInspectImageModel> getManuInspectImageModelList() {
+        return manuInspectImageModelList;
+    }
+
+    public void setManuInspectImageModelList(List<ManuInspectImageModel> manuInspectImageModelList) {
+        this.manuInspectImageModelList = manuInspectImageModelList;
     }
 }

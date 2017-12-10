@@ -180,6 +180,7 @@ public class Home extends AppCompatActivity  {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
+                                    List<ManuInspectImageModel> manuInspectImageModelList = new ArrayList<>();
                                     //Header
                                     manuInspectModel.setMpDocCode("IN01");
                                     manuInspectModel.setMpDocument(getDeviceImei(Home.this));
@@ -191,8 +192,25 @@ public class Home extends AppCompatActivity  {
                                     manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
                                     manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
                                     manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
+
+                                    //Detail
+                                    for (int i = 0; i < albumList.size(); i++) {
+                                        ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
+                                        manuInspectImageModel.setMpgDoccode(manuInspectModel.getMpDocCode());
+                                        manuInspectImageModel.setMpgDocument(manuInspectModel.getMpDocument());
+                                        manuInspectImageModel.setMpgDocBranch(manuInspectModel.getMpDocBranch());
+                                        manuInspectImageModel.setMpgDocSeq(manuInspectModel.getMpDocSeq());
+                                        //manuInspectImageModel.setMpgCause();
+                                        //manuInspectImageModel.setMpgSolution();
+                                        //manuInspectImageModel.setMpgMemo();
+                                        //manuInspectImageModel.setMpgImagePath();
+                                        //manuInspectImageModel.setMpgImageBlob();
+                                        manuInspectImageModelList.add(manuInspectImageModel);
+                                        manuInspectModel.setManuInspectImageModelList(manuInspectImageModelList);
+                                    }
+
                                     DatabaseHelper dbHelper = new DatabaseHelper(Home.this);
-                                    dbHelper.insertManuInspect(manuInspectModel);
+                                    dbHelper.save(manuInspectModel);
                                     Toast.makeText(Home.this, "Saved!!", Toast.LENGTH_SHORT).show();
 
                                 }})

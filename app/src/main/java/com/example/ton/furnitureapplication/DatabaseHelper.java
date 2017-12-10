@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
@@ -447,5 +448,68 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return manuInspectImages;
+    }
+
+    public void save(ManuInspectModel manuInspect){
+
+        database = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_DOCCODE, manuInspect.getMpDocCode());
+        contentValues.put(COL_DOCUMENT, manuInspect.getMpDocument());
+        contentValues.put(COL_DOCUMENTNO, manuInspect.getMpDocumentNo());
+        contentValues.put(COL_DOCBRANCH, manuInspect.getMpDocBranch());
+        contentValues.put(COL_DOCSEQ, manuInspect.getMpDocSeq());
+        contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate().toString());
+        contentValues.put(COL_DOCTIME, manuInspect.getMpDocTime());
+        contentValues.put(COL_EMPLOYEENO, manuInspect.getMpEmployeeNo());
+        contentValues.put(COL_EMPLOYEENAME, manuInspect.getMpEmployeeNo());
+        contentValues.put(COL_CUSTOMERNO, manuInspect.getMpCustomerNo());
+        contentValues.put(COL_CUSTOMERNAME, manuInspect.getMpCustomerName());
+        contentValues.put(COL_ITEMNO, manuInspect.getMpItemNo());
+        contentValues.put(COL_ITEMNO, manuInspect.getMpCustomerName());
+        contentValues.put(COL_COLORNO, manuInspect.getMpColorNo());
+        contentValues.put(COL_COLORNAME, manuInspect.getMpColorName());
+        contentValues.put(COL_CONO, manuInspect.getMpCoNo());
+        contentValues.put(COL_IMAGEPATH, manuInspect.getMpImagePath());
+        contentValues.put(COL_IMAGEBLOB, manuInspect.getMpImageBlob());
+        contentValues.put(COL_LASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
+        contentValues.put(COL_LASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
+        contentValues.put(COL_LASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
+        contentValues.put(COL_LASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
+        contentValues.put(COL_LASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
+        contentValues.put(COL_LASTMODIFYDATE, manuInspect.getMpLastModifyDate());
+        contentValues.put(COL_LASTMODIFYTIME, manuInspect.getMpLastModifyTime());
+        contentValues.put(COL_LASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
+        contentValues.put(COL_LASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
+        database.insert(TABLE_MANUINSPECT, null, contentValues);
+
+        if(manuInspect.getManuInspectImageModelList() != null){
+            List<ManuInspectImageModel> manuInspectImageModelList = manuInspect.getManuInspectImageModelList();
+            for (int i = 0; i < manuInspectImageModelList.size(); i++) {
+                ManuInspectImageModel manuInspectImage = manuInspectImageModelList.get(i);
+                contentValues = new ContentValues();
+                contentValues.put(COL_MPGDOCCODE, manuInspectImage.getMpgDoccode());
+                contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDoccode());
+                contentValues.put(COL_MPGDOCUMENTNO, manuInspectImage.getMpgDocumentno());
+                contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
+                contentValues.put(COL_MPGDOCSEQ, i);
+                contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
+                contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
+                contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
+                contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
+                contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
+                contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
+                contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
+                contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
+                contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
+                contentValues.put(COL_MPGLASTMODIFYDATE, manuInspectImage.getMpgLastModifyDate());
+                contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
+                contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
+                contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
+                database.insert(TABLE_MANUINSPECTIMAGE, null, contentValues);
+            }
+
+            database.close();
+        }
     }
 }
