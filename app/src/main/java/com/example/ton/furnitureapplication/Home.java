@@ -1,5 +1,7 @@
 package com.example.ton.furnitureapplication;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -16,12 +18,17 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.telecom.Call;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -30,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import Model.ManuInspectImageModel;
+import Model.ManuInspectModel;
 import resource.BitmapManager;
 import resource.CreateFile;
 
@@ -43,14 +52,17 @@ public class Home extends AppCompatActivity  {
     private File file;
     private Uri uri;
     private LinearLayout basicInfo;
+    private ImageButton saveBtn,saveAndSendBtn;
     private TextView dateV,cusNoV,itemV,colorV,coV,inspV;
     private BasicInfomation basicInfomation;
+    private ManuInspectModel manuInspectModel = new ManuInspectModel();
+    private ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
+    private Bitmap bitmap;
+    private int currentPositon  =-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
         initCollapsingToolbar();
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         albumList = new ArrayList<>();
@@ -64,12 +76,13 @@ public class Home extends AppCompatActivity  {
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-        // Extend the Callback class
+        // Extend the Callback class Drag Card View
         ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
+
             //and in your imlpementaion of
+
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 // get the viewHolder's and target's positions in your adapter data, swap them
-
                 Collections.swap(albumList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 // and notify the adapter that its dataset has changed
                 adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
@@ -81,7 +94,7 @@ public class Home extends AppCompatActivity  {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 //TODO
-
+                Toast.makeText(Home.this,"direction"+direction,Toast.LENGTH_LONG).show();
             }
 
             //defines the enabled move directions in each state (idle, swiping, dragging).
@@ -95,9 +108,9 @@ public class Home extends AppCompatActivity  {
             @Override
             public RecyclerView.ViewHolder chooseDropTarget(RecyclerView.ViewHolder selected, List<RecyclerView.ViewHolder> dropTargets, int curX, int curY) {
 
-
                 return super.chooseDropTarget(selected, dropTargets, curX, curY);
             }
+
 
             @Override
             public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -122,6 +135,12 @@ public class Home extends AppCompatActivity  {
         basicInfo.setOnClickListener(onClickBasicInfo);
         listFurnitureBtn = (ImageView) findViewById(R.id.listFunitueBtn);
         listFurnitureBtn.setOnClickListener(onClickListFurniture);
+        saveBtn = (ImageButton) findViewById(R.id.saveBth);
+        saveBtn.setOnClickListener(onClickSaveBtn);
+        saveAndSendBtn = (ImageButton)findViewById(R.id.saveAndSendBtn);
+        saveAndSendBtn.setOnClickListener(onClickSaveAndSend);
+
+
 
         //InfoHeader
         dateV = (TextView)findViewById(R.id.dateV);
@@ -137,6 +156,34 @@ public class Home extends AppCompatActivity  {
         coV.setText(basicInfomation.getFileHeader_coNo());
         inspV.setText(basicInfomation.getFileHeader_inspector());
     }
+    private View.OnClickListener onClickSaveBtn = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (bitmap != null){
+                //Header
+                manuInspectModel.setMpDocCode("IN01");
+                manuInspectModel.setMpDocument(getDeviceImei(Home.this));
+                manuInspectModel.setMpDocBranch("01");
+                manuInspectModel.setMpDocSeq("1");
+                manuInspectModel.setMpDocDate(basicInfomation.getFileHeader_date());
+                manuInspectModel.setMpCustomerNo(basicInfomation.getFileHeader_colorNo());
+                manuInspectModel.setMpItemNo(basicInfomation.getFileHeader_itemNo());
+                manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
+                manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
+                manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
+
+            }else{
+                Toast.makeText(Home.this,"กรุณาใส่ข้อมูลให้ครบถ้วนก่อนบันทึก",Toast.LENGTH_LONG).show();
+            }
+
+        }
+    };
+    private View.OnClickListener onClickSaveAndSend = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(Home.this,""+bitmap,Toast.LENGTH_LONG).show();
+        }
+    };
     private View.OnClickListener onClickListFurniture = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -162,6 +209,7 @@ public class Home extends AppCompatActivity  {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             startActivityForResult(intent, headerImage);
 
+
         }
     };
 
@@ -176,8 +224,10 @@ public class Home extends AppCompatActivity  {
 
         if (requestCode == headerImage && resultCode == RESULT_OK) {
             try {
-                Bitmap bitmap  = BitmapFactory.decodeFile(file.getPath());
+                bitmap  = BitmapFactory.decodeFile(file.getPath());
                 Picasso.with(Home.this).load(Utility.getImageUri(Home.this,bitmap)).fit().centerCrop().into(mainPic);
+                mainPic.setAlpha((float) 1.0);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -185,7 +235,9 @@ public class Home extends AppCompatActivity  {
             Log.d("POSITION : ",String.valueOf(requestCode));
             Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 300, 350);
             Album.DETAIL_BITMAP[requestCode] = bitmap;
+
             updateView();
+            //Toast.makeText(Home.this,""+requestCode,Toast.LENGTH_LONG).show();
             //Picasso.with(Home.this).load(getImageUri(Home.this,bitmap)).fit().centerCrop().into(mainPic);
         }
     }
@@ -313,5 +365,11 @@ public class Home extends AppCompatActivity  {
     private int dpToPx(int dp) {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+    /** IMEI*/
+    @SuppressLint("MissingPermission")
+    public static String getDeviceImei(Context ctx) {
+        TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getDeviceId();
     }
 }
