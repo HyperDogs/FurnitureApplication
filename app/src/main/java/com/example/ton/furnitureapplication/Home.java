@@ -2,6 +2,7 @@ package com.example.ton.furnitureapplication;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -159,30 +161,42 @@ public class Home extends AppCompatActivity  {
     private View.OnClickListener onClickSaveBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (bitmap != null){
-                if (!basicInfomation.getFileHeader_date().equals("")
-                        || !basicInfomation.getFileHeader_customerNo().equals("")
-                        || !basicInfomation.getFileHeader_itemNo().equals("")
-                        || !basicInfomation.getFileHeader_colorNo().equals("")
-                        || !basicInfomation.getFileHeader_coNo().equals("")
-                        || !basicInfomation.getFileHeader_inspector().equals("")) {
 
-                    //Header
-                    manuInspectModel.setMpDocCode("IN01");
-                    manuInspectModel.setMpDocument(getDeviceImei(Home.this));
-                    manuInspectModel.setMpDocBranch("01");
-                    manuInspectModel.setMpDocSeq("1");
-                    manuInspectModel.setMpDocDate(basicInfomation.getFileHeader_date());
-                    manuInspectModel.setMpCustomerNo(basicInfomation.getFileHeader_customerNo());
-                    manuInspectModel.setMpItemNo(basicInfomation.getFileHeader_itemNo());
-                    manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
-                    manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
-                    manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
-                    DatabaseHelper dbHelper = new DatabaseHelper(Home.this);
-                    dbHelper.insertManuInspect(manuInspectModel);
+            if (bitmap != null){
+                if (basicInfomation.getFileHeader_date().equals("")
+                        || basicInfomation.getFileHeader_customerNo().equals("")
+                        || basicInfomation.getFileHeader_itemNo().equals("")
+                        || basicInfomation.getFileHeader_colorNo().equals("")
+                        || basicInfomation.getFileHeader_coNo().equals("")
+                        || basicInfomation.getFileHeader_inspector().equals("")) {
+
+                    Toast.makeText(Home.this,"กรณากรอกข้อมูลสินค้าให้ครบถ้วน",Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Toast.makeText(Home.this,"กรณากรอกข้อมูลสินค้าให้ครบถ้วน",Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(Home.this)
+                            .setTitle("Title")
+                            .setMessage("Do you really want to whatever?")
+                            .setIcon(R.drawable.ic_save)
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    //Header
+                                    manuInspectModel.setMpDocCode("IN01");
+                                    manuInspectModel.setMpDocument(getDeviceImei(Home.this));
+                                    manuInspectModel.setMpDocBranch("01");
+                                    manuInspectModel.setMpDocSeq("0");
+                                    manuInspectModel.setMpDocDate(basicInfomation.getFileHeader_date());
+                                    manuInspectModel.setMpCustomerNo(basicInfomation.getFileHeader_customerNo());
+                                    manuInspectModel.setMpItemNo(basicInfomation.getFileHeader_itemNo());
+                                    manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
+                                    manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
+                                    manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
+                                    DatabaseHelper dbHelper = new DatabaseHelper(Home.this);
+                                    dbHelper.insertManuInspect(manuInspectModel);
+                                    Toast.makeText(Home.this, "Saved!!", Toast.LENGTH_SHORT).show();
+
+                                }})
+                            .setNegativeButton(android.R.string.no, null).show();
                 }
 
             }else{
@@ -236,22 +250,23 @@ public class Home extends AppCompatActivity  {
 
 
         if (requestCode == headerImage && resultCode == RESULT_OK) {
-            try {
-                bitmap  = BitmapFactory.decodeFile(file.getPath());
-                Picasso.with(Home.this).load(Utility.getImageUri(Home.this,bitmap)).fit().centerCrop().into(mainPic);
-                mainPic.setAlpha((float) 1.0);
 
+            try {
+                if (file !=null) {
+                    bitmap = BitmapFactory.decodeFile(file.getPath());
+                    Picasso.with(Home.this).load(Utility.getImageUri(Home.this, bitmap)).fit().centerCrop().into(mainPic);
+                    mainPic.setAlpha((float) 1.0);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
-            Log.d("POSITION : ",String.valueOf(requestCode));
-            Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 300, 350);
-            Album.DETAIL_BITMAP[requestCode] = bitmap;
-
-            updateView();
-            //Toast.makeText(Home.this,""+requestCode,Toast.LENGTH_LONG).show();
-            //Picasso.with(Home.this).load(getImageUri(Home.this,bitmap)).fit().centerCrop().into(mainPic);
+            if (Album.DETAIL_FILE != null) {
+                Log.d("POSITION : ", String.valueOf(requestCode));
+                Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 300, 350);
+                Album.DETAIL_BITMAP[requestCode] = bitmap;
+                updateView();
+            }
         }
     }
 
@@ -384,5 +399,11 @@ public class Home extends AppCompatActivity  {
     public static String getDeviceImei(Context ctx) {
         TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getDeviceId();
+    }
+    private void clearActivity(){
+        bitmap = null;
+        file = null;
+        Album.DETAIL_FILE = null;
+        recreate();
     }
 }
