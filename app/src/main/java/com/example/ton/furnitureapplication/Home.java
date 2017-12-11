@@ -174,8 +174,8 @@ public class Home extends AppCompatActivity  {
 
                 }else {
                     new AlertDialog.Builder(Home.this)
-                            .setTitle("Title")
-                            .setMessage("Do you really want to whatever?")
+                            .setTitle("Savr")
+                            .setMessage("Do you want to save ?")
                             .setIcon(R.drawable.ic_save)
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -195,21 +195,25 @@ public class Home extends AppCompatActivity  {
 
                                     //Detail
                                     for (int i = 0; i < albumList.size(); i++) {
-                                        ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
-                                        manuInspectImageModel.setMpgDoccode(manuInspectModel.getMpDocCode());
-                                        manuInspectImageModel.setMpgDocument(manuInspectModel.getMpDocument());
-                                        manuInspectImageModel.setMpgDocBranch(manuInspectModel.getMpDocBranch());
-                                        manuInspectImageModel.setMpgDocSeq(manuInspectModel.getMpDocSeq());
-                                        //manuInspectImageModel.setMpgCause();
-                                        //manuInspectImageModel.setMpgSolution();
-                                        //manuInspectImageModel.setMpgMemo();
-                                        //manuInspectImageModel.setMpgImagePath();
-                                        //manuInspectImageModel.setMpgImageBlob();
-                                        manuInspectImageModelList.add(manuInspectImageModel);
-                                        manuInspectModel.setManuInspectImageModelList(manuInspectImageModelList);
+                                        Album album =  albumList.get(i);
+                                        if (album.DETAIL_FILE != null) {
+                                            ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
+                                            manuInspectImageModel.setMpgDoccode(manuInspectModel.getMpDocCode());
+                                            manuInspectImageModel.setMpgDocument(manuInspectModel.getMpDocument());
+                                            manuInspectImageModel.setMpgDocBranch(manuInspectModel.getMpDocBranch());
+                                            manuInspectImageModel.setMpgDocSeq(manuInspectModel.getMpDocSeq());
+                                            //manuInspectImageModel.setMpgCause();
+                                            //manuInspectImageModel.setMpgSolution();
+                                            manuInspectImageModel.setMpgMemo(album.getName());
+                                            manuInspectImageModel.setMpgImagePath(album.getFileName());
+                                            //manuInspectImageModel.setMpgImageBlob();
+                                            manuInspectImageModelList.add(manuInspectImageModel);
+                                            manuInspectModel.setManuInspectImageModelList(manuInspectImageModelList);
+                                        }
                                     }
 
                                     DatabaseHelper dbHelper = new DatabaseHelper(Home.this);
+                                    //dbHelper.insertManuInspect(manuInspectModel);
                                     dbHelper.save(manuInspectModel);
                                     Toast.makeText(Home.this, "Saved!!", Toast.LENGTH_SHORT).show();
 
@@ -226,7 +230,8 @@ public class Home extends AppCompatActivity  {
     private View.OnClickListener onClickSaveAndSend = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(Home.this,""+bitmap,Toast.LENGTH_LONG).show();
+            DatabaseHelper helper = new DatabaseHelper(Home.this);
+            Toast.makeText(Home.this,""+helper.getAllManuInspect().size(),Toast.LENGTH_LONG).show();
         }
     };
     private View.OnClickListener onClickListFurniture = new View.OnClickListener() {
@@ -240,6 +245,7 @@ public class Home extends AppCompatActivity  {
         @Override
         public void onClick(View v) {
             Intent i = new Intent(Home.this,info.class);
+
             startActivity(i);
 
         }
@@ -324,49 +330,6 @@ public class Home extends AppCompatActivity  {
             b = new Album(coverStr,i,cover[i]);
             albumList.add(b);
         }
-/*
-        int[] covers = new int[]{
-                R.drawable.example,
-                R.drawable.example,
-                R.drawable.example,
-                R.drawable.example,
-                R.drawable.example,
-                R.drawable.example,
-                R.drawable.example,
-                R.drawable.example,
-                R.drawable.example,
-                R.drawable.example,
-                R.drawable.example};
-
-        Album a = new Album("True Romance", 13, covers[0]);
-        albumList.add(a);
-
-        a = new Album("Xscpae", 8, covers[1]);
-        albumList.add(a);
-
-        a = new Album("Maroon 5", 11, covers[2]);
-        albumList.add(a);
-
-        a = new Album("Born to Die", 12, covers[3]);
-        albumList.add(a);
-
-        a = new Album("Honeymoon", 14, covers[4]);
-        albumList.add(a);
-
-        a = new Album("I Need a Doctor", 1, covers[5]);
-        albumList.add(a);
-
-        a = new Album("Loud", 11, covers[6]);
-        albumList.add(a);
-
-        a = new Album("Legend", 14, covers[7]);
-        albumList.add(a);
-
-        a = new Album("Hello", 11, covers[8]);
-        albumList.add(a);
-
-        a = new Album("Greatest Hits", 17, covers[9]);
-        albumList.add(a);*/
 
         adapter.notifyDataSetChanged();
     }

@@ -20,7 +20,7 @@ import Model.TBUserLoginModel;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase database;
     private static final String DATABASE_NAME = "SQLiteDatabase.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String TABLE_USERLOGIN = "TBUserLogin";
     public static final String TABLE_MANUINSPECT = "ManuInspect";
     public static final String TABLE_MANUINSPECTIMAGE = "ManuInspectImage";
@@ -145,11 +145,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void createTABLE_MANUINSPECTIMAGE(SQLiteDatabase db){
         String CREATE_UMANUINSPECTIMAGE_TABLE = " CREATE TABLE " + TABLE_MANUINSPECTIMAGE + "("
-                + COL_MPGDOCCODE  + " CHAR(4) PRIMARY KEY, "
+                + COL_MPGDOCCODE  + " CHAR(4), "
                 + COL_MPGDOCUMENT + " VARCHAR(20), "
                 + COL_MPGDOCUMENTNO + " INTEGER, "
                 + COL_MPGDOCBRANCH + " CHAR(5), "
-                + COL_MPGDOCSEQ + " INTEGER, "
+                + COL_MPGDOCSEQ + " INTEGER PRIMARY KEY, "
                 + COL_MPGCAUSE + " INTEGER, "
                 + COL_MPGSOLUTION + " VARCHAR(220), "
                 + COL_MPGMEMO + " VARCHAR(220), "
@@ -259,7 +259,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_DOCUMENTNO, manuInspect.getMpDocumentNo());
         contentValues.put(COL_DOCBRANCH, manuInspect.getMpDocBranch());
         contentValues.put(COL_DOCSEQ, manuInspect.getMpDocSeq());
-        contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate().toString());
+        contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate());
         contentValues.put(COL_DOCTIME, manuInspect.getMpDocTime());
         contentValues.put(COL_EMPLOYEENO, manuInspect.getMpEmployeeNo());
         contentValues.put(COL_EMPLOYEENAME, manuInspect.getMpEmployeeNo());
@@ -456,7 +456,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_DOCCODE, manuInspect.getMpDocCode());
         contentValues.put(COL_DOCUMENT, manuInspect.getMpDocument());
-        contentValues.put(COL_DOCUMENTNO, manuInspect.getMpDocumentNo());
+        //contentValues.put(COL_DOCUMENTNO, manuInspect.getMpDocumentNo());
         contentValues.put(COL_DOCBRANCH, manuInspect.getMpDocBranch());
         contentValues.put(COL_DOCSEQ, manuInspect.getMpDocSeq());
         contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate().toString());
@@ -488,12 +488,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToLast();
             int mpgDocumentNo = cursor.getInt(0);
             if(manuInspect.getManuInspectImageModelList() != null){
-                List<ManuInspectImageModel> manuInspectImageModelList = manuInspect.getManuInspectImageModelList();
+               List<ManuInspectImageModel> manuInspectImageModelList = manuInspect.getManuInspectImageModelList();
                 for (int i = 0; i < manuInspectImageModelList.size(); i++) {
                     ManuInspectImageModel manuInspectImage = manuInspectImageModelList.get(i);
                     contentValues = new ContentValues();
                     contentValues.put(COL_MPGDOCCODE, manuInspectImage.getMpgDoccode());
-                    contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDoccode());
+                    contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDocument());
                     contentValues.put(COL_MPGDOCUMENTNO, mpgDocumentNo);
                     contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
                     contentValues.put(COL_MPGDOCSEQ, i);

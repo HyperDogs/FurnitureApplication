@@ -98,6 +98,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                 } else {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     Album.DETAIL_FILE= CreateFile.createUnique();
+                    album.setFileName(CreateFile.getFileName());
                     uri = FileProvider.getUriForFile(mContext,BuildConfig.APPLICATION_ID + ".provider",Album.DETAIL_FILE);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                     ((Activity) mContext).startActivityForResult(intent, position);
@@ -127,6 +128,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
 
                         album1.setName(input.getText().toString());
                         albumList.set(position, album1);
+
                         Toast.makeText(mContext,"Position alert"+position,Toast.LENGTH_SHORT).show();
                         Home.updateView();
 

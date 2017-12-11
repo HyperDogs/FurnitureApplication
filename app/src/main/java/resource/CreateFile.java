@@ -11,6 +11,7 @@ import java.util.Calendar;
  */
 public class CreateFile {
     private static String path="";
+    private static String name="";
 
     public static File createUnique(){
         ///Create File Name
@@ -27,6 +28,7 @@ public class CreateFile {
 
         //File Path
         path = sdCard + imageStorageFolder + filename + fileNameExtension;
+        name = filename+fileNameExtension;
 
         File file = new File(path);
         return file;
@@ -35,4 +37,5 @@ public class CreateFile {
     public static String getFilePath(){
         return  path;
     }
+    public static String getFileName(){ return name; }
 }

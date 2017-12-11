@@ -8,19 +8,25 @@ import java.io.File;
  * Created by Lincoln on 18/05/16.
  */
 public class Album {
-    private String name;
+    private String name,fileName;
     private int numOfSongs;
     private int thumbnail;
     public static File DETAIL_FILE;
     public static Bitmap[] DETAIL_BITMAP = new Bitmap[100];
 
-    public Album() {
-    }
 
     public Album(String name, int numOfSongs, int thumbnail) {
         this.name = name;
         this.numOfSongs = numOfSongs;
         this.thumbnail = thumbnail;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 
     public String getName() {

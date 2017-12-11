@@ -96,8 +96,9 @@ public class info extends AppCompatActivity {
                 basicInfo.setFileHeader_coNo(co_no_edt.getText().toString().trim());
                 basicInfo.setFileHeader_inspector(inspector_edt.getText().toString().trim());
 
-                Intent mainIntent = new Intent(info.this, Home.class);
-                startActivity(mainIntent);
+                /*Intent mainIntent = new Intent(info.this, Home.class);
+                startActivity(mainIntent);*/
+                finish();
             }
         }
     };
