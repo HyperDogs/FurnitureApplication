@@ -20,12 +20,10 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.telecom.Call;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,7 +57,7 @@ public class Home extends AppCompatActivity  {
     private BasicInfomation basicInfomation;
     private ManuInspectModel manuInspectModel = new ManuInspectModel();
     private ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
-    private Bitmap bitmap;
+    private Bitmap bitmap,bitmapDtl;
     private int currentPositon  =-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +155,20 @@ public class Home extends AppCompatActivity  {
         colorV.setText(basicInfomation.getFileHeader_colorNo());
         coV.setText(basicInfomation.getFileHeader_coNo());
         inspV.setText(basicInfomation.getFileHeader_inspector());
+
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        dateV.setText(basicInfomation.getFileHeader_date());
+        cusNoV.setText(basicInfomation.getFileHeader_customerNo());
+        itemV.setText(basicInfomation.getFileHeader_itemNo());
+        colorV.setText(basicInfomation.getFileHeader_colorNo());
+        coV.setText(basicInfomation.getFileHeader_coNo());
+        inspV.setText(basicInfomation.getFileHeader_inspector());
+    }
+
     private View.OnClickListener onClickSaveBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -174,7 +185,7 @@ public class Home extends AppCompatActivity  {
 
                 }else {
                     new AlertDialog.Builder(Home.this)
-                            .setTitle("Savr")
+                            .setTitle("Save")
                             .setMessage("Do you want to save ?")
                             .setIcon(R.drawable.ic_save)
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -196,18 +207,17 @@ public class Home extends AppCompatActivity  {
                                     //Detail
                                     for (int i = 0; i < albumList.size(); i++) {
                                         Album album =  albumList.get(i);
-                                        if (album.DETAIL_FILE != null) {
+                                        if (album.DETAIL_BITMAP[i] != null) {
                                             ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
                                             manuInspectImageModel.setMpgDoccode(manuInspectModel.getMpDocCode());
                                             manuInspectImageModel.setMpgDocument(manuInspectModel.getMpDocument());
                                             manuInspectImageModel.setMpgDocBranch(manuInspectModel.getMpDocBranch());
                                             manuInspectImageModel.setMpgDocSeq(manuInspectModel.getMpDocSeq());
-                                            //manuInspectImageModel.setMpgCause();
-                                            //manuInspectImageModel.setMpgSolution();
                                             manuInspectImageModel.setMpgMemo(album.getName());
                                             manuInspectImageModel.setMpgImagePath(album.getFileName());
-                                            //manuInspectImageModel.setMpgImageBlob();
                                             manuInspectImageModelList.add(manuInspectImageModel);
+                                            Log.d("album.DETAIL_FILE : ", String.valueOf(i));
+                                            Log.d("album.DETAIL_FILE : ", String.valueOf(album.DETAIL_BITMAP[i]));
                                             manuInspectModel.setManuInspectImageModelList(manuInspectImageModelList);
                                         }
                                     }
@@ -216,6 +226,7 @@ public class Home extends AppCompatActivity  {
                                     //dbHelper.insertManuInspect(manuInspectModel);
                                     dbHelper.save(manuInspectModel);
                                     Toast.makeText(Home.this, "Saved!!", Toast.LENGTH_SHORT).show();
+                                    clearActivity();
 
                                 }})
                             .setNegativeButton(android.R.string.no, null).show();
@@ -232,6 +243,7 @@ public class Home extends AppCompatActivity  {
         public void onClick(View v) {
             DatabaseHelper helper = new DatabaseHelper(Home.this);
             Toast.makeText(Home.this,""+helper.getAllManuInspect().size(),Toast.LENGTH_LONG).show();
+            Toast.makeText(Home.this,""+helper.getAllManuInspectImage().size(),Toast.LENGTH_LONG).show();
         }
     };
     private View.OnClickListener onClickListFurniture = new View.OnClickListener() {
@@ -245,7 +257,12 @@ public class Home extends AppCompatActivity  {
         @Override
         public void onClick(View v) {
             Intent i = new Intent(Home.this,info.class);
-
+            i.putExtra("date",basicInfomation.getFileHeader_date());
+            i.putExtra("cusNo",basicInfomation.getFileHeader_customerNo());
+            i.putExtra("itemNo",basicInfomation.getFileHeader_itemNo());
+            i.putExtra("colorNo",basicInfomation.getFileHeader_colorNo());
+            i.putExtra("coNo",basicInfomation.getFileHeader_coNo());
+            i.putExtra("inspector",basicInfomation.getFileHeader_inspector());
             startActivity(i);
 
         }
@@ -383,8 +400,20 @@ public class Home extends AppCompatActivity  {
     }
     private void clearActivity(){
         bitmap = null;
+        bitmapDtl = null;
         file = null;
         Album.DETAIL_FILE = null;
+        Album.DETAIL_BITMAP = new Bitmap[100];
+        Album album = new Album();
+        ManuInspectModel manuInspectModel = new ManuInspectModel();
+        ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
+        basicInfomation.setFileHeader_date(null);
+        basicInfomation.setFileHeader_customerNo(null);
+        basicInfomation.setFileHeader_itemNo(null);
+        basicInfomation.setFileHeader_colorNo(null);
+        basicInfomation.setFileHeader_coNo(null);
+        basicInfomation.setFileHeader_inspector(null);
         recreate();
     }
+
 }

@@ -1,13 +1,16 @@
 package resource;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.example.ton.furnitureapplication.DatabaseHelper;
@@ -55,7 +58,7 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
                 /// Return from SQLite >> LOGIN_STATUS = true หรือ false
                 createDB();
                 /// Login
-                if(mHelper.checkUserLogin(getUser,getPassword)){
+                if(mHelper.checkUserLogin(getUser,getPassword,getDeviceImei(activity))){
                     LOGIN_STATUS = true;
                 } else {
                     LOGIN_STATUS = false;
@@ -90,5 +93,11 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
         //SQLite
         mHelper = new DatabaseHelper(activity);
         mDb = mHelper.getWritableDatabase();
+    }
+    /** IMEI*/
+    @SuppressLint("MissingPermission")
+    public static String getDeviceImei(Context ctx) {
+        TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getDeviceId();
     }
 }

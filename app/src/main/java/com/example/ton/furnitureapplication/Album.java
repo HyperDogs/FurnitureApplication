@@ -13,7 +13,9 @@ public class Album {
     private int thumbnail;
     public static File DETAIL_FILE;
     public static Bitmap[] DETAIL_BITMAP = new Bitmap[100];
+    public Album(){
 
+    }
 
     public Album(String name, int numOfSongs, int thumbnail) {
         this.name = name;

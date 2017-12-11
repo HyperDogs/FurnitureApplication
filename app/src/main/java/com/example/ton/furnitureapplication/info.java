@@ -63,12 +63,23 @@ public class info extends AppCompatActivity {
         date_edt = (EditText)findViewById(R.id.date_edt);
         customer_no_edt = (EditText)findViewById(R.id.customer_no_edt);
         item_no_edt = (EditText)findViewById(R.id.item_no_edt);
-        color_no_edt = (EditText)findViewById(R.id.co_no_edt);
+        color_no_edt = (EditText)findViewById(R.id.color_no_edt);
         co_no_edt = (EditText)findViewById(R.id.co_no_edt);
         inspector_edt = (EditText)findViewById(R.id.inspector_edt);
         //updateBtn
         update_btn = (Button)findViewById(R.id.update_btn);
         update_btn.setOnClickListener(updateBtn);
+
+        //Bundle
+        Bundle bundle = getIntent().getExtras();
+        date_edt.setText(bundle.getString("date"));
+        customer_no_edt.setText(bundle.getString("cusNo"));
+        item_no_edt.setText(bundle.getString("itemNo"));
+        color_no_edt.setText(bundle.getString("colorNo"));
+        co_no_edt.setText(bundle.getString("coNo"));
+        inspector_edt.setText(bundle.getString("inspector"));
+
+
 
 
 
@@ -96,9 +107,8 @@ public class info extends AppCompatActivity {
                 basicInfo.setFileHeader_coNo(co_no_edt.getText().toString().trim());
                 basicInfo.setFileHeader_inspector(inspector_edt.getText().toString().trim());
 
-                /*Intent mainIntent = new Intent(info.this, Home.class);
-                startActivity(mainIntent);*/
-                finish();
+                onBackPressed();
+
             }
         }
     };
@@ -115,7 +125,7 @@ public class info extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            basicInfo.setFileHeader_date(null);
+            /*basicInfo.setFileHeader_date(null);
             basicInfo.setFileHeader_customerNo(null);
             basicInfo.setFileHeader_itemNo(null);
             basicInfo.setFileHeader_colorNo(null);
@@ -127,7 +137,7 @@ public class info extends AppCompatActivity {
             item_no_edt.setText("");
             color_no_edt.setText("");
             co_no_edt.setText("");
-            inspector_edt.setText("");
+            inspector_edt.setText("");*/
         // close this activity and return to preview activity (if there is any)
             finish();
         }
