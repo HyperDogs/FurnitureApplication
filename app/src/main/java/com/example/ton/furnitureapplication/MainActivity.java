@@ -22,6 +22,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.ManuInspectImageModel;
 import Model.TBUserLoginModel;
 import resource.AsyncTaskLogin;
 
@@ -92,7 +93,7 @@ public class MainActivity extends Activity {
             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                 token.continuePermissionRequest();
             }
-        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE);
 
     }
 
