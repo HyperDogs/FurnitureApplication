@@ -24,45 +24,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_USERLOGIN = "TBUserLogin";
     public static final String TABLE_MANUINSPECT = "ManuInspect";
     public static final String TABLE_MANUINSPECTIMAGE = "ManuInspectImage";
+    public static final String TABLE_EMPLOYEES = "Employees";
 
-    public static final String COL_USERLOGINID = "ulUserLoginId";
-    public static final String COL_NAME = "ulName";
-    public static final String COL_PASS = "ulPass";
-    public static final String COL_DESC = "ulDesc";
-    public static final String COL_GROUPID = "ulGroupId";
-    public static final String COL_STATUS = "ulStatus";
-    public static final String COL_EMPLOYEEID = "ulEmployeeId";
-    public static final String COL_BRANCHID = "ulBranchId";
-    public static final String COL_SETPERMISSION = "ulSetPermission";
-    public static final String COL_REMOTEADDR = "ulRemoteAddr";
+    public static final String COL_ULUSERLOGINID = "ulUserLoginId";
+    public static final String COL_ULNAME = "ulName";
+    public static final String COL_ULPASS = "ulPass";
+    public static final String COL_ULDESC = "ulDesc";
+    public static final String COL_ULGROUPID = "ulGroupId";
+    public static final String COL_ULSTATUS = "ulStatus";
+    public static final String COL_ULEMPLOYEEID = "ulEmployeeId";
+    public static final String COL_ULBRANCHID = "ulBranchId";
+    public static final String COL_ULSETPERMISSION = "ulSetPermission";
+    public static final String COL_ULREMOTEADDR = "ulRemoteAddr";
 
-    public static final String COL_DOCCODE = "mpDocCode";
-    public static final String COL_DOCUMENT = "mpDocument";
-    public static final String COL_DOCUMENTNO = "mpDocumentNo";
-    public static final String COL_DOCBRANCH = "mpDocBranch";
-    public static final String COL_DOCSEQ = "mpDocSeq";
-    public static final String COL_DOCDATE = "mpDocDate";
-    public static final String COL_DOCTIME = "mpDocTime";
-    public static final String COL_EMPLOYEENO = "mpEmployeeNo";
-    public static final String COL_EMPLOYEENAME = "mpEmployeeName";
-    public static final String COL_CUSTOMERNO = "mpCustomerNo";
-    public static final String COL_CUSTOMERNAME = "mpCustomerName";
-    public static final String COL_ITEMNO = "mpItemNo";
-    public static final String COL_ITEMNAME = "mpItemName";
-    public static final String COL_COLORNO = "mpColorNo";
-    public static final String COL_COLORNAME = "mpColorName";
-    public static final String COL_CONO = "mpCoNo";
-    public static final String COL_IMAGEPATH = "mpImagePath";
-    public static final String COL_IMAGEBLOB = "mpImageBlob";
-    public static final String COL_LASTSENDBYMAIL = "mpLastSendBymail";
-    public static final String COL_LASTSENDMAILBYUSERNO = "mpLastSendmailByUserNo";
-    public static final String COL_LASTSENDMAILBYUSERNAME = "mpLastSendmailByUserName";
-    public static final String COL_LASTSENDMAILDATE = "mpLastSendmailDate";
-    public static final String COL_LASTSENDMAILTIME = "mpLastSendmailTime";
-    public static final String COL_LASTMODIFYDATE = "mpLastModifyDate";
-    public static final String COL_LASTMODIFYTIME = "mpLastModifyTime";
-    public static final String COL_LASTMODIFYBYUSERNO = "mpLastModifyByUserNo";
-    public static final String COL_LASTMODIFYBYUSERNAME = "mpLastModifyByUserName";
+    public static final String COL_MPDOCCODE = "mpDocCode";
+    public static final String COL_MPDOCUMENT = "mpDocument";
+    public static final String COL_MPDOCUMENTNO = "mpDocumentNo";
+    public static final String COL_MPDOCBRANCH = "mpDocBranch";
+    public static final String COL_MPDOCSEQ = "mpDocSeq";
+    public static final String COL_MPDOCDATE = "mpDocDate";
+    public static final String COL_MPDOCTIME = "mpDocTime";
+    public static final String COL_MPEMPLOYEENO = "mpEmployeeNo";
+    public static final String COL_MPEMPLOYEENAME = "mpEmployeeName";
+    public static final String COL_MPCUSTOMERNO = "mpCustomerNo";
+    public static final String COL_MPCUSTOMERNAME = "mpCustomerName";
+    public static final String COL_MPITEMNO = "mpItemNo";
+    public static final String COL_MPITEMNAME = "mpItemName";
+    public static final String COL_MPCOLORNO = "mpColorNo";
+    public static final String COL_MPCOLORNAME = "mpColorName";
+    public static final String COL_MPCONO = "mpCoNo";
+    public static final String COL_MPIMAGEPATH = "mpImagePath";
+    public static final String COL_MPIMAGEBLOB = "mpImageBlob";
+    public static final String COL_MPLASTSENDBYMAIL = "mpLastSendBymail";
+    public static final String COL_MPLASTSENDMAILBYUSERNO = "mpLastSendmailByUserNo";
+    public static final String COL_MPLASTSENDMAILBYUSERNAME = "mpLastSendmailByUserName";
+    public static final String COL_MPLASTSENDMAILDATE = "mpLastSendmailDate";
+    public static final String COL_MPLASTSENDMAILTIME = "mpLastSendmailTime";
+    public static final String COL_MPLASTMODIFYDATE = "mpLastModifyDate";
+    public static final String COL_MPLASTMODIFYTIME = "mpLastModifyTime";
+    public static final String COL_MPLASTMODIFYBYUSERNO = "mpLastModifyByUserNo";
+    public static final String COL_MPLASTMODIFYBYUSERNAME = "mpLastModifyByUserName";
 
     public static final String COL_MPGDOCCODE = "mpgDocCode";
     public static final String COL_MPGDOCUMENT = "mgeDocument";
@@ -83,6 +84,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_MPGLASTMODIFYBYUSERNO = "mpgLastModifyByUserNo";
     public static final String COL_MPGLASTMODIFYBYUSERNAME = "mpgLastModifyByUserName";
 
+    public static final String COL_ID = "id";
+    public static final String COL_EMPLOYEENAME = "employeeName";
+    public static final String COL_EMPGROUP = "empGroup";
+    public static final String COL_POSITION = "position";
+    public static final String COL_DEPARTMENT = "department";
+    public static final String COL_SYSTEMGROUP = "systemGroup";
+    public static final String COL_PASSWD = "passwd";
+    public static final String COL_SALARY = "salary";
+    public static final String COL_MAXPARTDISC = "maxPartDisc";
+    public static final String COL_MAXSERVICEDISC = "maxServiceDisc";
+    public static final String COL_STARTDATE = "startDate";
+    public static final String COL_EXPIREDDATE = "expiredDate";
+    public static final String COL_YTDPRODUCTION = "ytdProduction";
+    public static final String COL_STATUS = "status";
+    public static final String COL_CURRENTJOB = "currentJob";
+    public static final String COL_CURRENTREF = "currentPef";
+    public static final String COL_CURRENTOPERATION = "currentOperation";
+    public static final String COL_CURRENTCOUNTER = "currentCounter";
+    public static final String COL_CURRENTSALETYPE = "currentSaleType";
+    public static final String COL_QUEUE = "queue";
+    public static final String COL_CURRENTREFINT = "currentRefInt";
+    public static final String COL_CURRENTIO = "currentIO";
+    public static final String COL_CURRENTJOBSTATUS = "currentJobStatus";
+    public static final String COL_STATUSON = "statusOn";
+    public static final String COL_STATUSONDATE = "statusOnDate";
+    public static final String COL_BRANCH = "branch";
+    public static final String COL_WAREHOUSE = "warehouse";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -92,53 +121,54 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         createTABLE_USERLOGIN(db);
         createTABLE_MANUINSPECT(db);
         createTABLE_MANUINSPECTIMAGE(db);
+        createTABLE_EMPLOYEES(db);
     }
 
     private void createTABLE_USERLOGIN(SQLiteDatabase db){
         String CREATE_USERLOGIN_TABLE = "CREATE TABLE " + TABLE_USERLOGIN + "("
-                + COL_USERLOGINID + " CHAR(10) PRIMARY KEY, "
-                + COL_NAME + " VARCHAR(20), "
-                + COL_PASS + " VARCHAR(80), "
-                + COL_DESC + " VARCHAR(50), "
-                + COL_GROUPID + " VARCHAR(10), "
-                + COL_STATUS + " CHAR(1), "
-                + COL_EMPLOYEEID + " VARCHAR(10), "
-                + COL_BRANCHID + " VARCHAR(10), "
-                + COL_SETPERMISSION + " CHAR(1), "
-                + COL_REMOTEADDR + " VARCHAR(15) "
+                + COL_ULUSERLOGINID + " CHAR(10) PRIMARY KEY, "
+                + COL_ULNAME + " VARCHAR(20), "
+                + COL_ULPASS + " VARCHAR(80), "
+                + COL_ULDESC + " VARCHAR(50), "
+                + COL_ULGROUPID + " VARCHAR(10), "
+                + COL_ULSTATUS + " CHAR(1), "
+                + COL_ULEMPLOYEEID + " VARCHAR(10), "
+                + COL_ULBRANCHID + " VARCHAR(10), "
+                + COL_ULSETPERMISSION + " CHAR(1), "
+                + COL_ULREMOTEADDR + " VARCHAR(15) "
                 + ") ";
         db.execSQL(CREATE_USERLOGIN_TABLE);
-        db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_USERLOGINID + ", " + COL_NAME + ", " + COL_PASS + " ) VALUES ('1', 'admin', 'admin');");
+        db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_ULUSERLOGINID + ", " + COL_ULNAME + ", " + COL_ULPASS + ", " + COL_ULDESC + " ) VALUES ('1', 'admin', 'admin', '000000000000000'), ('2', 'admin', 'admin', '357220073447263'), ('3', 'admin', 'admin', '357221073447261');");
     }
     private void createTABLE_MANUINSPECT(SQLiteDatabase db){
         String CREATE_UMANUINSPECT_TABLE = " CREATE TABLE " + TABLE_MANUINSPECT + "("
-                + COL_DOCCODE  + " CHAR(4), "
-                + COL_DOCUMENT + " VARCHAR(20), "
-                + COL_DOCUMENTNO + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + COL_DOCBRANCH + " CHAR(5), "
-                + COL_DOCSEQ + " INTEGER, "
-                + COL_DOCDATE + " DATETIME, "
-                + COL_DOCTIME + " CHAR(6), "
-                + COL_EMPLOYEENO + " VARCHAR(20), "
-                + COL_EMPLOYEENAME + " VARCHAR(50), "
-                + COL_CUSTOMERNO + " VARCHAR(20), "
-                + COL_CUSTOMERNAME + " VARCHAR(100), "
-                + COL_ITEMNO + " VARCHAR(30), "
-                + COL_ITEMNAME + " VARCHAR(100), "
-                + COL_COLORNO + " VARCHAR(20), "
-                + COL_COLORNAME + " VARCHAR(100), "
-                + COL_CONO + " VARCHAR(50), "
-                + COL_IMAGEPATH + " VARCHAR(220), "
-                + COL_IMAGEBLOB + " VARCHAR(50), "
-                + COL_LASTSENDBYMAIL + " VARCHAR(220), "
-                + COL_LASTSENDMAILBYUSERNO + " VARCHAR(20), "
-                + COL_LASTSENDMAILBYUSERNAME + " VARCHAR(20), "
-                + COL_LASTSENDMAILDATE + " DATETIME, "
-                + COL_LASTSENDMAILTIME + " CHAR(6), "
-                + COL_LASTMODIFYDATE + " DATETIME, "
-                + COL_LASTMODIFYTIME + " CHAR(6), "
-                + COL_LASTMODIFYBYUSERNO + " VARCHAR(20), "
-                + COL_LASTMODIFYBYUSERNAME + " VARCHAR(50) "
+                + COL_MPDOCCODE  + " CHAR(4), "
+                + COL_MPDOCUMENT + " VARCHAR(20), "
+                + COL_MPDOCUMENTNO + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_MPDOCBRANCH + " CHAR(5), "
+                + COL_MPDOCSEQ + " INTEGER, "
+                + COL_MPDOCDATE + " DATETIME, "
+                + COL_MPDOCTIME + " CHAR(6), "
+                + COL_MPEMPLOYEENO + " VARCHAR(20), "
+                + COL_MPEMPLOYEENAME + " VARCHAR(50), "
+                + COL_MPCUSTOMERNO + " VARCHAR(20), "
+                + COL_MPCUSTOMERNAME + " VARCHAR(100), "
+                + COL_MPITEMNO + " VARCHAR(30), "
+                + COL_MPITEMNAME + " VARCHAR(100), "
+                + COL_MPCOLORNO + " VARCHAR(20), "
+                + COL_MPCOLORNAME + " VARCHAR(100), "
+                + COL_MPCONO + " VARCHAR(50), "
+                + COL_MPIMAGEPATH + " VARCHAR(220), "
+                + COL_MPIMAGEBLOB + " VARCHAR(50), "
+                + COL_MPLASTSENDBYMAIL + " VARCHAR(220), "
+                + COL_MPLASTSENDMAILBYUSERNO + " VARCHAR(20), "
+                + COL_MPLASTSENDMAILBYUSERNAME + " VARCHAR(20), "
+                + COL_MPLASTSENDMAILDATE + " DATETIME, "
+                + COL_MPLASTSENDMAILTIME + " CHAR(6), "
+                + COL_MPLASTMODIFYDATE + " DATETIME, "
+                + COL_MPLASTMODIFYTIME + " CHAR(6), "
+                + COL_MPLASTMODIFYBYUSERNO + " VARCHAR(20), "
+                + COL_MPLASTMODIFYBYUSERNAME + " VARCHAR(50) "
                 + ") ";
         db.execSQL(CREATE_UMANUINSPECT_TABLE);
     }
@@ -168,27 +198,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_UMANUINSPECTIMAGE_TABLE);
     }
 
+    private void createTABLE_EMPLOYEES(SQLiteDatabase db){
+        String CREATE_EMPLOYEES_TABLE = " CREATE TABLE " + TABLE_EMPLOYEES + "("
+                + COL_ID  + " VARCHAR(20), "
+                + COL_EMPLOYEENAME + " VARCHAR(50), "
+                + COL_EMPGROUP + " VARCHAR(20), "
+                + COL_POSITION + " VARCHAR(30), "
+                + COL_DEPARTMENT + " VARCHAR(30), "
+                + COL_SYSTEMGROUP + " INTEGER, "
+                + COL_PASSWD + " VARCHAR(15), "
+                + COL_SALARY + " INTEGER, "
+                + COL_MAXPARTDISC + " VARCHAR(220), "
+                + COL_MAXSERVICEDISC + " VARCHAR(220), "
+                + COL_STARTDATE + " DATETIME, "
+                + COL_EXPIREDDATE + " DATETIME, "
+                + COL_YTDPRODUCTION + " INTEGER, "
+                + COL_STATUS + " VARCHAR(1), "
+                + COL_CURRENTJOB + " INTEGER, "
+                + COL_CURRENTREF + " VARCHAR(20), "
+                + COL_CURRENTOPERATION + " VARCHAR(20), "
+                + COL_CURRENTCOUNTER + " INTEGER, "
+                + COL_CURRENTSALETYPE + " CHAR(2), "
+                + COL_QUEUE + " INTEGER, "
+                + COL_CURRENTREFINT + " INTEGER, "
+                + COL_CURRENTIO + " INTEGER, "
+                + COL_CURRENTJOBSTATUS + " CHAR(2), "
+                + COL_STATUSON + " CHAR(1), "
+                + COL_STATUSONDATE + " DATETIME, "
+                + COL_BRANCH + " CHAR(5), "
+                + COL_WAREHOUSE + " CHAR(2) "
+                + ") ";
+        db.execSQL(CREATE_EMPLOYEES_TABLE);
+    }
+
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_USERLOGIN);
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_MANUINSPECT);
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_MANUINSPECTIMAGE);
+        db.execSQL("DROP TABLE IF EXISTS " +TABLE_EMPLOYEES);
         onCreate(db);
     }
 
     public void insertUserLogin(TBUserLoginModel userLogin){
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_USERLOGINID, userLogin.getUlBranchId());
-        contentValues.put(COL_NAME, userLogin.getUlName());
-        contentValues.put(COL_PASS, userLogin.getUlPass());
-        contentValues.put(COL_DESC, userLogin.getUlDesc());
-        contentValues.put(COL_GROUPID, userLogin.getUlGroupId());
-        contentValues.put(COL_STATUS, userLogin.getUlStatus());
-        contentValues.put(COL_EMPLOYEEID, userLogin.getUlEmployeeId());
-        contentValues.put(COL_BRANCHID, userLogin.getUlBranchId());
-        contentValues.put(COL_SETPERMISSION, userLogin.getUlSetPermission());
-        contentValues.put(COL_REMOTEADDR, userLogin.getUlRemoteAddr());
+        contentValues.put(COL_ULUSERLOGINID, userLogin.getUlBranchId());
+        contentValues.put(COL_ULNAME, userLogin.getUlName());
+        contentValues.put(COL_ULPASS, userLogin.getUlPass());
+        contentValues.put(COL_ULDESC, userLogin.getUlDesc());
+        contentValues.put(COL_ULGROUPID, userLogin.getUlGroupId());
+        contentValues.put(COL_ULSTATUS, userLogin.getUlStatus());
+        contentValues.put(COL_ULEMPLOYEEID, userLogin.getUlEmployeeId());
+        contentValues.put(COL_ULBRANCHID, userLogin.getUlBranchId());
+        contentValues.put(COL_ULSETPERMISSION, userLogin.getUlSetPermission());
+        contentValues.put(COL_ULREMOTEADDR, userLogin.getUlRemoteAddr());
         database.insert(TABLE_USERLOGIN, null, contentValues);
         database.close();
     }
@@ -196,22 +261,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void updateUserLogin(TBUserLoginModel userLogin) {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_NAME, userLogin.getUlName());
-        contentValues.put(COL_PASS, userLogin.getUlPass());
-        contentValues.put(COL_DESC, userLogin.getUlDesc());
-        contentValues.put(COL_GROUPID, userLogin.getUlGroupId());
-        contentValues.put(COL_STATUS, userLogin.getUlStatus());
-        contentValues.put(COL_EMPLOYEEID, userLogin.getUlEmployeeId());
-        contentValues.put(COL_BRANCHID, userLogin.getUlBranchId());
-        contentValues.put(COL_SETPERMISSION, userLogin.getUlSetPermission());
-        contentValues.put(COL_REMOTEADDR, userLogin.getUlRemoteAddr());
-        database.update(TABLE_USERLOGIN, contentValues, COL_USERLOGINID + " = ?", new String[]{userLogin.getUlUserLoginId()});
+        contentValues.put(COL_ULNAME, userLogin.getUlName());
+        contentValues.put(COL_ULPASS, userLogin.getUlPass());
+        contentValues.put(COL_ULDESC, userLogin.getUlDesc());
+        contentValues.put(COL_ULGROUPID, userLogin.getUlGroupId());
+        contentValues.put(COL_ULSTATUS, userLogin.getUlStatus());
+        contentValues.put(COL_ULEMPLOYEEID, userLogin.getUlEmployeeId());
+        contentValues.put(COL_ULBRANCHID, userLogin.getUlBranchId());
+        contentValues.put(COL_ULSETPERMISSION, userLogin.getUlSetPermission());
+        contentValues.put(COL_ULREMOTEADDR, userLogin.getUlRemoteAddr());
+        database.update(TABLE_USERLOGIN, contentValues, COL_ULUSERLOGINID + " = ?", new String[]{userLogin.getUlUserLoginId()});
         database.close();
     }
 
     public void deleteUserLogin(TBUserLoginModel userLogin) {
         database = this.getReadableDatabase();
-        database.delete(TABLE_USERLOGIN, COL_USERLOGINID + " = ?", new String[]{userLogin.getUlUserLoginId()});
+        database.delete(TABLE_USERLOGIN, COL_ULUSERLOGINID + " = ?", new String[]{userLogin.getUlUserLoginId()});
         database.close();
     }
 
@@ -242,10 +307,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userLogins;
     }
 
-    public boolean checkUserLogin(String userName, String passWord){
+    public boolean checkUserLogin(String userName, String passWord, String imei){
         boolean result = false;
         database = this.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_USERLOGIN, null, COL_NAME + " = ? AND " + COL_PASS + " = ? ", new String[]{userName, passWord}, null, null, null);
+        Cursor cursor = database.query(TABLE_USERLOGIN, null, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
         if(cursor.getCount() > 0){
             result = true;
         }
@@ -255,33 +320,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void insertManuInspect(ManuInspectModel manuInspect){
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_DOCCODE, manuInspect.getMpDocCode());
-        contentValues.put(COL_DOCUMENT, manuInspect.getMpDocument());
-        contentValues.put(COL_DOCUMENTNO, manuInspect.getMpDocumentNo());
-        contentValues.put(COL_DOCBRANCH, manuInspect.getMpDocBranch());
-        contentValues.put(COL_DOCSEQ, manuInspect.getMpDocSeq());
-        contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate());
-        contentValues.put(COL_DOCTIME, manuInspect.getMpDocTime());
-        contentValues.put(COL_EMPLOYEENO, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_EMPLOYEENAME, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_CUSTOMERNO, manuInspect.getMpCustomerNo());
-        contentValues.put(COL_CUSTOMERNAME, manuInspect.getMpCustomerName());
-        contentValues.put(COL_ITEMNO, manuInspect.getMpItemNo());
-        contentValues.put(COL_ITEMNO, manuInspect.getMpCustomerName());
-        contentValues.put(COL_COLORNO, manuInspect.getMpColorNo());
-        contentValues.put(COL_COLORNAME, manuInspect.getMpColorName());
-        contentValues.put(COL_CONO, manuInspect.getMpCoNo());
-        contentValues.put(COL_IMAGEPATH, manuInspect.getMpImagePath());
-        contentValues.put(COL_IMAGEBLOB, manuInspect.getMpImageBlob());
-        contentValues.put(COL_LASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
-        contentValues.put(COL_LASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
-        contentValues.put(COL_LASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
-        contentValues.put(COL_LASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
-        contentValues.put(COL_LASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
-        contentValues.put(COL_LASTMODIFYDATE, manuInspect.getMpLastModifyDate());
-        contentValues.put(COL_LASTMODIFYTIME, manuInspect.getMpLastModifyTime());
-        contentValues.put(COL_LASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
-        contentValues.put(COL_LASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
+        contentValues.put(COL_MPDOCCODE, manuInspect.getMpDocCode());
+        contentValues.put(COL_MPDOCUMENT, manuInspect.getMpDocument());
+        contentValues.put(COL_MPDOCUMENTNO, manuInspect.getMpDocumentNo());
+        contentValues.put(COL_MPDOCBRANCH, manuInspect.getMpDocBranch());
+        contentValues.put(COL_MPDOCSEQ, manuInspect.getMpDocSeq());
+        contentValues.put(COL_MPDOCDATE, manuInspect.getMpDocDate());
+        contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
+        contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
+        contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeNo());
+        contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
+        contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
+        contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
+        contentValues.put(COL_MPITEMNO, manuInspect.getMpCustomerName());
+        contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
+        contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
+        contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
+        contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
+        contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
+        contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
+        contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
+        contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
+        contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
+        contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
+        contentValues.put(COL_MPLASTMODIFYDATE, manuInspect.getMpLastModifyDate());
+        contentValues.put(COL_MPLASTMODIFYTIME, manuInspect.getMpLastModifyTime());
+        contentValues.put(COL_MPLASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
+        contentValues.put(COL_MPLASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
         database.insert(TABLE_MANUINSPECT, null, contentValues);
         database.close();
     }
@@ -289,30 +354,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void updateManuInspect(ManuInspectModel manuInspect) {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate());
-        contentValues.put(COL_DOCTIME, manuInspect.getMpDocTime());
-        contentValues.put(COL_EMPLOYEENO, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_EMPLOYEENAME, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_CUSTOMERNO, manuInspect.getMpCustomerNo());
-        contentValues.put(COL_CUSTOMERNAME, manuInspect.getMpCustomerName());
-        contentValues.put(COL_ITEMNO, manuInspect.getMpItemNo());
-        contentValues.put(COL_ITEMNO, manuInspect.getMpCustomerName());
-        contentValues.put(COL_COLORNO, manuInspect.getMpColorNo());
-        contentValues.put(COL_COLORNAME, manuInspect.getMpColorName());
-        contentValues.put(COL_CONO, manuInspect.getMpCoNo());
-        contentValues.put(COL_IMAGEPATH, manuInspect.getMpImagePath());
-        contentValues.put(COL_IMAGEBLOB, manuInspect.getMpImageBlob());
-        contentValues.put(COL_LASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
-        contentValues.put(COL_LASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
-        contentValues.put(COL_LASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
-        contentValues.put(COL_LASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
-        contentValues.put(COL_LASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
-        contentValues.put(COL_LASTMODIFYDATE, manuInspect.getMpLastModifyDate());
-        contentValues.put(COL_LASTMODIFYTIME, manuInspect.getMpLastModifyTime());
-        contentValues.put(COL_LASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
-        contentValues.put(COL_LASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
+        contentValues.put(COL_MPDOCDATE, manuInspect.getMpDocDate());
+        contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
+        contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
+        contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeNo());
+        contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
+        contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
+        contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
+        contentValues.put(COL_MPITEMNO, manuInspect.getMpCustomerName());
+        contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
+        contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
+        contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
+        contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
+        contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
+        contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
+        contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
+        contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
+        contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
+        contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
+        contentValues.put(COL_MPLASTMODIFYDATE, manuInspect.getMpLastModifyDate());
+        contentValues.put(COL_MPLASTMODIFYTIME, manuInspect.getMpLastModifyTime());
+        contentValues.put(COL_MPLASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
+        contentValues.put(COL_MPLASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
         database.update(TABLE_MANUINSPECT, contentValues,
-                COL_DOCCODE + " = ? AND " + COL_DOCUMENT + " = ? AND " + COL_DOCUMENTNO + " = ? AND " + COL_DOCBRANCH + " = ? AND " + COL_DOCSEQ + " = ? ",
+                COL_MPDOCCODE + " = ? AND " + COL_MPDOCUMENT + " = ? AND " + COL_MPDOCUMENTNO + " = ? AND " + COL_MPDOCBRANCH + " = ? AND " + COL_MPDOCSEQ + " = ? ",
                 new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), String.valueOf(manuInspect.getMpDocumentNo()), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
         database.close();
     }
@@ -455,37 +520,37 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_DOCCODE, manuInspect.getMpDocCode());
-        contentValues.put(COL_DOCUMENT, manuInspect.getMpDocument());
-        //contentValues.put(COL_DOCUMENTNO, manuInspect.getMpDocumentNo());
-        contentValues.put(COL_DOCBRANCH, manuInspect.getMpDocBranch());
-        contentValues.put(COL_DOCSEQ, manuInspect.getMpDocSeq());
-        contentValues.put(COL_DOCDATE, manuInspect.getMpDocDate().toString());
-        contentValues.put(COL_DOCTIME, manuInspect.getMpDocTime());
-        contentValues.put(COL_EMPLOYEENO, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_EMPLOYEENAME, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_CUSTOMERNO, manuInspect.getMpCustomerNo());
-        contentValues.put(COL_CUSTOMERNAME, manuInspect.getMpCustomerName());
-        contentValues.put(COL_ITEMNO, manuInspect.getMpItemNo());
-        contentValues.put(COL_ITEMNO, manuInspect.getMpCustomerName());
-        contentValues.put(COL_COLORNO, manuInspect.getMpColorNo());
-        contentValues.put(COL_COLORNAME, manuInspect.getMpColorName());
-        contentValues.put(COL_CONO, manuInspect.getMpCoNo());
-        contentValues.put(COL_IMAGEPATH, manuInspect.getMpImagePath());
-        contentValues.put(COL_IMAGEBLOB, manuInspect.getMpImageBlob());
-        contentValues.put(COL_LASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
-        contentValues.put(COL_LASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
-        contentValues.put(COL_LASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
-        contentValues.put(COL_LASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
-        contentValues.put(COL_LASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
-        contentValues.put(COL_LASTMODIFYDATE, manuInspect.getMpLastModifyDate());
-        contentValues.put(COL_LASTMODIFYTIME, manuInspect.getMpLastModifyTime());
-        contentValues.put(COL_LASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
-        contentValues.put(COL_LASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
+        contentValues.put(COL_MPDOCCODE, manuInspect.getMpDocCode());
+        contentValues.put(COL_MPDOCUMENT, manuInspect.getMpDocument());
+        //contentValues.put(COL_MPDOCUMENTNO, manuInspect.getMpDocumentNo());
+        contentValues.put(COL_MPDOCBRANCH, manuInspect.getMpDocBranch());
+        contentValues.put(COL_MPDOCSEQ, manuInspect.getMpDocSeq());
+        contentValues.put(COL_MPDOCDATE, manuInspect.getMpDocDate().toString());
+        contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
+        contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
+        contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeNo());
+        contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
+        contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
+        contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
+        contentValues.put(COL_MPITEMNO, manuInspect.getMpCustomerName());
+        contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
+        contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
+        contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
+        contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
+        contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
+        contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
+        contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
+        contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
+        contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
+        contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
+        contentValues.put(COL_MPLASTMODIFYDATE, manuInspect.getMpLastModifyDate());
+        contentValues.put(COL_MPLASTMODIFYTIME, manuInspect.getMpLastModifyTime());
+        contentValues.put(COL_MPLASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
+        contentValues.put(COL_MPLASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
         long success = database.insert(TABLE_MANUINSPECT, null, contentValues);
 
         if(success > 0){
-            Cursor cursor = database.query(TABLE_MANUINSPECT, new String[]{COL_DOCUMENTNO}, null, null, null, null, null);
+            Cursor cursor = database.query(TABLE_MANUINSPECT, new String[]{COL_MPDOCUMENTNO}, null, null, null, null, null);
             cursor.moveToLast();
             int mpgDocumentNo = cursor.getInt(0);
             if(manuInspect.getManuInspectImageModelList() != null){
