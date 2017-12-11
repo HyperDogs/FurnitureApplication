@@ -149,7 +149,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_MPGDOCUMENT + " VARCHAR(20), "
                 + COL_MPGDOCUMENTNO + " INTEGER, "
                 + COL_MPGDOCBRANCH + " CHAR(5), "
-                + COL_MPGDOCSEQ + " INTEGER PRIMARY KEY, "
+                + COL_MPGDOCSEQ + " INTEGER, "
                 + COL_MPGCAUSE + " INTEGER, "
                 + COL_MPGSOLUTION + " VARCHAR(220), "
                 + COL_MPGMEMO + " VARCHAR(220), "
@@ -162,7 +162,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_MPGLASTMODIFYDATE + " DATETIME, "
                 + COL_MPGLASTMODIFYTIME + " CHAR(6), "
                 + COL_MPGLASTMODIFYBYUSERNO + " VARCHAR(20), "
-                + COL_MPGLASTMODIFYBYUSERNAME + " VARCHAR(50) "
+                + COL_MPGLASTMODIFYBYUSERNAME + " VARCHAR(50), "
+                + "PRIMARY KEY ("+ COL_MPGDOCCODE + ", "+ COL_MPGDOCUMENT + ", "+ COL_MPGDOCUMENTNO +", "+ COL_MPGDOCBRANCH +", "+ COL_MPGDOCSEQ +") "
                 + ") ";
         db.execSQL(CREATE_UMANUINSPECTIMAGE_TABLE);
     }
