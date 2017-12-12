@@ -86,7 +86,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                             manuInspectImageModel.setMpgDoccode(manuInspectModel.getMpDocCode());
                             manuInspectImageModel.setMpgDocument(manuInspectModel.getMpDocument());
                             manuInspectImageModel.setMpgDocBranch(manuInspectModel.getMpDocBranch());
-                            manuInspectImageModel.setMpgDocSeq(manuInspectModel.getMpDocSeq());
+                            manuInspectImageModel.setMpgDocSeq(String.valueOf(i));
                             manuInspectImageModel.setMpgMemo(album.getName());
                             manuInspectImageModel.setMpgImagePath(album.getFileName());
                             manuInspectImageModelList.add(manuInspectImageModel);
