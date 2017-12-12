@@ -38,30 +38,6 @@
                     android:layout_toRightOf="@+id/basicinfo"
                     android:id="@+id/frameLayout">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
-                        android:orientation="vertical">
-
-                        <ImageButton
-                            android:id="@+id/listFunitueBtn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_list" />
-
-                        <ImageButton
-                            android:id="@+id/saveAndSendBtn"
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:src="@android:drawable/ic_menu_send" />
-
-                        <ImageButton
-                            android:id="@+id/saveBth"
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_save" />
-                    </LinearLayout>
                 </FrameLayout>
 
                 <LinearLayout
@@ -81,14 +57,15 @@
                         app:srcCompat="@drawable/camera01" />
 
                 </LinearLayout>
+
                 <FrameLayout
                     android:id="@+id/basicinfo"
-                    android:layout_width="160dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/textView4"
                     android:layout_toEndOf="@+id/mainpic_bg"
-                    android:background="@drawable/border"
-                    android:layout_toRightOf="@+id/mainpic_bg">
+                    android:layout_toRightOf="@+id/mainpic_bg"
+                    android:background="@drawable/border">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -98,7 +75,7 @@
                             android:id="@+id/info"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            
+
                             android:orientation="vertical"
                             android:paddingLeft="8dp">
 
@@ -135,7 +112,7 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:layout_width="16dp"
+                                    android:layout_width="13dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="left"
@@ -162,7 +139,7 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:layout_width="16dp"
+                                    android:layout_width="13dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="left"
@@ -188,7 +165,7 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:layout_width="16dp"
+                                    android:layout_width="13dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="left"
@@ -215,7 +192,7 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:layout_width="16dp"
+                                    android:layout_width="13dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="left"
@@ -242,7 +219,7 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:layout_width="16dp"
+                                    android:layout_width="13dp"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="left"
@@ -281,7 +258,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_toEndOf="@+id/textView4"
@@ -311,40 +288,49 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:paddingRight="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="10dp"
-        fab:menu_colorNormal="#DA4336"
-        fab:menu_colorPressed="#E75043"
-        fab:menu_colorRipple="#99FFFFFF"
-        fab:menu_labels_ellipsize="end"
-        fab:menu_labels_singleLine="true"
+        android:paddingRight="10dp"
+        app:menu_colorNormal="@android:color/holo_green_dark"
+        app:menu_colorPressed="@color/color_green"
         fab:menu_backgroundColor="#ccffffff"
-        fab:menu_fab_label="Menu label">
+        fab:menu_colorRipple="#99FFFFFF"
+        fab:menu_fab_label="Menu label"
+        fab:menu_labels_ellipsize="end"
+        fab:menu_labels_singleLine="true">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab1"
+            android:id="@+id/listFunitueBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_list"
+            app:fab_colorNormal="@android:color/holo_green_dark"
+            app:fab_colorPressed="@color/color_green"
+            fab:fab_colorRipple="#99FFFFFF"
+            fab:fab_label="LIST FILE"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/saveAndSendBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_send"
+            app:fab_colorNormal="@android:color/holo_green_dark"
+            app:fab_colorPressed="@color/color_green"
+            fab:fab_colorRipple="#99FFFFFF"
+            fab:fab_label="SAVE AND SEND"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/saveBth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_save"
-            fab:fab_size="mini"
-            fab:fab_label="Disabled" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_save"
-            fab:fab_size="mini"
-            fab:fab_label="Remove button" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_save"
-            fab:fab_size="mini"
-            fab:fab_label="Restore Button" />
+            app:fab_colorNormal="@android:color/holo_green_dark"
+            app:fab_colorPressed="@color/color_green"
+            fab:fab_colorRipple="#99FFFFFF"
+            fab:fab_label="SAVE"
+            fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
 

@@ -1,6 +1,7 @@
 package com.example.ton.furnitureapplication;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,7 +14,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,12 +25,13 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -40,6 +41,8 @@ import java.util.List;
 
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
+import resource.AsyncTaskLogin;
+import resource.AsyncTaskSave;
 import resource.BitmapManager;
 import resource.CreateFile;
 
@@ -53,12 +56,13 @@ public class Home extends AppCompatActivity  {
     private File file;
     private Uri uri;
     private LinearLayout basicInfo;
-    private ImageButton saveBtn,saveAndSendBtn;
+    private FloatingActionMenu menuFab;
+    private FloatingActionButton saveBtn,saveAndSendBtn;
     private TextView dateV,cusNoV,itemV,colorV,coV,inspV;
     private BasicInfomation basicInfomation;
     private ManuInspectModel manuInspectModel = new ManuInspectModel();
     private ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
-    private Bitmap bitmap,bitmapDtl;
+    private Bitmap bitmap, bitmapDtl;
     private int currentPositon  =-1;
     private FloatingActionButton fab;
     @Override
@@ -137,9 +141,11 @@ public class Home extends AppCompatActivity  {
         basicInfo.setOnClickListener(onClickBasicInfo);
         listFurnitureBtn = (ImageView) findViewById(R.id.listFunitueBtn);
         listFurnitureBtn.setOnClickListener(onClickListFurniture);
-        saveBtn = (ImageButton) findViewById(R.id.saveBth);
+        menuFab = (FloatingActionMenu)findViewById(R.id.menu_red);
+        menuFab.setClosedOnTouchOutside(true);
+        saveBtn = (FloatingActionButton) findViewById(R.id.saveBth);
         saveBtn.setOnClickListener(onClickSaveBtn);
-        saveAndSendBtn = (ImageButton)findViewById(R.id.saveAndSendBtn);
+        saveAndSendBtn = (FloatingActionButton) findViewById(R.id.saveAndSendBtn);
         saveAndSendBtn.setOnClickListener(onClickSaveAndSend);
 
 
@@ -159,6 +165,7 @@ public class Home extends AppCompatActivity  {
         inspV.setText(basicInfomation.getFileHeader_inspector());
 
     }
+
 
     @Override
     protected void onResume() {
@@ -193,7 +200,7 @@ public class Home extends AppCompatActivity  {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    List<ManuInspectImageModel> manuInspectImageModelList = new ArrayList<>();
+                                    /*List<ManuInspectImageModel> manuInspectImageModelList = new ArrayList<>();
                                     //Header
                                     manuInspectModel.setMpDocCode("IN01");
                                     manuInspectModel.setMpDocument(getDeviceImei(Home.this));
@@ -228,9 +235,15 @@ public class Home extends AppCompatActivity  {
                                     //dbHelper.insertManuInspect(manuInspectModel);
                                     dbHelper.save(manuInspectModel);
                                     Toast.makeText(Home.this, "Saved!!", Toast.LENGTH_SHORT).show();
-                                    clearActivity();
+                                    clearActivity();*/
 
-                                }})
+                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList);
+                                    atlLogin.execute();
+                                    dialog.dismiss();
+
+
+                                }
+                            })
                             .setNegativeButton(android.R.string.no, null).show();
                 }
 
@@ -400,22 +413,6 @@ public class Home extends AppCompatActivity  {
         TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getDeviceId();
     }
-    private void clearActivity(){
-        bitmap = null;
-        bitmapDtl = null;
-        file = null;
-        Album.DETAIL_FILE = null;
-        Album.DETAIL_BITMAP = new Bitmap[100];
-        Album album = new Album();
-        ManuInspectModel manuInspectModel = new ManuInspectModel();
-        ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
-        basicInfomation.setFileHeader_date(null);
-        basicInfomation.setFileHeader_customerNo(null);
-        basicInfomation.setFileHeader_itemNo(null);
-        basicInfomation.setFileHeader_colorNo(null);
-        basicInfomation.setFileHeader_coNo(null);
-        basicInfomation.setFileHeader_inspector(null);
-        recreate();
-    }
+
 
 }
