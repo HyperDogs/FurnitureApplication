@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
     Button loginBth;
     EditText username,password;
     String usernameTxt,passwordTxt;
-    //DB
+    //Database
     SQLiteDatabase mDb;
     DatabaseHelper mHelper;
     ArrayList<TBUserLoginModel> loginUser = null;
