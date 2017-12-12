@@ -37,6 +37,30 @@
                     android:layout_toEndOf="@+id/basicinfo"
                     android:layout_toRightOf="@+id/basicinfo"
                     android:id="@+id/frameLayout">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:orientation="vertical">
+
+                        <ImageButton
+                            android:id="@+id/listFunitueBtn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_list" />
+
+                        <ImageButton
+                            android:id="@+id/saveAndSendBtn"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:src="@android:drawable/ic_menu_send" />
+
+                        <ImageButton
+                            android:id="@+id/saveBth"
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_save" />
+                    </LinearLayout>
 
                 </FrameLayout>
 
@@ -60,12 +84,12 @@
 
                 <FrameLayout
                     android:id="@+id/basicinfo"
-                    android:layout_width="match_parent"
+                    android:layout_width="160dp"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/textView4"
                     android:layout_toEndOf="@+id/mainpic_bg"
-                    android:layout_toRightOf="@+id/mainpic_bg"
-                    android:background="@drawable/border">
+                    android:background="@drawable/border"
+                    android:layout_toRightOf="@+id/mainpic_bg">
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -300,7 +324,7 @@
         fab:menu_labels_singleLine="true">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/listFunitueBtn"
+            android:id="@+id/fab1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_list"
@@ -311,7 +335,7 @@
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/saveAndSendBtn"
+            android:id="@+id/fab2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_send"
@@ -322,7 +346,7 @@
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/saveBth"
+            android:id="@+id/fab3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_save"

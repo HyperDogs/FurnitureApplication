@@ -24,7 +24,9 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -57,7 +59,8 @@ public class Home extends AppCompatActivity  {
     private Uri uri;
     private LinearLayout basicInfo;
     private FloatingActionMenu menuFab;
-    private FloatingActionButton saveBtn,saveAndSendBtn;
+    private FloatingActionButton fab1,fab2,fab3;
+    private ImageButton saveBtn,saveAndSendBtn;
     private TextView dateV,cusNoV,itemV,colorV,coV,inspV;
     private BasicInfomation basicInfomation;
     private ManuInspectModel manuInspectModel = new ManuInspectModel();
@@ -143,9 +146,9 @@ public class Home extends AppCompatActivity  {
         listFurnitureBtn.setOnClickListener(onClickListFurniture);
         menuFab = (FloatingActionMenu)findViewById(R.id.menu_red);
         menuFab.setClosedOnTouchOutside(true);
-        saveBtn = (FloatingActionButton) findViewById(R.id.saveBth);
+        saveBtn = (ImageButton) findViewById(R.id.saveBth);
         saveBtn.setOnClickListener(onClickSaveBtn);
-        saveAndSendBtn = (FloatingActionButton) findViewById(R.id.saveAndSendBtn);
+        saveAndSendBtn = (ImageButton) findViewById(R.id.saveAndSendBtn);
         saveAndSendBtn.setOnClickListener(onClickSaveAndSend);
 
 
@@ -200,42 +203,6 @@ public class Home extends AppCompatActivity  {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    /*List<ManuInspectImageModel> manuInspectImageModelList = new ArrayList<>();
-                                    //Header
-                                    manuInspectModel.setMpDocCode("IN01");
-                                    manuInspectModel.setMpDocument(getDeviceImei(Home.this));
-                                    manuInspectModel.setMpDocBranch("01");
-                                    manuInspectModel.setMpDocSeq("0");
-                                    manuInspectModel.setMpDocDate(basicInfomation.getFileHeader_date());
-                                    manuInspectModel.setMpCustomerNo(basicInfomation.getFileHeader_customerNo());
-                                    manuInspectModel.setMpItemNo(basicInfomation.getFileHeader_itemNo());
-                                    manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
-                                    manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
-                                    manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
-
-                                    //Detail
-                                    for (int i = 0; i < albumList.size(); i++) {
-                                        Album album =  albumList.get(i);
-                                        if (album.DETAIL_BITMAP[i] != null) {
-                                            ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
-                                            manuInspectImageModel.setMpgDoccode(manuInspectModel.getMpDocCode());
-                                            manuInspectImageModel.setMpgDocument(manuInspectModel.getMpDocument());
-                                            manuInspectImageModel.setMpgDocBranch(manuInspectModel.getMpDocBranch());
-                                            manuInspectImageModel.setMpgDocSeq(manuInspectModel.getMpDocSeq());
-                                            manuInspectImageModel.setMpgMemo(album.getName());
-                                            manuInspectImageModel.setMpgImagePath(album.getFileName());
-                                            manuInspectImageModelList.add(manuInspectImageModel);
-                                            Log.d("album.DETAIL_FILE : ", String.valueOf(i));
-                                            Log.d("album.DETAIL_FILE : ", String.valueOf(album.DETAIL_BITMAP[i]));
-                                            manuInspectModel.setManuInspectImageModelList(manuInspectImageModelList);
-                                        }
-                                    }
-
-                                    DatabaseHelper dbHelper = new DatabaseHelper(Home.this);
-                                    //dbHelper.insertManuInspect(manuInspectModel);
-                                    dbHelper.save(manuInspectModel);
-                                    Toast.makeText(Home.this, "Saved!!", Toast.LENGTH_SHORT).show();
-                                    clearActivity();*/
 
                                     AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList);
                                     atlLogin.execute();
@@ -398,6 +365,27 @@ public class Home extends AppCompatActivity  {
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            new AlertDialog.Builder(Home.this)
+                    .setTitle("Logout")
+                    .setMessage("Do you want to logout ?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                            Intent i = new Intent(Home.this,MainActivity.class);
+                            startActivity(i);
+
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     /**
