@@ -587,7 +587,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDocument());
                     contentValues.put(COL_MPGDOCUMENTNO, mpgDocumentNo);
                     contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
-                    contentValues.put(COL_MPGDOCSEQ, i);
+                    contentValues.put(COL_MPGDOCSEQ, manuInspectImage.getMpgDocSeq());
                     contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
                     contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
                     contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
