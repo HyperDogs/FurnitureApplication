@@ -200,7 +200,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private void createTABLE_EMPLOYEES(SQLiteDatabase db){
         String CREATE_EMPLOYEES_TABLE = " CREATE TABLE " + TABLE_EMPLOYEES + "("
-                + COL_ID  + " VARCHAR(20), "
+                + COL_ID  + " VARCHAR(20) PRIMARY KEY, "
                 + COL_EMPLOYEENAME + " VARCHAR(50), "
                 + COL_EMPGROUP + " VARCHAR(20), "
                 + COL_POSITION + " VARCHAR(30), "
@@ -229,6 +229,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_WAREHOUSE + " CHAR(2) "
                 + ") ";
         db.execSQL(CREATE_EMPLOYEES_TABLE);
+        db.execSQL("INSERT INTO " + TABLE_EMPLOYEES + " (" + COL_ID + ", " + COL_EMPLOYEENAME + " ) VALUES ('1', 'admin'), ('2', 'admin'), ('3', 'admin');");
     }
 
 
@@ -314,6 +315,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(cursor.getCount() > 0){
             result = true;
         }
+        cursor.close();
+        database.close();
         return result;
     }
 
@@ -516,6 +519,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return manuInspectImages;
     }
 
+    public String getEmployeeName(String userName, String passWord, String imei){
+        String employeeId = "";
+        String employeeName = "";
+        database = this.getReadableDatabase();
+        //get userLoginId
+        Cursor cursor_log = database.query(TABLE_USERLOGIN, new String[]{COL_ULUSERLOGINID}, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
+        if(cursor_log.getCount() > 0){
+            cursor_log.moveToNext();
+            employeeId = cursor_log.getString(0);
+        }
+        //get employeeName
+        Cursor cursor_emp = database.query(TABLE_EMPLOYEES, new String[]{COL_EMPLOYEENAME}, COL_ID + " = ? ", new String[]{employeeId}, null, null, null);
+        if(cursor_emp.getCount() > 0){
+            cursor_emp.moveToNext();
+            employeeName = cursor_emp.getString(0);
+        }
+        cursor_log.close();
+        cursor_emp.close();
+        database.close();
+        return employeeName;
+    }
+
     public void save(ManuInspectModel manuInspect){
 
         database = this.getReadableDatabase();
@@ -579,6 +604,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     database.insert(TABLE_MANUINSPECTIMAGE, null, contentValues);
                 }
             }
+            cursor.close();
         }
         database.close();
     }
