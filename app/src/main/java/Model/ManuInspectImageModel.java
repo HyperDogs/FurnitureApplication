@@ -7,7 +7,7 @@ package Model;
 public class ManuInspectImageModel {
     private String mpgDoccode;
     private String mpgDocument;
-    private String mpgDocumentno;
+    private int mpgDocumentno;
     private String mpgDocBranch;
     private String mpgDocSeq;
     private String mpgCause;
@@ -40,11 +40,11 @@ public class ManuInspectImageModel {
         this.mpgDocument = mpgDocument;
     }
 
-    public String getMpgDocumentno() {
+    public int getMpgDocumentno() {
         return mpgDocumentno;
     }
 
-    public void setMpgDocumentno(String mpgDocumentno) {
+    public void setMpgDocumentno(int mpgDocumentno) {
         this.mpgDocumentno = mpgDocumentno;
     }
 
