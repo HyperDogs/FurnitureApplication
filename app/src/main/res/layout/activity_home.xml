@@ -113,7 +113,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="fill|clip_vertical|clip_horizontal|start|end"
-                                    android:paddingTop="4dp"
+                                    android:paddingTop="2dp"
                                     android:text="@string/date"
                                     android:textColor="#FFFFFF"
                                     android:textSize="10sp"
@@ -140,7 +140,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="left"
-                                    android:paddingTop="4dp"
+                                    android:paddingTop="2dp"
                                     android:text="@string/cus_no"
                                     android:textColor="#FFFFFF"
                                     android:textSize="10sp"
@@ -167,7 +167,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="left"
-                                    android:paddingTop="4dp"
+                                    android:paddingTop="2dp"
                                     android:text="@string/item_no"
                                     android:textColor="#FFFFFF"
                                     android:textSize="10sp"
@@ -193,7 +193,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="left"
-                                    android:paddingTop="4dp"
+                                    android:paddingTop="2dp"
                                     android:text="@string/color_no"
                                     android:textColor="#FFFFFF"
                                     android:textSize="10sp"
@@ -220,7 +220,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="left"
-                                    android:paddingTop="4dp"
+                                    android:paddingTop="2dp"
                                     android:text="@string/co_no"
                                     android:textColor="#FFFFFF"
                                     android:textSize="10sp"
@@ -247,7 +247,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:gravity="left"
-                                    android:paddingTop="4dp"
+                                    android:paddingTop="2dp"
                                     android:text="@string/inspector"
                                     android:textColor="#FFFFFF"
                                     android:textSize="10sp"
@@ -255,6 +255,32 @@
 
                                 <TextView
                                     android:id="@+id/inspV"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="left"
+                                    android:layout_weight="1"
+                                    android:gravity="left" />
+
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="13dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:gravity="left"
+                                    android:paddingTop="2dp"
+                                    android:text="@string/mail"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="10sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/mailV"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="left"

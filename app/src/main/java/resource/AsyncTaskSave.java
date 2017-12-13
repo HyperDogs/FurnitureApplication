@@ -77,6 +77,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                     manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
                     manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
                     manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
+                    Log.d("album.DETAIL_FILE : ", String.valueOf(basicInfomation.getFileHeader_itemNo()));
 
                     //Detail
                     for (int i = 0; i < albumList.size(); i++) {

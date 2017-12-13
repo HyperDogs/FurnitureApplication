@@ -19,6 +19,7 @@
     <string name="color_no">Color No :</string>
     <string name="co_no">Co No :</string>
     <string name="inspector">Inspector :</string>
+    <string name="mail">E-mail :</string>
 
     <string name="alertInfo">Please fill in all information.</string>
     <string name="update">Update</string>

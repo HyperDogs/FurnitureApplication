@@ -61,7 +61,7 @@ public class Home extends AppCompatActivity  {
     private FloatingActionMenu menuFab;
     private FloatingActionButton fab1,fab2,fab3;
     private ImageButton saveBtn,saveAndSendBtn;
-    private TextView dateV,cusNoV,itemV,colorV,coV,inspV;
+    private TextView dateV,cusNoV,itemV,colorV,coV,inspV,mail;
     private BasicInfomation basicInfomation;
     private ManuInspectModel manuInspectModel = new ManuInspectModel();
     private ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
@@ -160,6 +160,7 @@ public class Home extends AppCompatActivity  {
         colorV = (TextView)findViewById(R.id.colorV);
         coV = (TextView)findViewById(R.id.coV);
         inspV = (TextView)findViewById(R.id.inspV);
+        mail = (TextView)findViewById(R.id.mailV);
         dateV.setText(basicInfomation.getFileHeader_date());
         cusNoV.setText(basicInfomation.getFileHeader_customerNo());
         itemV.setText(basicInfomation.getFileHeader_itemNo());

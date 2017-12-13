@@ -1,5 +1,6 @@
 package com.example.ton.furnitureapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -8,10 +9,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import android.widget.Toast;
@@ -29,6 +32,8 @@ import android.text.Spanned;
 
 import android.support.design.widget.FloatingActionButton;
 
+import Model.ManuInspectModel;
+
 
 public class Allfile extends AppCompatActivity {
 
@@ -45,7 +50,6 @@ public class Allfile extends AppCompatActivity {
     //FloatingActionButton fab;
     private FloatingActionButton fab;
     private RecyclerViewAdapter mAdapter;
-
     private ArrayList<AbstractModel> modelList = new ArrayList<>();
 
 
@@ -56,7 +60,7 @@ public class Allfile extends AppCompatActivity {
 
         // ButterKnife.bind(this);
         findViews();
-        initToolbar("Takeoff Android");
+        initToolbar("ค้นหาข้อมูล");
         setAdapter();
 
 
@@ -66,8 +70,16 @@ public class Allfile extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(fabClick);
 
     }
+    private View.OnClickListener fabClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent home = new Intent(Allfile.this,Home.class);
+            startActivity(home);
+        }
+    };
 
     public void initToolbar(String title) {
         setSupportActionBar(toolbar);
@@ -135,7 +147,7 @@ public class Allfile extends AppCompatActivity {
                 ArrayList<AbstractModel> filterList = new ArrayList<AbstractModel>();
                 if (s.length() > 0) {
                     for (int i = 0; i < modelList.size(); i++) {
-                        if (modelList.get(i).getTitle().toLowerCase().contains(s.toString().toLowerCase())) {
+                        if (modelList.get(i).getCusNo().toLowerCase().contains(s.toString().toLowerCase())) {
                             filterList.add(modelList.get(i));
                             mAdapter.updateList(filterList);
                         }
@@ -154,30 +166,25 @@ public class Allfile extends AppCompatActivity {
 
 
     private void setAdapter() {
-
         AbstractModel b;
-        String Str1 = "Test",Str2= "Test";
-        int[] cover = new int[20];
-        for (int i=0;i<cover.length;i++){
-            cover[i] = R.drawable.camera;
-            b = new AbstractModel(Str1+i,Str2,cover[i]);
-            modelList.add(b);
+        DatabaseHelper db = new DatabaseHelper(Allfile.this);
+        List<ManuInspectModel> manuInspectList = db.getAllManuInspect();
+        int cover;
+        for (int i = 0 ;i<manuInspectList.size();i++){
+            ManuInspectModel manuInspectModel =  manuInspectList.get(i);
+            cover = R.drawable.camera;
+             b = new AbstractModel(cover
+                     ,manuInspectModel.getMpDocDate()
+                     ,manuInspectModel.getMpCustomerNo()
+                     ,manuInspectModel.getMpItemNo()
+                     ,manuInspectModel.getMpColorNo()
+                     ,manuInspectModel.getMpCoNo()
+                     ,manuInspectModel.getMpEmployeeName()
+                     ,manuInspectModel.getMpLastSendBymail());
+             modelList.add(b);
+
+
         }
-        /*modelList.add(new AbstractModel("Android", "Hello " + " Android"));
-        modelList.add(new AbstractModel("Beta", "Hello " + " Beta"));
-        modelList.add(new AbstractModel("Cupcake", "Hello " + " Cupcake"));
-        modelList.add(new AbstractModel("Donut", "Hello " + " Donut"));
-        modelList.add(new AbstractModel("Eclair", "Hello " + " Eclair"));
-        modelList.add(new AbstractModel("Froyo", "Hello " + " Froyo"));
-        modelList.add(new AbstractModel("Gingerbread", "Hello " + " Gingerbread"));
-        modelList.add(new AbstractModel("Honeycomb", "Hello " + " Honeycomb"));
-        modelList.add(new AbstractModel("Ice Cream Sandwich", "Hello " + " Ice Cream Sandwich"));
-        modelList.add(new AbstractModel("Jelly Bean", "Hello " + " Jelly Bean"));
-        modelList.add(new AbstractModel("KitKat", "Hello " + " KitKat"));
-        modelList.add(new AbstractModel("Lollipop", "Hello " + " Lollipop"));
-        modelList.add(new AbstractModel("Marshmallow", "Hello " + " Marshmallow"));
-        modelList.add(new AbstractModel("Nougat", "Hello " + " Nougat"));
-        modelList.add(new AbstractModel("Android O", "Hello " + " Android O"));*/
 
 
         mAdapter = new RecyclerViewAdapter(Allfile.this, modelList);
@@ -199,7 +206,7 @@ public class Allfile extends AppCompatActivity {
             public void onItemClick(View view, int position, AbstractModel model) {
 
                 //handle item click events here
-                Toast.makeText(Allfile.this, "Hey " + model.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Allfile.this, "Hey " + model.getDate(), Toast.LENGTH_SHORT).show();
 
 
             }

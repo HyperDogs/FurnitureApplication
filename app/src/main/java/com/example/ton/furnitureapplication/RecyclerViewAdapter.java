@@ -53,9 +53,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             final AbstractModel model = getItem(position);
             ViewHolder genericViewHolder = (ViewHolder) holder;
 
-            genericViewHolder.itemTxtTitle.setText(model.getTitle());
-            genericViewHolder.itemTxtMessage.setText(model.getMessage());
             Picasso.with(mContext).load(model.getImage()).fit().centerCrop().into(genericViewHolder.imgUser);
+            genericViewHolder.dateV.setText(model.getDate());
+            genericViewHolder.cusNoV.setText(model.getCusNo());
+            genericViewHolder.itemV.setText(model.getItemNo());
+            genericViewHolder.colorV.setText(model.getColorNo());
+            genericViewHolder.coV.setText(model.getCoNo());
+            genericViewHolder.inspV.setText(model.getInspector());
+            genericViewHolder.mailV.setText(model.getMail());
 
 
         }
@@ -84,8 +89,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView imgUser;
-        private TextView itemTxtTitle;
-        private TextView itemTxtMessage;
+        private TextView dateV,cusNoV,itemV,colorV,coV,inspV,mailV;
 
 
         // @BindView(R.id.img_user)
@@ -104,8 +108,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             // ButterKnife.bind(this, itemView);
 
             this.imgUser = (ImageView) itemView.findViewById(R.id.img_user);
-            this.itemTxtTitle = (TextView) itemView.findViewById(R.id.item_txt_title);
-            this.itemTxtMessage = (TextView) itemView.findViewById(R.id.item_txt_message);
+            this.dateV = (TextView)itemView.findViewById(R.id.dateV);
+            this.cusNoV = (TextView)itemView.findViewById(R.id.cusNoV);
+            this.itemV = (TextView)itemView.findViewById(R.id.itemV);
+            this.colorV = (TextView)itemView.findViewById(R.id.colorV);
+            this.coV = (TextView)itemView.findViewById(R.id.coV);
+            this.inspV = (TextView)itemView.findViewById(R.id.inspV);
+            this.mailV = (TextView)itemView.findViewById(R.id.mailV);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {

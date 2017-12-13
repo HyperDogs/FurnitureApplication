@@ -17,6 +17,7 @@
     <string name="color_no">รหัสสี :</string>
     <string name="co_no">รหัสเอกสาร :</string>
     <string name="inspector">ผู้จัดทำ :</string>
+    <string name="mail">E-mail :</string>
 
 
     <string name="alertInfo">กรุณากรอกข้อมูลให้ครบ</string>
