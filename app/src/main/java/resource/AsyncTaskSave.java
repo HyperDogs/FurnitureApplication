@@ -32,7 +32,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     private Activity activity;
 
     private ProgressDialog progressDialog;
-    private String Imei;
+    private String Imei,imgName;
     private boolean SAVE_STATUS = false;
     private Handler handler = new Handler();
     ManuInspectModel manuInspectModel;
@@ -40,12 +40,13 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     List<Album> albumList;
 
 
-    public AsyncTaskSave(Activity a, ManuInspectModel manuInspectModel, BasicInfomation basicInfomation,String Imei,List<Album> albumList){
+    public AsyncTaskSave(Activity a, ManuInspectModel manuInspectModel, BasicInfomation basicInfomation,String Imei,List<Album> albumList,String imgName){
         this.activity = a;
         this.manuInspectModel = manuInspectModel;
         this.basicInfomation = basicInfomation;
         this.albumList = albumList;
         this.Imei = Imei;
+        this.imgName = imgName;
     }
 
     @Override
@@ -77,7 +78,8 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                     manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
                     manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
                     manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
-                    Log.d("album.DETAIL_FILE : ", String.valueOf(basicInfomation.getFileHeader_itemNo()));
+                    manuInspectModel.setMpImagePath(imgName);
+                    Log.d("album.DETAIL_FILE : ", imgName);
 
                     //Detail
                     for (int i = 0; i < albumList.size(); i++) {

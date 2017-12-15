@@ -1,15 +1,19 @@
 package com.example.ton.furnitureapplication;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
+
+import resource.BitmapManager;
 
 public class AbstractModel {
 
 
 
-    private int image;
+    private String image;
     private String date,cusNo,itemNo,colorNo,coNo,inspector,mail;
 
-    public AbstractModel(int image, String date, String cusNo, String itemNo, String colorNo, String coNo, String inspector, String mail) {
+    public AbstractModel(String image, String date, String cusNo, String itemNo, String colorNo, String coNo, String inspector, String mail) {
         this.image = image;
         this.date = date;
         this.cusNo = cusNo;
@@ -76,7 +80,7 @@ public class AbstractModel {
         this.mail = mail;
     }
 
-    public int getImage() {return image;}
+    public String getImage() {return image;}
 
-    public void setImage(int image) {this.image = image;}
+    public void setImage(String image) {this.image = image;}
 }

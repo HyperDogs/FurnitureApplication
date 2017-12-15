@@ -1,6 +1,10 @@
 package com.example.ton.furnitureapplication;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +12,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.squareup.picasso.Picasso;
+
+import resource.BitmapManager;
+import resource.CreateFile;
 
 
 /**
@@ -47,22 +56,26 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-
+        try {
         //Here you can fill your row view
         if (holder instanceof ViewHolder) {
-            final AbstractModel model = getItem(position);
-            ViewHolder genericViewHolder = (ViewHolder) holder;
 
-            Picasso.with(mContext).load(model.getImage()).fit().centerCrop().into(genericViewHolder.imgUser);
-            genericViewHolder.dateV.setText(model.getDate());
-            genericViewHolder.cusNoV.setText(model.getCusNo());
-            genericViewHolder.itemV.setText(model.getItemNo());
-            genericViewHolder.colorV.setText(model.getColorNo());
-            genericViewHolder.coV.setText(model.getCoNo());
-            genericViewHolder.inspV.setText(model.getInspector());
-            genericViewHolder.mailV.setText(model.getMail());
+                final AbstractModel model = getItem(position);
+                ViewHolder genericViewHolder = (ViewHolder) holder;
+                File file = new File(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + model.getImage());
+                Bitmap bitmap = BitmapManager.decode(file.getPath(),300,350);
+                Picasso.with(mContext).load(Utility.getImageUri(mContext,bitmap)).fit().centerCrop().into(genericViewHolder.imgUser);
+                genericViewHolder.dateV.setText(model.getDate());
+                genericViewHolder.cusNoV.setText(model.getCusNo());
+                genericViewHolder.itemV.setText(model.getItemNo());
+                genericViewHolder.colorV.setText(model.getColorNo());
+                genericViewHolder.coV.setText(model.getCoNo());
+                genericViewHolder.inspV.setText(model.getInspector());
+                genericViewHolder.mailV.setText(model.getMail());
 
-
+        }
+        }catch (Exception e){
+            throw e;
         }
     }
 

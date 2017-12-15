@@ -1,6 +1,8 @@
 package com.example.ton.furnitureapplication;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -33,6 +35,8 @@ import android.text.Spanned;
 import android.support.design.widget.FloatingActionButton;
 
 import Model.ManuInspectModel;
+import resource.BitmapManager;
+import resource.CreateFile;
 
 
 public class Allfile extends AppCompatActivity {
@@ -169,11 +173,9 @@ public class Allfile extends AppCompatActivity {
         AbstractModel b;
         DatabaseHelper db = new DatabaseHelper(Allfile.this);
         List<ManuInspectModel> manuInspectList = db.getAllManuInspect();
-        int cover;
         for (int i = 0 ;i<manuInspectList.size();i++){
             ManuInspectModel manuInspectModel =  manuInspectList.get(i);
-            cover = R.drawable.camera;
-             b = new AbstractModel(cover
+             b = new AbstractModel(manuInspectModel.getMpImagePath()
                      ,manuInspectModel.getMpDocDate()
                      ,manuInspectModel.getMpCustomerNo()
                      ,manuInspectModel.getMpItemNo()
@@ -206,7 +208,7 @@ public class Allfile extends AppCompatActivity {
             public void onItemClick(View view, int position, AbstractModel model) {
 
                 //handle item click events here
-                Toast.makeText(Allfile.this, "Hey " + model.getDate(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Allfile.this, "" + model.getImage(), Toast.LENGTH_SHORT).show();
 
 
             }

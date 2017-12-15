@@ -205,7 +205,7 @@ public class Home extends AppCompatActivity  {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList);
+                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,CreateFile.getFileName());
                                     atlLogin.execute();
                                     dialog.dismiss();
 
