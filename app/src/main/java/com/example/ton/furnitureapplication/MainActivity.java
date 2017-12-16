@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
             if (usernameTxt.matches("") || passwordTxt.matches("")){
                 Intent i = new Intent(MainActivity.this,Home.class);
                 startActivity(i);
-                Toast.makeText(MainActivity.this,"กรุณากรอกข้อมูลให้ครบ",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,"Please enter information.",Toast.LENGTH_LONG).show();
             }else {
                 AsyncTaskLogin atlLogin = new AsyncTaskLogin(MainActivity.this,usernameTxt,passwordTxt);
                 atlLogin.execute();
