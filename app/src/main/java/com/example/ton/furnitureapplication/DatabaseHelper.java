@@ -767,4 +767,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.close();
         return manuInspectModel;
     }
+
 }
