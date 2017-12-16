@@ -341,7 +341,7 @@ public class Home extends AppCompatActivity  {
     private void prepareAlbumsEdit(String docNo) {
         DatabaseHelper helper = new DatabaseHelper(Home.this);
         int no = Integer.parseInt(docNo);
-        ManuInspectModel manuInspectModel =  helper.getData(no);
+        ManuInspectModel manuInspectModel =  helper.getDataForUpdate(no);
         File file = new File(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
         //Bitmap bitmapEdit = BitmapManager.decode(file.getPath(),300,350);
         Bitmap bitmapEdit = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
