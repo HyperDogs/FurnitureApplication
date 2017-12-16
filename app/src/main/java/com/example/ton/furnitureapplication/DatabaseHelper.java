@@ -480,6 +480,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteManuInspectImage(ManuInspectImageModel manuInspectImage) {
         database = this.getReadableDatabase();
         database.delete(TABLE_MANUINSPECTIMAGE,
+                COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? AND " + COL_MPGDOCSEQ + " = ? ",
+                new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), String.valueOf(manuInspectImage.getMpgDocumentno()), manuInspectImage.getMpgDocBranch(), manuInspectImage.getMpgDocSeq()});
+        database.close();
+    }
+
+    public void deleteManuInspectImageByDocNo(ManuInspectImageModel manuInspectImage) {
+        database = this.getReadableDatabase();
+        database.delete(TABLE_MANUINSPECTIMAGE,
                 COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? ",
                 new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), String.valueOf(manuInspectImage.getMpgDocumentno()), manuInspectImage.getMpgDocBranch()});
         database.close();
@@ -656,7 +664,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             manuInspectImageTmp.setMpgDocument(cursor.getString(1));
             manuInspectImageTmp.setMpgDocumentno(cursor.getInt(2));
             manuInspectImageTmp.setMpgDocBranch(cursor.getString(3));
-            deleteManuInspectImage(manuInspectImageTmp);
+            deleteManuInspectImageByDocNo(manuInspectImageTmp);
 
             if(manuInspect.getManuInspectImageModelList() != null){
                 List<ManuInspectImageModel> manuInspectImageModelList = manuInspect.getManuInspectImageModelList();
@@ -687,5 +695,76 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         database.close();
+    }
+
+    public ManuInspectModel getData(int documentNo) {
+        database = this.getReadableDatabase();
+        Cursor cursor_mp = database.query(TABLE_MANUINSPECT, null, COL_MPDOCUMENTNO + " = ? ", new String[]{String.valueOf(documentNo)}, null, null, null);
+        ManuInspectModel manuInspectModel =  new ManuInspectModel();
+        if (cursor_mp.getCount() > 0) {
+            cursor_mp.moveToNext();
+            manuInspectModel.setMpDocCode(cursor_mp.getString(0));
+            manuInspectModel.setMpDocument(cursor_mp.getString(1));
+            manuInspectModel.setMpDocumentNo(cursor_mp.getInt(2));
+            manuInspectModel.setMpDocBranch(cursor_mp.getString(3));
+            manuInspectModel.setMpDocSeq(cursor_mp.getString(4));
+            manuInspectModel.setMpDocDate(cursor_mp.getString(5));
+            manuInspectModel.setMpDocTime(cursor_mp.getString(6));
+            manuInspectModel.setMpEmployeeNo(cursor_mp.getString(7));
+            manuInspectModel.setMpEmployeeName(cursor_mp.getString(8));
+            manuInspectModel.setMpCustomerNo(cursor_mp.getString(9));
+            manuInspectModel.setMpCustomerName(cursor_mp.getString(10));
+            manuInspectModel.setMpItemNo(cursor_mp.getString(11));
+            manuInspectModel.setMpItemName(cursor_mp.getString(12));
+            manuInspectModel.setMpColorNo(cursor_mp.getString(13));
+            manuInspectModel.setMpColorName(cursor_mp.getString(14));
+            manuInspectModel.setMpCoNo(cursor_mp.getString(15));
+            manuInspectModel.setMpImagePath(cursor_mp.getString(16));
+            manuInspectModel.setMpImageBlob(cursor_mp.getString(17));
+            manuInspectModel.setMpLastSendBymail(cursor_mp.getString(18));
+            manuInspectModel.setMpLastSendmailByUserNo(cursor_mp.getString(19));
+            manuInspectModel.setMpLastSendmailByUserName(cursor_mp.getString(20));
+            manuInspectModel.setMpLastSendmailDate(cursor_mp.getString(21));
+            manuInspectModel.setMpLastSendmailTime(cursor_mp.getString(22));
+            manuInspectModel.setMpLastModifyDate(cursor_mp.getString(23));
+            manuInspectModel.setMpLastModifyTime(cursor_mp.getString(24));
+            manuInspectModel.setMpLastModifyByUserNo(cursor_mp.getString(25));
+            manuInspectModel.setMpLastModifyByUserName(cursor_mp.getString(26));
+
+            Cursor cursor_mpg = database.query(TABLE_MANUINSPECTIMAGE, null
+                    ,COL_MPGDOCCODE + " = ?  AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? "
+                    , new String[]{manuInspectModel.getMpDocCode(), manuInspectModel.getMpDocument(), String.valueOf(manuInspectModel.getMpDocumentNo()), manuInspectModel.getMpDocBranch()}, null, null, null);
+            List<ManuInspectImageModel> manuInspectImageList = new ArrayList<ManuInspectImageModel>();
+            if (cursor_mpg.getCount() > 0) {
+                for (int i = 0; i < cursor_mpg.getCount(); i++) {
+                    cursor_mpg.moveToNext();
+                    ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
+                    manuInspectImageModel.setMpgDoccode(cursor_mpg.getString(0));
+                    manuInspectImageModel.setMpgDocument(cursor_mpg.getString(1));
+                    manuInspectImageModel.setMpgDocumentno(cursor_mpg.getInt(2));
+                    manuInspectImageModel.setMpgDocBranch(cursor_mpg.getString(3));
+                    manuInspectImageModel.setMpgDocSeq(cursor_mpg.getString(4));
+                    manuInspectImageModel.setMpgCause(cursor_mpg.getString(5));
+                    manuInspectImageModel.setMpgSolution(cursor_mpg.getString(6));
+                    manuInspectImageModel.setMpgMemo(cursor_mpg.getString(7));
+                    manuInspectImageModel.setMpgImagePath(cursor_mpg.getString(8));
+                    manuInspectImageModel.setMpgImageBlob(cursor_mpg.getString(9));
+                    manuInspectImageModel.setMpgCauseByEmployeeNo(cursor_mpg.getString(10));
+                    manuInspectImageModel.setMpgCauseByEmployeeName(cursor_mpg.getString(11));
+                    manuInspectImageModel.setMpgSolutionByEmployeeNo(cursor_mpg.getString(12));
+                    manuInspectImageModel.setMpgSolutionByEmployeeName(cursor_mpg.getString(13));
+                    manuInspectImageModel.setMpgLastModifyDate(cursor_mpg.getString(14));
+                    manuInspectImageModel.setMpgLastModifyTime(cursor_mpg.getString(15));
+                    manuInspectImageModel.setMpgLastModifyByUserNo(cursor_mpg.getString(16));
+                    manuInspectImageModel.setMpgLastModifyByUserName(cursor_mpg.getString(17));
+                    manuInspectImageList.add(manuInspectImageModel);
+                }
+            }
+            cursor_mpg.close();
+            manuInspectModel.setManuInspectImageModelList(manuInspectImageList);
+        }
+        cursor_mp.close();
+        database.close();
+        return manuInspectModel;
     }
 }
