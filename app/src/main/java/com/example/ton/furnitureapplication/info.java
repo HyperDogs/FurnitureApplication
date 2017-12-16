@@ -125,20 +125,6 @@ public class info extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            /*basicInfo.setFileHeader_date(null);
-            basicInfo.setFileHeader_customerNo(null);
-            basicInfo.setFileHeader_itemNo(null);
-            basicInfo.setFileHeader_colorNo(null);
-            basicInfo.setFileHeader_coNo(null);
-            basicInfo.setFileHeader_inspector(null);
-
-            date_edt.setText("");
-            customer_no_edt.setText("");
-            item_no_edt.setText("");
-            color_no_edt.setText("");
-            co_no_edt.setText("");
-            inspector_edt.setText("");*/
-        // close this activity and return to preview activity (if there is any)
             finish();
         }
 

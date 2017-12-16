@@ -64,10 +64,10 @@
 
                 </FrameLayout>
 
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/mainpic_bg"
                     android:layout_width="150dp"
-                    android:layout_height="wrap_content"                    
+                    android:layout_height="wrap_content"
                     android:background="@drawable/border"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -75,12 +75,12 @@
 
                     <ImageView
                         android:id="@+id/mainpic"
-                        android:layout_width="150dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:alpha="0.5"
                         app:srcCompat="@drawable/camera01" />
 
-                </LinearLayout>
+                </FrameLayout>
 
                 <FrameLayout
                     android:id="@+id/basicinfo"

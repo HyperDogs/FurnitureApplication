@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -32,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.picasso.Picasso;
@@ -61,7 +63,7 @@ public class Home extends AppCompatActivity  {
     private FloatingActionMenu menuFab;
     private FloatingActionButton fab1,fab2,fab3;
     private ImageButton saveBtn,saveAndSendBtn;
-    private TextView dateV,cusNoV,itemV,colorV,coV,inspV,mail;
+    private TextView dateV,cusNoV,itemV,colorV,coV,inspV,mailV;
     private BasicInfomation basicInfomation;
     private ManuInspectModel manuInspectModel = new ManuInspectModel();
     private ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
@@ -73,94 +75,31 @@ public class Home extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initCollapsingToolbar();
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        albumList = new ArrayList<>();
-        adapter = new AlbumsAdapter(this, albumList);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(10), true));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setItemViewCacheSize(2000);
-        recyclerView.setDrawingCacheEnabled(true);
-        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-
-        // Extend the Callback class Drag Card View
-        ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
-
-            //and in your imlpementaion of
-
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                // get the viewHolder's and target's positions in your adapter data, swap them
-                Collections.swap(albumList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                // and notify the adapter that its dataset has changed
-                adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
-                return true;
-
-
+        String docNo;
+        Intent intent = getIntent();
+        setView();
+        if(intent.hasExtra("docNo")){
+            Bundle bundle  = getIntent().getExtras();
+            if(!bundle.getString("docNo").equals(null)){
+                docNo = bundle.getString("docNo");
+                createGirdViewEdit(docNo);
+                //Toast.makeText(Home.this,"null extra",Toast.LENGTH_SHORT).show();
+                //createGirdView();
             }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                //TODO
-                Toast.makeText(Home.this,"direction"+direction,Toast.LENGTH_LONG).show();
-            }
-
-            //defines the enabled move directions in each state (idle, swiping, dragging).
-            @Override
-            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
-                        ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END);
-
-            }
-
-            @Override
-            public RecyclerView.ViewHolder chooseDropTarget(RecyclerView.ViewHolder selected, List<RecyclerView.ViewHolder> dropTargets, int curX, int curY) {
-
-                return super.chooseDropTarget(selected, dropTargets, curX, curY);
-            }
-
-
-            @Override
-            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                super.clearView(recyclerView, viewHolder);
-                adapter.notifyDataSetChanged();
-            }
-        };
-
-        ItemTouchHelper ith = new ItemTouchHelper(ithCallback);
-        ith.attachToRecyclerView(recyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-        prepareAlbums();
-
-
-
-
+        }else {
+            createGirdView();
+        }
         //Header
-        mainPic = (ImageView) findViewById(R.id.mainpic);
         mainPic.setOnClickListener(onClickTakePic);
-        basicInfo = (LinearLayout) findViewById(R.id.info);
         basicInfo.setOnClickListener(onClickBasicInfo);
-        listFurnitureBtn = (ImageView) findViewById(R.id.listFunitueBtn);
         listFurnitureBtn.setOnClickListener(onClickListFurniture);
-        menuFab = (FloatingActionMenu)findViewById(R.id.menu_red);
         menuFab.setClosedOnTouchOutside(true);
-        saveBtn = (ImageButton) findViewById(R.id.saveBth);
         saveBtn.setOnClickListener(onClickSaveBtn);
-        saveAndSendBtn = (ImageButton) findViewById(R.id.saveAndSendBtn);
         saveAndSendBtn.setOnClickListener(onClickSaveAndSend);
 
 
 
         //InfoHeader
-        dateV = (TextView)findViewById(R.id.dateV);
-        cusNoV = (TextView)findViewById(R.id.cusNoV);
-        itemV = (TextView)findViewById(R.id.itemV);
-        colorV = (TextView)findViewById(R.id.colorV);
-        coV = (TextView)findViewById(R.id.coV);
-        inspV = (TextView)findViewById(R.id.inspV);
-        mail = (TextView)findViewById(R.id.mailV);
         dateV.setText(basicInfomation.getFileHeader_date());
         cusNoV.setText(basicInfomation.getFileHeader_customerNo());
         itemV.setText(basicInfomation.getFileHeader_itemNo());
@@ -169,7 +108,23 @@ public class Home extends AppCompatActivity  {
         inspV.setText(basicInfomation.getFileHeader_inspector());
 
     }
+    private void setView(){
+        mainPic = (ImageView)findViewById(R.id.mainpic);
+        basicInfo = (LinearLayout) findViewById(R.id.info);
+        listFurnitureBtn = (ImageView) findViewById(R.id.listFunitueBtn);
+        menuFab = (FloatingActionMenu)findViewById(R.id.menu_red);
+        saveBtn = (ImageButton) findViewById(R.id.saveBth);
+        saveAndSendBtn = (ImageButton) findViewById(R.id.saveAndSendBtn);
 
+
+        dateV = (TextView)findViewById(R.id.dateV);
+        cusNoV = (TextView)findViewById(R.id.cusNoV);
+        itemV = (TextView)findViewById(R.id.itemV);
+        colorV = (TextView)findViewById(R.id.colorV);
+        coV = (TextView)findViewById(R.id.coV);
+        inspV = (TextView)findViewById(R.id.inspV);
+        mailV = (TextView)findViewById(R.id.mailV);
+    }
 
     @Override
     protected void onResume() {
@@ -278,7 +233,8 @@ public class Home extends AppCompatActivity  {
             try {
                 if (file !=null) {
                     bitmap = BitmapFactory.decodeFile(file.getPath());
-                    Picasso.with(Home.this).load(Utility.getImageUri(Home.this, bitmap)).fit().centerCrop().into(mainPic);
+                    Picasso.with(Home.this).load(Utility.getImageUri(Home.this, bitmap)).resize(mainPic.getDrawable().getIntrinsicWidth(),mainPic.getDrawable().getIntrinsicHeight()).centerCrop().into(mainPic);
+                    //Picasso.with(Home.this).load(file.getPath()).resize(mainPic.getDrawable().getIntrinsicWidth(),mainPic.getDrawable().getIntrinsicHeight()).centerCrop().into(mainPic);
                     mainPic.setAlpha((float) 1.0);
                 }
             } catch (Exception e) {
@@ -319,6 +275,168 @@ public class Home extends AppCompatActivity  {
                 }
             }
         });
+    }
+    private void createGirdViewEdit(String docNo){
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        albumList = new ArrayList<>();
+        adapter = new AlbumsAdapter(this, albumList);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(2000);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        // Extend the Callback class Drag Card View
+        ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
+
+            //and in your imlpementaion of
+
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                // get the viewHolder's and target's positions in your adapter data, swap them
+                Collections.swap(albumList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                // and notify the adapter that its dataset has changed
+                adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                return true;
+
+
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                //TODO
+                Toast.makeText(Home.this,"direction"+direction,Toast.LENGTH_LONG).show();
+            }
+
+            //defines the enabled move directions in each state (idle, swiping, dragging).
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
+                        ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END);
+
+            }
+
+            @Override
+            public RecyclerView.ViewHolder chooseDropTarget(RecyclerView.ViewHolder selected, List<RecyclerView.ViewHolder> dropTargets, int curX, int curY) {
+
+                return super.chooseDropTarget(selected, dropTargets, curX, curY);
+            }
+
+
+            @Override
+            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                adapter.notifyDataSetChanged();
+            }
+        };
+
+        ItemTouchHelper ith = new ItemTouchHelper(ithCallback);
+        ith.attachToRecyclerView(recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        prepareAlbumsEdit(docNo);
+    }
+    private void prepareAlbumsEdit(String docNo) {
+        DatabaseHelper helper = new DatabaseHelper(Home.this);
+        int no = Integer.parseInt(docNo);
+        ManuInspectModel manuInspectModel =  helper.getData(no);
+        File file = new File(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
+        //Bitmap bitmapEdit = BitmapManager.decode(file.getPath(),300,350);
+        Bitmap bitmapEdit = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
+        if (bitmapEdit !=null) {
+            //Picasso.with(Home.this).load(Uri.fromFile(file)).fit().centerCrop().into(mainPic);
+            Glide.with(Home.this).load(Uri.fromFile(file)).override(mainPic.getDrawable().getIntrinsicWidth(),mainPic.getDrawable().getIntrinsicHeight()).fitCenter().centerCrop().into(mainPic);
+            //mainPic.setImageBitmap(bitmapEdit);
+            mainPic.setAlpha((float)1.0);
+        }else{
+            ImageView mainPicEdt  = (ImageView)findViewById(R.id.mainpic);
+            Picasso.with(Home.this).load(R.drawable.camera2).fit().centerCrop().into(mainPicEdt);
+        }
+        basicInfomation.setFileHeader_date(manuInspectModel.getMpDocDate().toString());
+        basicInfomation.setFileHeader_customerNo(manuInspectModel.getMpCustomerNo());
+        basicInfomation.setFileHeader_itemNo(manuInspectModel.getMpItemNo());
+        basicInfomation.setFileHeader_colorNo(manuInspectModel.getMpColorNo());
+        basicInfomation.setFileHeader_coNo(manuInspectModel.getMpCoNo());
+        basicInfomation.setFileHeader_inspector(manuInspectModel.getMpEmployeeName());
+        basicInfomation.setFileHeader_mail(manuInspectModel.getMpLastSendBymail());
+
+
+
+        Album b;
+        String coverStr = "xxx";
+        int[] cover = new int[100];
+        for (int i=0;i<cover.length;i++){
+            cover[i] = R.drawable.camera2;
+            b = new Album(coverStr,i,cover[i]);
+            albumList.add(b);
+        }
+
+        adapter.notifyDataSetChanged();
+        Toast.makeText(Home.this,""+bitmapEdit,Toast.LENGTH_SHORT).show();
+    }
+    private void createGirdView(){
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        albumList = new ArrayList<>();
+        adapter = new AlbumsAdapter(this, albumList);
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(3, dpToPx(10), true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(2000);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        // Extend the Callback class Drag Card View
+        ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
+
+            //and in your imlpementaion of
+
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                // get the viewHolder's and target's positions in your adapter data, swap them
+                Collections.swap(albumList, viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                // and notify the adapter that its dataset has changed
+                adapter.notifyItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                return true;
+
+
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                //TODO
+                Toast.makeText(Home.this,"direction"+direction,Toast.LENGTH_LONG).show();
+            }
+
+            //defines the enabled move directions in each state (idle, swiping, dragging).
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                return makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
+                        ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END);
+
+            }
+
+            @Override
+            public RecyclerView.ViewHolder chooseDropTarget(RecyclerView.ViewHolder selected, List<RecyclerView.ViewHolder> dropTargets, int curX, int curY) {
+
+                return super.chooseDropTarget(selected, dropTargets, curX, curY);
+            }
+
+
+            @Override
+            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                adapter.notifyDataSetChanged();
+            }
+        };
+
+        ItemTouchHelper ith = new ItemTouchHelper(ithCallback);
+        ith.attachToRecyclerView(recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        prepareAlbums();
     }
     private void prepareAlbums() {
 

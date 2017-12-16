@@ -12,8 +12,9 @@ public class AbstractModel {
 
     private String image;
     private String date,cusNo,itemNo,colorNo,coNo,inspector,mail;
+    private int docNo;
 
-    public AbstractModel(String image, String date, String cusNo, String itemNo, String colorNo, String coNo, String inspector, String mail) {
+    public AbstractModel(String image, String date, String cusNo, String itemNo, String colorNo, String coNo, String inspector, String mail, int docNo) {
         this.image = image;
         this.date = date;
         this.cusNo = cusNo;
@@ -22,6 +23,14 @@ public class AbstractModel {
         this.coNo = coNo;
         this.inspector = inspector;
         this.mail = mail;
+        this.docNo = docNo;
+    }
+    public int getDocNo() {
+        return docNo;
+    }
+
+    public void setDocNo(int docNo) {
+        this.docNo = docNo;
     }
 
     public String getDate() {

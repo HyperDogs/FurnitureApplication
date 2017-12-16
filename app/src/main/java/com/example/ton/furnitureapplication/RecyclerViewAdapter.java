@@ -12,16 +12,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-
-import android.support.v7.widget.LinearLayoutManager;
-
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import resource.BitmapManager;
-import resource.CreateFile;
 
 
 /**
@@ -64,7 +60,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 ViewHolder genericViewHolder = (ViewHolder) holder;
                 File file = new File(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + model.getImage());
                 Bitmap bitmap = BitmapManager.decode(file.getPath(),300,350);
-                Picasso.with(mContext).load(Utility.getImageUri(mContext,bitmap)).fit().centerCrop().into(genericViewHolder.imgUser);
+                //Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + model.getImage());
+                if (bitmap != null) {
+                    Picasso.with(mContext).load(Uri.fromFile(file)).fit().centerCrop().into(genericViewHolder.imgUser);
+                }else {
+                    Picasso.with(mContext).load(R.drawable.camera2).fit().centerCrop().into(genericViewHolder.imgUser);
+                }
                 genericViewHolder.dateV.setText(model.getDate());
                 genericViewHolder.cusNoV.setText(model.getCusNo());
                 genericViewHolder.itemV.setText(model.getItemNo());

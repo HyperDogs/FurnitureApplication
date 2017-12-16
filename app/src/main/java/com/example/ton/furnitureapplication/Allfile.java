@@ -1,42 +1,28 @@
 package com.example.ton.furnitureapplication;
 
+import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
 import android.os.Bundle;
-
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.Spanned;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-import android.widget.Toast;
-import android.os.Handler;
-import android.support.v7.widget.Toolbar;
-
-import android.view.Menu;
-import android.support.v7.widget.SearchView;
-import android.support.v4.view.MenuItemCompat;
-import android.app.SearchManager;
-import android.widget.EditText;
-import android.graphics.Color;
-import android.text.InputFilter;
-import android.text.Spanned;
-
-import android.support.design.widget.FloatingActionButton;
-
 import Model.ManuInspectModel;
-import resource.BitmapManager;
-import resource.CreateFile;
 
 
 public class Allfile extends AppCompatActivity {
@@ -81,6 +67,13 @@ public class Allfile extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent home = new Intent(Allfile.this,Home.class);
+            BasicInfomation basicInfomation = new BasicInfomation();
+            basicInfomation.setFileHeader_date(null);
+            basicInfomation.setFileHeader_inspector(null);
+            basicInfomation.setFileHeader_coNo(null);
+            basicInfomation.setFileHeader_colorNo(null);
+            basicInfomation.setFileHeader_itemNo(null);
+            basicInfomation.setFileHeader_customerNo(null);
             startActivity(home);
         }
     };
@@ -182,7 +175,8 @@ public class Allfile extends AppCompatActivity {
                      ,manuInspectModel.getMpColorNo()
                      ,manuInspectModel.getMpCoNo()
                      ,manuInspectModel.getMpEmployeeName()
-                     ,manuInspectModel.getMpLastSendBymail());
+                     ,manuInspectModel.getMpLastSendBymail()
+                     ,manuInspectModel.getMpDocumentNo());
              modelList.add(b);
 
 
@@ -208,7 +202,10 @@ public class Allfile extends AppCompatActivity {
             public void onItemClick(View view, int position, AbstractModel model) {
 
                 //handle item click events here
-                Toast.makeText(Allfile.this, "" + model.getImage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Allfile.this, "" + model.getDocNo(), Toast.LENGTH_SHORT).show();
+                Intent home = new Intent(Allfile.this,Home.class);
+                home.putExtra("docNo",String.valueOf(model.getDocNo()));
+                startActivity(home);
 
 
             }
