@@ -697,7 +697,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.close();
     }
 
-    public ManuInspectModel getData(int documentNo) {
+    public ManuInspectModel getDataForUpdate(int documentNo) {
         database = this.getReadableDatabase();
         Cursor cursor_mp = database.query(TABLE_MANUINSPECT, null, COL_MPDOCUMENTNO + " = ? ", new String[]{String.valueOf(documentNo)}, null, null, null);
         ManuInspectModel manuInspectModel =  new ManuInspectModel();
@@ -766,6 +766,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor_mp.close();
         database.close();
         return manuInspectModel;
+    }
+
+    public ArrayList<ManuInspectModel> searchManuInspect(String dateFrom, String dateTo) {
+        database = this.getReadableDatabase();
+        String strSelection = null;
+        String[] strSelectionArgs = null;
+
+        if(!dateFrom.isEmpty() && !dateTo.isEmpty()){
+            strSelection = " TODATE("+COL_MPDOCDATE+", 'dd/mm/yyyyy') BETWEEN TODATE( ?, 'dd/mm/yyyyy') AND TODATE(?, 'dd/mm/yyyyy') ";
+            strSelectionArgs = new String[]{dateFrom, dateTo};
+        }
+
+        Cursor cursor = database.query(TABLE_MANUINSPECT, null
+                , strSelection
+                , strSelectionArgs, null, null, null);
+
+        ArrayList<ManuInspectModel> manuInspects = new ArrayList<ManuInspectModel>();
+        ManuInspectModel manuInspectModel;
+        if (cursor.getCount() > 0) {
+            for (int i = 0; i < cursor.getCount(); i++) {
+                cursor.moveToNext();
+                manuInspectModel = new ManuInspectModel();
+                manuInspectModel.setMpDocCode(cursor.getString(0));
+                manuInspectModel.setMpDocument(cursor.getString(1));
+                manuInspectModel.setMpDocumentNo(cursor.getInt(2));
+                manuInspectModel.setMpDocBranch(cursor.getString(3));
+                manuInspectModel.setMpDocSeq(cursor.getString(4));
+                manuInspectModel.setMpDocDate(cursor.getString(5));
+                manuInspectModel.setMpDocTime(cursor.getString(6));
+                manuInspectModel.setMpEmployeeNo(cursor.getString(7));
+                manuInspectModel.setMpEmployeeName(cursor.getString(8));
+                manuInspectModel.setMpCustomerNo(cursor.getString(9));
+                manuInspectModel.setMpCustomerName(cursor.getString(10));
+                manuInspectModel.setMpItemNo(cursor.getString(11));
+                manuInspectModel.setMpItemName(cursor.getString(12));
+                manuInspectModel.setMpColorNo(cursor.getString(13));
+                manuInspectModel.setMpColorName(cursor.getString(14));
+                manuInspectModel.setMpCoNo(cursor.getString(15));
+                manuInspectModel.setMpImagePath(cursor.getString(16));
+                manuInspectModel.setMpImageBlob(cursor.getString(17));
+                manuInspectModel.setMpLastSendBymail(cursor.getString(18));
+                manuInspectModel.setMpLastSendmailByUserNo(cursor.getString(19));
+                manuInspectModel.setMpLastSendmailByUserName(cursor.getString(20));
+                manuInspectModel.setMpLastSendmailDate(cursor.getString(21));
+                manuInspectModel.setMpLastSendmailTime(cursor.getString(22));
+                manuInspectModel.setMpLastModifyDate(cursor.getString(23));
+                manuInspectModel.setMpLastModifyTime(cursor.getString(24));
+                manuInspectModel.setMpLastModifyByUserNo(cursor.getString(25));
+                manuInspectModel.setMpLastModifyByUserName(cursor.getString(26));
+                manuInspects.add(manuInspectModel);
+            }
+        }
+        cursor.close();
+        database.close();
+        return manuInspects;
     }
 
 }
