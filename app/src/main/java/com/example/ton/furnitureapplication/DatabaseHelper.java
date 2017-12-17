@@ -490,7 +490,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.delete(TABLE_MANUINSPECTIMAGE,
                 COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? ",
                 new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), String.valueOf(manuInspectImage.getMpgDocumentno()), manuInspectImage.getMpgDocBranch()});
-        database.close();
     }
 
     public ArrayList<ManuInspectImageModel> getAllManuInspectImage() {
