@@ -20,6 +20,7 @@ import com.example.ton.furnitureapplication.MainMenu;
 
 import java.util.ArrayList;
 
+import Model.EmployeesModel;
 import Model.TBUserLoginModel;
 
 public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
@@ -70,6 +71,7 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
 
                     if (LOGIN_STATUS == true) {
                         /// ให้ไปยังหน้าหลัก
+                        mHelper.getEmployee(getUser, getPassword, getDeviceImei(activity));
                         Intent intent = new Intent(activity, Home.class);
                         activity.startActivity(intent);
                     } else if (LOGIN_STATUS == false) {
@@ -100,4 +102,5 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
         TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getDeviceId();
     }
+
 }

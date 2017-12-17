@@ -7,8 +7,8 @@ import java.util.Date;
  */
 
 public class EmployeesModel {
-    private String id;
-    private String employeeName;
+    public static String id;
+    public static String employeeName;
     private String empGroup;
     private String position;
     private String department;
@@ -32,7 +32,7 @@ public class EmployeesModel {
     private String currentJobStatus;
     private String stutusOn;
     private Date statusOnDate;
-    private String branch;
+    public static String branch;
     private String warehouse;
 
     public String getId() {

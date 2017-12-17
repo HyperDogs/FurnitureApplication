@@ -22,8 +22,10 @@ import com.example.ton.furnitureapplication.DatabaseHelper;
 import com.example.ton.furnitureapplication.Home;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
+import Model.EmployeesModel;
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
 import Model.TBUserLoginModel;
@@ -36,12 +38,13 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     private boolean SAVE_STATUS = false;
     private Handler handler = new Handler();
     private String docNo;
+    private boolean sendMail = false;
     ManuInspectModel manuInspectModel;
     BasicInfomation basicInfomation;
     List<Album> albumList;
 
 
-    public AsyncTaskSave(Activity a, ManuInspectModel manuInspectModel, BasicInfomation basicInfomation,String Imei,List<Album> albumList,String imgName,String docNo){
+    public AsyncTaskSave(Activity a, ManuInspectModel manuInspectModel, BasicInfomation basicInfomation,String Imei,List<Album> albumList,String imgName,String docNo, boolean sendMail){
         this.activity = a;
         this.manuInspectModel = manuInspectModel;
         this.basicInfomation = basicInfomation;
@@ -49,6 +52,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
         this.Imei = Imei;
         this.imgName = imgName;
         this.docNo = docNo;
+        this.sendMail = sendMail;
     }
 
     @Override
@@ -81,8 +85,16 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                     manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
                     manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
                     manuInspectModel.setMpImagePath(imgName);
+                    manuInspectModel.setMpLastModifyDate(String.valueOf(Calendar.getInstance().getTime()));
+                    manuInspectModel.setMpLastModifyByUserNo(EmployeesModel.id);
+                    manuInspectModel.setMpLastModifyByUserName(EmployeesModel.employeeName);
                     if (!docNo.equals("0")) {
                         manuInspectModel.setMpDocumentNo(Integer.parseInt(docNo));
+                    }
+                    if(sendMail){
+                        manuInspectModel.setMpLastSendmailDate(String.valueOf(Calendar.getInstance().getTime()));
+                        manuInspectModel.setMpLastSendmailByUserNo(EmployeesModel.id);
+                        manuInspectModel.setMpLastSendmailByUserName(EmployeesModel.employeeName);
                     }
 
 
@@ -98,6 +110,9 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                             manuInspectImageModel.setMpgDocSeq(String.valueOf(i));
                             manuInspectImageModel.setMpgMemo(album.getName());
                             manuInspectImageModel.setMpgImagePath(Album.DETAIL_FILENAME[i]);
+                            manuInspectImageModel.setMpgLastModifyDate(String.valueOf(Calendar.getInstance().getTime()));
+                            manuInspectImageModel.setMpgLastModifyByUserNo(EmployeesModel.id);
+                            manuInspectImageModel.setMpgLastModifyByUserName(EmployeesModel.employeeName);
                             manuInspectImageModelList.add(manuInspectImageModel);
                             manuInspectModel.setManuInspectImageModelList(manuInspectImageModelList);
 
@@ -158,6 +173,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
         basicInfomation.setFileHeader_colorNo(null);
         basicInfomation.setFileHeader_itemNo(null);
         basicInfomation.setFileHeader_customerNo(null);
+        basicInfomation.setFileHeader_mail(null);
     }
 
 }

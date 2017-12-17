@@ -89,6 +89,7 @@ public class Allfile extends AppCompatActivity {
             basicInfomation.setFileHeader_colorNo(null);
             basicInfomation.setFileHeader_itemNo(null);
             basicInfomation.setFileHeader_customerNo(null);
+            basicInfomation.setFileHeader_mail(null);
             Album.DETAIL_FILENAME = new String[100];
             Album.DETAIL_BITMAP = new Bitmap[100];
             Album.DETAIL_MEMO = new String[100];
@@ -164,10 +165,17 @@ public class Allfile extends AppCompatActivity {
 
     private void setAdapter() {
         AbstractModel b;
+        String status;
         DatabaseHelper db = new DatabaseHelper(Allfile.this);
         List<ManuInspectModel> manuInspectList = db.getAllManuInspect();
         for (int i = 0 ;i<manuInspectList.size();i++){
             ManuInspectModel manuInspectModel =  manuInspectList.get(i);
+            if (manuInspectModel.getMpLastSendmailByUserName() != null){
+                status = "Sent";
+            }else {
+                status = "Not Sent";
+            }
+
              b = new AbstractModel(manuInspectModel.getMpImagePath()
                      ,manuInspectModel.getMpDocDate()
                      ,manuInspectModel.getMpCustomerNo()
@@ -175,7 +183,7 @@ public class Allfile extends AppCompatActivity {
                      ,manuInspectModel.getMpColorNo()
                      ,manuInspectModel.getMpCoNo()
                      ,manuInspectModel.getMpEmployeeName()
-                     ,manuInspectModel.getMpLastSendBymail()
+                     ,status
                      ,manuInspectModel.getMpDocumentNo());
              modelList.add(b);
 

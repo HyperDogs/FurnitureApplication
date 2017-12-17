@@ -10,6 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.EmployeesModel;
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
 import Model.TBUserLoginModel;
@@ -527,9 +528,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return manuInspectImages;
     }
 
-    public String getEmployeeName(String userName, String passWord, String imei){
+    public EmployeesModel getEmployee(String userName, String passWord, String imei){
         String employeeId = "";
         String employeeName = "";
+        EmployeesModel employeesModel = new EmployeesModel();
         database = this.getReadableDatabase();
         //get userLoginId
         Cursor cursor_log = database.query(TABLE_USERLOGIN, new String[]{COL_ULUSERLOGINID}, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
@@ -538,15 +540,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             employeeId = cursor_log.getString(0);
         }
         //get employeeName
-        Cursor cursor_emp = database.query(TABLE_EMPLOYEES, new String[]{COL_EMPLOYEENAME}, COL_ID + " = ? ", new String[]{employeeId}, null, null, null);
+        Cursor cursor_emp = database.query(TABLE_EMPLOYEES, new String[]{COL_ID, COL_EMPLOYEENAME, COL_BRANCH}, COL_ID + " = ? ", new String[]{employeeId}, null, null, null);
         if(cursor_emp.getCount() > 0){
             cursor_emp.moveToNext();
-            employeeName = cursor_emp.getString(0);
+            employeesModel.setId(cursor_emp.getString(0));
+            employeesModel.setEmployeeName(cursor_emp.getString(1));
+            employeesModel.setBranch(cursor_emp.getString(2));
         }
         cursor_log.close();
         cursor_emp.close();
         database.close();
-        return employeeName;
+        return employeesModel;
     }
 
     public void save(ManuInspectModel manuInspect){
