@@ -631,7 +631,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_MPDOCDATE, manuInspect.getMpDocDate());
         contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
         contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeNo());
+        contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeName());
         contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
         contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
         contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
