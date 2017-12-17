@@ -1,29 +1,43 @@
 package com.example.ton.furnitureapplication;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.ManuInspectModel;
+import resource.AsyncTaskSave;
+import resource.CreateFile;
 
 
 public class Allfile extends AppCompatActivity {
@@ -42,7 +56,7 @@ public class Allfile extends AppCompatActivity {
     private FloatingActionButton fab;
     private RecyclerViewAdapter mAdapter;
     private ArrayList<AbstractModel> modelList = new ArrayList<>();
-
+    private Button back_btn,search_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +65,7 @@ public class Allfile extends AppCompatActivity {
 
         // ButterKnife.bind(this);
         findViews();
-        initToolbar("ค้นหาข้อมูล");
+        initToolbar();
         setAdapter();
 
 
@@ -83,89 +97,70 @@ public class Allfile extends AppCompatActivity {
         }
     };
 
-    public void initToolbar(String title) {
-        setSupportActionBar(toolbar);
-        // add back arrow to toolbar
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle(title);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-
-
-        // Retrieve the SearchView and plug it into SearchManager
-        final SearchView searchView = (SearchView) MenuItemCompat
-                .getActionView(menu.findItem(R.id.action_search));
-
-        SearchManager searchManager = (SearchManager) this.getSystemService(this.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(this.getComponentName()));
-
-        //changing edittext color
-        EditText searchEdit = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
-        searchEdit.setTextColor(Color.WHITE);
-        searchEdit.setHintTextColor(Color.WHITE);
-        searchEdit.setBackgroundColor(Color.TRANSPARENT);
-        searchEdit.setHint("Search");
-
-        InputFilter[] fArray = new InputFilter[2];
-        fArray[0] = new InputFilter.LengthFilter(40);
-        fArray[1] = new InputFilter() {
+    public void initToolbar() {
+        back_btn=(Button)findViewById(R.id.back_btn);
+        back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-
-                for (int i = start; i < end; i++) {
-
-                    if (!Character.isLetterOrDigit(source.charAt(i)))
-                        return "";
-                }
-
-
-                return null;
-
-
+            public void onClick(View v) {
+                onBackPressed();
             }
-        };
-        searchEdit.setFilters(fArray);
-        View v = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
-        v.setBackgroundColor(Color.TRANSPARENT);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        });
+        search_btn=(Button)findViewById(R.id.search_btn);
+        search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
+            public void onClick(View v) {
+                final Dialog getDialog = new Dialog(Allfile.this);
+                getDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                getDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                getDialog.setContentView(R.layout.custom_alert_dialog);
+                getDialog.setCanceledOnTouchOutside(false);
+                getDialog.setCancelable(false);
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                ArrayList<AbstractModel> filterList = new ArrayList<AbstractModel>();
-                if (s.length() > 0) {
-                    for (int i = 0; i < modelList.size(); i++) {
-                        if (modelList.get(i).getCusNo().toLowerCase().contains(s.toString().toLowerCase())) {
-                            filterList.add(modelList.get(i));
-                            mAdapter.updateList(filterList);
+                //Grab the window of the dialog, and change the width
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                Window window = getDialog.getWindow();
+                lp.copyFrom(window.getAttributes());
+                //This makes the dialog take up the full width
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                window.setAttributes(lp);
+
+                final EditText dateF_edt= (EditText) getDialog.findViewById(R.id.dateF_edt);
+                final EditText dateT_edt = (EditText) getDialog.findViewById(R.id.dateF_edt);
+                final Button progressCloseBtn = (Button) getDialog.findViewById(R.id.dialogCloseBtn);
+                final Button dialogConfirm = (Button) getDialog.findViewById(R.id.dialogConfirmBtn);
+                final Button dialogCancel = (Button) getDialog.findViewById(R.id.dialogCancelBtn);
+
+                    progressCloseBtn.setVisibility(View.VISIBLE);
+                    progressCloseBtn.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v){
+                            getDialog.dismiss();
                         }
-                    }
+                    });
 
-                } else {
-                    mAdapter.updateList(modelList);
-                }
-                return false;
+                    dialogConfirm.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v){
+                            getDialog.dismiss();
+                        }
+                    });
+
+                    dialogCancel.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v){
+                            getDialog.dismiss();
+                        }
+                    });
+
+
+                getDialog.show();
+
+
             }
         });
 
-
-        return true;
     }
-
 
     private void setAdapter() {
         AbstractModel b;
