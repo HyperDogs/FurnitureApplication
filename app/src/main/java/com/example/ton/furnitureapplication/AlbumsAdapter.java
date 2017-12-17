@@ -1,5 +1,6 @@
 package com.example.ton.furnitureapplication;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -78,8 +80,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             Picasso.with(mContext).load(Utility.getImageUri(mContext, Album.DETAIL_BITMAP[position]))
                     .fit().centerCrop().into(holder.thumbnail);
             holder.overflow.setVisibility(View.VISIBLE);
+
         } else {
             holder.overflow.setVisibility(View.GONE);
+        }
+
+        if(Album.DETAIL_MEMO[position] !=null){
+            holder.title.setText(Album.DETAIL_MEMO[position]);
         }
 
         // loading album cover using Glide library
@@ -110,24 +117,26 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                 final Album album1 = albumList.get(position);
                 Toast.makeText(mContext,"Position alert"+position,Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Title");
+                builder.setTitle("Memo");
 
                 // Set up the input
                 final EditText input = new EditText(mContext);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.setText(position+"");
+                input.setText(Album.DETAIL_MEMO[position]);
                 builder.setView(input);
 
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @SuppressLint("LongLogTag")
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        album1.setName(input.getText().toString());
+                        //album1.setName(input.getText().toString());
+                        Album.DETAIL_MEMO[position] = input.getText().toString();
                         albumList.set(position, album1);
 
-                        Toast.makeText(mContext,"Position alert"+position,Toast.LENGTH_SHORT).show();
+                        Log.d("MEMOADAPTER*************",input.getText().toString());
                         Home.updateView();
 
                     }

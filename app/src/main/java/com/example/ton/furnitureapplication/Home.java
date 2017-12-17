@@ -87,6 +87,7 @@ public class Home extends AppCompatActivity  {
             if(!bundle.getString("docNo").equals(null)){
                 docNo = bundle.getString("docNo");
                 createGirdViewEdit(docNo);
+                bitmap.recycle();
                 //Toast.makeText(Home.this,"null extra",Toast.LENGTH_SHORT).show();
                 //createGirdView();
             }
@@ -193,6 +194,7 @@ public class Home extends AppCompatActivity  {
         public void onClick(View v) {
             Intent listFuniture = new Intent(Home.this,Allfile.class);
             startActivity(listFuniture);
+            System.gc();
         }
     };
     private  View.OnClickListener onClickBasicInfo = new View.OnClickListener() {
@@ -237,8 +239,8 @@ public class Home extends AppCompatActivity  {
             try {
                 if (file !=null) {
                     bitmap = BitmapFactory.decodeFile(file.getPath());
-                    Picasso.with(Home.this).load(Utility.getImageUri(Home.this, bitmap)).resize(mainPic.getDrawable().getIntrinsicWidth(),mainPic.getDrawable().getIntrinsicHeight()).centerCrop().into(mainPic);
-                    //Picasso.with(Home.this).load(file.getPath()).resize(mainPic.getDrawable().getIntrinsicWidth(),mainPic.getDrawable().getIntrinsicHeight()).centerCrop().into(mainPic);
+                    Picasso.with(Home.this).load(Utility.getImageUri(Home.this, bitmap)).fit().centerCrop().into(mainPic);
+                    //Picasso.with(Home.this).load(file.getPath()).fit().centerCrop().into(mainPic);
                     mainPic.setAlpha((float) 1.0);
                 }
             } catch (Exception e) {
@@ -249,6 +251,7 @@ public class Home extends AppCompatActivity  {
                 Log.d("POSITION : ", String.valueOf(requestCode));
                 Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 300, 350);
                 Album.DETAIL_BITMAP[requestCode] = bitmap;
+                Album.DETAIL_FILENAME[requestCode] = CreateFile.getFileName();
                 updateView();
             }
         }
@@ -350,6 +353,7 @@ public class Home extends AppCompatActivity  {
         //Bitmap bitmapEdit = BitmapManager.decode(file.getPath(),300,350);
         Bitmap bitmapEdit = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
         if (bitmapEdit !=null) {
+            bitmap = bitmapEdit;
             //Picasso.with(Home.this).load(Uri.fromFile(file)).fit().centerCrop().into(mainPic);
             Glide.with(Home.this).load(Uri.fromFile(file)).override(mainPic.getDrawable().getIntrinsicWidth(),mainPic.getDrawable().getIntrinsicHeight()).fitCenter().centerCrop().into(mainPic);
             //mainPic.setImageBitmap(bitmapEdit);
@@ -385,15 +389,14 @@ public class Home extends AppCompatActivity  {
             //Drawable d = new BitmapDrawable(getResources(), bitmap);
             int reqCode = Integer.parseInt(manuInspectImageModel.getMpgDocSeq());
             Album.DETAIL_BITMAP[reqCode] = bitmap;
-            Album ab = new Album(manuInspectImageModel.getMpgMemo(),i,R.drawable.example);
-            albumList.set(reqCode,ab);
+            Album.DETAIL_MEMO[reqCode] = manuInspectImageModel.getMpgMemo();
+            //Album ab = new Album(manuInspectImageModel.getMpgMemo(),i,R.drawable.example);
+            //albumList.set(reqCode,ab);
+            Log.d("BITMAP-------------",String.valueOf(bitmap));
+            Log.d("PATH-------------",Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectImageModel.getMpgImagePath());
 
         }
-
-
-
         adapter.notifyDataSetChanged();
-        Toast.makeText(Home.this,""+bitmapEdit,Toast.LENGTH_SHORT).show();
     }
     private void createGirdView(){
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);

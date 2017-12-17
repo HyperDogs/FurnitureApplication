@@ -85,7 +85,6 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                         manuInspectModel.setMpDocumentNo(Integer.parseInt(docNo));
                     }
 
-                    Log.d("album.DETAIL_FILE : ", imgName);
 
                     //Detail
                     for (int i = 0; i < albumList.size(); i++) {
@@ -98,11 +97,13 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                             manuInspectImageModel.setMpgDocBranch(manuInspectModel.getMpDocBranch());
                             manuInspectImageModel.setMpgDocSeq(String.valueOf(i));
                             manuInspectImageModel.setMpgMemo(album.getName());
-                            manuInspectImageModel.setMpgImagePath(album.getFileName());
+                            manuInspectImageModel.setMpgImagePath(Album.DETAIL_FILENAME[i]);
                             manuInspectImageModelList.add(manuInspectImageModel);
-                            Log.d("album.DETAIL_FILE : ", String.valueOf(i));
-                            Log.d("album.DETAIL_FILE : ", String.valueOf(album.DETAIL_BITMAP[i]));
                             manuInspectModel.setManuInspectImageModelList(manuInspectImageModelList);
+                            Log.d("FILENAME__________: ", Album.DETAIL_FILENAME[i]);
+                            if (Album.DETAIL_MEMO[i]!= null) {
+                                Log.d("MEMO__________: ", Album.DETAIL_MEMO[i]);
+                            }
                         }
                     }
 
@@ -121,6 +122,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                         activity.finish();
                         Intent intent = new Intent(activity, Home.class);
                         activity.startActivity(intent);
+                        activity.finish();
                     } else if (SAVE_STATUS == false) {
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
@@ -142,8 +144,10 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
         //bitmap = null;
         //bitmapDtl = null;
         //file = null;
-        Album.DETAIL_FILE = null;
+        //Album.DETAIL_FILE = null;
         Album.DETAIL_BITMAP = new Bitmap[100];
+        Album.DETAIL_MEMO = new String[100];
+        Album.DETAIL_FILENAME = new String[100];
         Album album = new Album();
         ManuInspectModel manuInspectModel = new ManuInspectModel();
         ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();

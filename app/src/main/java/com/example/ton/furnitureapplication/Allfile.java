@@ -2,6 +2,7 @@ package com.example.ton.furnitureapplication;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -74,6 +75,10 @@ public class Allfile extends AppCompatActivity {
             basicInfomation.setFileHeader_colorNo(null);
             basicInfomation.setFileHeader_itemNo(null);
             basicInfomation.setFileHeader_customerNo(null);
+            Album.DETAIL_FILENAME = new String[100];
+            Album.DETAIL_BITMAP = new Bitmap[100];
+            Album.DETAIL_MEMO = new String[100];
+            home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(home);
         }
     };
@@ -206,6 +211,8 @@ public class Allfile extends AppCompatActivity {
                 Intent home = new Intent(Allfile.this,Home.class);
                 home.putExtra("docNo",String.valueOf(model.getDocNo()));
                 startActivity(home);
+                System.gc();
+                finish();
 
 
             }
