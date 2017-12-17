@@ -238,7 +238,8 @@ public class Home extends AppCompatActivity  {
 
             try {
                 if (file !=null) {
-                    bitmap = BitmapFactory.decodeFile(file.getPath());
+                    bitmap = BitmapManager.decode(file.getPath(),300,350);
+                    //BitmapFactory.decodeFile(file.getPath());
                     Picasso.with(Home.this).load(Utility.getImageUri(Home.this, bitmap)).fit().centerCrop().into(mainPic);
                     //Picasso.with(Home.this).load(file.getPath()).fit().centerCrop().into(mainPic);
                     mainPic.setAlpha((float) 1.0);

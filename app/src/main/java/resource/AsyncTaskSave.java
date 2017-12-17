@@ -100,8 +100,9 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                             manuInspectImageModel.setMpgImagePath(Album.DETAIL_FILENAME[i]);
                             manuInspectImageModelList.add(manuInspectImageModel);
                             manuInspectModel.setManuInspectImageModelList(manuInspectImageModelList);
-                            Log.d("FILENAME__________: ", Album.DETAIL_FILENAME[i]);
+
                             if (Album.DETAIL_MEMO[i]!= null) {
+                                Log.d("FILENAME__________: ", Album.DETAIL_FILENAME[i]);
                                 Log.d("MEMO__________: ", Album.DETAIL_MEMO[i]);
                             }
                         }
