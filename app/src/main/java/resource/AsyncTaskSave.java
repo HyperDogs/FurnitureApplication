@@ -93,6 +93,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                         if (album.DETAIL_BITMAP[i] != null) {
                             ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
                             manuInspectImageModel.setMpgDoccode(manuInspectModel.getMpDocCode());
+                            manuInspectImageModel.setMpgDocumentno(manuInspectModel.getMpDocumentNo());
                             manuInspectImageModel.setMpgDocument(manuInspectModel.getMpDocument());
                             manuInspectImageModel.setMpgDocBranch(manuInspectModel.getMpDocBranch());
                             manuInspectImageModel.setMpgDocSeq(String.valueOf(i));
