@@ -48,7 +48,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
-            //count = (TextView) view.findViewById(R.id.count);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             overflow = (ImageView) view.findViewById(R.id.overflow);
         }
@@ -73,7 +72,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         album = albumList.get(position);
         holder.title.setText(album.getName());
-        //holder.count.setText(album.getNumOfSongs()+"");
 
 
         if(Album.DETAIL_BITMAP[position] != null) {

@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FurnitureApplication.iml" filepath="$PROJECT_DIR$/FurnitureApplication.iml" />
+      <module fileurl="file://C:\Users\TON_R\Desktop\app\FurnitureApplication\FurnitureApplication.iml" filepath="C:\Users\TON_R\Desktop\app\FurnitureApplication\FurnitureApplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\TON_R\Desktop\app\FurnitureApplication\app\app.iml" filepath="C:\Users\TON_R\Desktop\app\FurnitureApplication\app\app.iml" />
     </modules>
   </component>
 </project>

@@ -74,6 +74,7 @@ public class Home extends AppCompatActivity  {
     private int currentPositon  =-1;
     private FloatingActionButton fab;
     private String docNo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,12 +159,13 @@ public class Home extends AppCompatActivity  {
                     new AlertDialog.Builder(Home.this)
                             .setTitle("Save")
                             .setMessage("Do you want to save ?")
-                            .setIcon(R.drawable.ic_save)
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    int docNoForEdt = Integer.parseInt(docNo);
-                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,CreateFile.getFileName(),docNoForEdt);
+                                    if (docNo == null){
+                                        docNo = "0";
+                                    }
+                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,CreateFile.getFileName(),docNo);
                                     atlLogin.execute();
                                     dialog.dismiss();
 
@@ -183,8 +185,7 @@ public class Home extends AppCompatActivity  {
         @Override
         public void onClick(View v) {
             DatabaseHelper helper = new DatabaseHelper(Home.this);
-            Toast.makeText(Home.this,""+helper.getAllManuInspect().size(),Toast.LENGTH_LONG).show();
-            Toast.makeText(Home.this,""+helper.getAllManuInspectImage().size(),Toast.LENGTH_LONG).show();
+            Toast.makeText(Home.this,""+docNo,Toast.LENGTH_LONG).show();
         }
     };
     private View.OnClickListener onClickListFurniture = new View.OnClickListener() {

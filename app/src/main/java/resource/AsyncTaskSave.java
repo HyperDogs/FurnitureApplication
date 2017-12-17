@@ -35,13 +35,13 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     private String Imei,imgName;
     private boolean SAVE_STATUS = false;
     private Handler handler = new Handler();
-    private int docNo;
+    private String docNo;
     ManuInspectModel manuInspectModel;
     BasicInfomation basicInfomation;
     List<Album> albumList;
 
 
-    public AsyncTaskSave(Activity a, ManuInspectModel manuInspectModel, BasicInfomation basicInfomation,String Imei,List<Album> albumList,String imgName,int docNo){
+    public AsyncTaskSave(Activity a, ManuInspectModel manuInspectModel, BasicInfomation basicInfomation,String Imei,List<Album> albumList,String imgName,String docNo){
         this.activity = a;
         this.manuInspectModel = manuInspectModel;
         this.basicInfomation = basicInfomation;
@@ -81,8 +81,8 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                     manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
                     manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
                     manuInspectModel.setMpImagePath(imgName);
-                    if(docNo>0){
-                        manuInspectModel.setMpDocumentNo(docNo);
+                    if (!docNo.equals("0")) {
+                        manuInspectModel.setMpDocumentNo(Integer.parseInt(docNo));
                     }
 
                     Log.d("album.DETAIL_FILE : ", imgName);
