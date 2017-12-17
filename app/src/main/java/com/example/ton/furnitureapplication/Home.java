@@ -166,7 +166,7 @@ public class Home extends AppCompatActivity  {
                                     if (docNo == null){
                                         docNo = "0";
                                     }
-                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,CreateFile.getFileName(),docNo);
+                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,CreateFile.getFileName(),docNo, false);
                                     atlLogin.execute();
                                     dialog.dismiss();
 
@@ -185,8 +185,39 @@ public class Home extends AppCompatActivity  {
     private View.OnClickListener onClickSaveAndSend = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            DatabaseHelper helper = new DatabaseHelper(Home.this);
-            Toast.makeText(Home.this,""+docNo,Toast.LENGTH_LONG).show();
+
+            if (bitmap != null){
+                if (basicInfomation.getFileHeader_date().equals("")
+                        || basicInfomation.getFileHeader_customerNo().equals("")
+                        || basicInfomation.getFileHeader_itemNo().equals("")
+                        || basicInfomation.getFileHeader_colorNo().equals("")
+                        || basicInfomation.getFileHeader_coNo().equals("")
+                        || basicInfomation.getFileHeader_inspector().equals("")) {
+
+                    Toast.makeText(Home.this,"กรณากรอกข้อมูลสินค้าให้ครบถ้วน",Toast.LENGTH_SHORT).show();
+
+                }else {
+                    new AlertDialog.Builder(Home.this)
+                            .setTitle("Send Mail")
+                            .setMessage("Do you want to send mail ?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    if (docNo == null){
+                                        docNo = "0";
+                                    }
+                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this, manuInspectModel, basicInfomation, getDeviceImei(Home.this), albumList, CreateFile.getFileName(), docNo, true);
+                                    atlLogin.execute();
+                                    dialog.dismiss();
+
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null).show();
+                }
+
+            }else{
+                Toast.makeText(Home.this,"กรุณาใส่ข้อมูลให้ครบถ้วนก่อนบันทึก",Toast.LENGTH_LONG).show();
+            }
         }
     };
     private View.OnClickListener onClickListFurniture = new View.OnClickListener() {
