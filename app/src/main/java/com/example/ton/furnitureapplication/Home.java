@@ -111,6 +111,7 @@ public class Home extends AppCompatActivity  {
         colorV.setText(basicInfomation.getFileHeader_colorNo());
         coV.setText(basicInfomation.getFileHeader_coNo());
         inspV.setText(basicInfomation.getFileHeader_inspector());
+        mailV.setText(basicInfomation.getFileHeader_mail());
 
     }
     private void setView(){
@@ -377,6 +378,7 @@ public class Home extends AppCompatActivity  {
         prepareAlbumsEdit(docNo);
     }
     private void prepareAlbumsEdit(String docNo) {
+        String status;
         DatabaseHelper helper = new DatabaseHelper(Home.this);
         int no = Integer.parseInt(docNo);
         ManuInspectModel manuInspectModel =  helper.getDataForUpdate(no);
@@ -394,13 +396,18 @@ public class Home extends AppCompatActivity  {
             ImageView mainPicEdt  = (ImageView)findViewById(R.id.mainpic);
             Picasso.with(Home.this).load(R.drawable.camera2).fit().centerCrop().into(mainPicEdt);
         }
+        if (manuInspectModel.getMpLastSendmailByUserName() != null){
+            status = "Sent";
+        }else {
+            status = "Not Sent";
+        }
         basicInfomation.setFileHeader_date(manuInspectModel.getMpDocDate().toString());
         basicInfomation.setFileHeader_customerNo(manuInspectModel.getMpCustomerNo());
         basicInfomation.setFileHeader_itemNo(manuInspectModel.getMpItemNo());
         basicInfomation.setFileHeader_colorNo(manuInspectModel.getMpColorNo());
         basicInfomation.setFileHeader_coNo(manuInspectModel.getMpCoNo());
         basicInfomation.setFileHeader_inspector(manuInspectModel.getMpEmployeeName());
-        basicInfomation.setFileHeader_mail(manuInspectModel.getMpLastSendBymail());
+        basicInfomation.setFileHeader_mail(status);
 
         Album b;
         String coverStr = "xxx";

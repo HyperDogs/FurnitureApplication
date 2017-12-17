@@ -172,6 +172,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
         basicInfomation.setFileHeader_colorNo(null);
         basicInfomation.setFileHeader_itemNo(null);
         basicInfomation.setFileHeader_customerNo(null);
+        basicInfomation.setFileHeader_mail(null);
     }
 
 }
