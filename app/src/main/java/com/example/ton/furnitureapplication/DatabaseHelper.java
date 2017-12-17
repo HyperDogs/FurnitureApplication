@@ -658,13 +658,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Cursor cursor = database.query(TABLE_MANUINSPECTIMAGE, new String[]{COL_MPGDOCCODE, COL_MPGDOCUMENT, COL_MPGDOCUMENTNO, COL_MPGDOCBRANCH}
                     , COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? "
                     , new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), String.valueOf(manuInspect.getMpDocumentNo()), manuInspect.getMpDocBranch()}, null, null, null);
-            cursor.moveToNext();
-            ManuInspectImageModel manuInspectImageTmp = new ManuInspectImageModel();
-            manuInspectImageTmp.setMpgDoccode(cursor.getString(0));
-            manuInspectImageTmp.setMpgDocument(cursor.getString(1));
-            manuInspectImageTmp.setMpgDocumentno(cursor.getInt(2));
-            manuInspectImageTmp.setMpgDocBranch(cursor.getString(3));
-            deleteManuInspectImageByDocNo(manuInspectImageTmp);
+            if(cursor.getCount() > 0) {
+                cursor.moveToNext();
+                ManuInspectImageModel manuInspectImageTmp = new ManuInspectImageModel();
+                manuInspectImageTmp.setMpgDoccode(cursor.getString(0));
+                manuInspectImageTmp.setMpgDocument(cursor.getString(1));
+                manuInspectImageTmp.setMpgDocumentno(cursor.getInt(2));
+                manuInspectImageTmp.setMpgDocBranch(cursor.getString(3));
+                deleteManuInspectImageByDocNo(manuInspectImageTmp);
+            }
 
             if(manuInspect.getManuInspectImageModelList() != null){
                 List<ManuInspectImageModel> manuInspectImageModelList = manuInspect.getManuInspectImageModelList();
