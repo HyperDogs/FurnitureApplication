@@ -9,6 +9,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,6 +44,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingDeque;
 
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
@@ -70,12 +73,12 @@ public class Home extends AppCompatActivity  {
     private Bitmap bitmap, bitmapDtl;
     private int currentPositon  =-1;
     private FloatingActionButton fab;
+    private String docNo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         initCollapsingToolbar();
-        String docNo;
         Intent intent = getIntent();
         setView();
         if(intent.hasExtra("docNo")){
@@ -159,8 +162,8 @@ public class Home extends AppCompatActivity  {
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
-
-                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,CreateFile.getFileName());
+                                    int docNoForEdt = Integer.parseInt(docNo);
+                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,CreateFile.getFileName(),docNoForEdt);
                                     atlLogin.execute();
                                     dialog.dismiss();
 
@@ -350,6 +353,7 @@ public class Home extends AppCompatActivity  {
             Glide.with(Home.this).load(Uri.fromFile(file)).override(mainPic.getDrawable().getIntrinsicWidth(),mainPic.getDrawable().getIntrinsicHeight()).fitCenter().centerCrop().into(mainPic);
             //mainPic.setImageBitmap(bitmapEdit);
             mainPic.setAlpha((float)1.0);
+            bitmapEdit = null;
         }else{
             ImageView mainPicEdt  = (ImageView)findViewById(R.id.mainpic);
             Picasso.with(Home.this).load(R.drawable.camera2).fit().centerCrop().into(mainPicEdt);
@@ -362,8 +366,6 @@ public class Home extends AppCompatActivity  {
         basicInfomation.setFileHeader_inspector(manuInspectModel.getMpEmployeeName());
         basicInfomation.setFileHeader_mail(manuInspectModel.getMpLastSendBymail());
 
-
-
         Album b;
         String coverStr = "xxx";
         int[] cover = new int[100];
@@ -372,6 +374,22 @@ public class Home extends AppCompatActivity  {
             b = new Album(coverStr,i,cover[i]);
             albumList.add(b);
         }
+
+        List<ManuInspectImageModel> dtlList = new ArrayList();
+        dtlList = manuInspectModel.getManuInspectImageModelList();
+        for (int i = 0;i<dtlList.size();i++){
+            ManuInspectImageModel manuInspectImageModel = dtlList.get(i);
+            File fileIm = new File(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectImageModel.getMpgImagePath());
+            Bitmap bitmap = BitmapManager.decode(fileIm.getPath(),300,350);
+            //Drawable d = new BitmapDrawable(getResources(), bitmap);
+            int reqCode = Integer.parseInt(manuInspectImageModel.getMpgDocSeq());
+            Album.DETAIL_BITMAP[reqCode] = bitmap;
+            Album ab = new Album(manuInspectImageModel.getMpgMemo(),i,R.drawable.example);
+            albumList.set(reqCode,ab);
+
+        }
+
+
 
         adapter.notifyDataSetChanged();
         Toast.makeText(Home.this,""+bitmapEdit,Toast.LENGTH_SHORT).show();
