@@ -71,9 +71,7 @@ public class Home extends AppCompatActivity  {
     private ManuInspectModel manuInspectModel = new ManuInspectModel();
     private ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
     private Bitmap bitmap, bitmapDtl;
-    private int currentPositon  =-1;
-    private FloatingActionButton fab;
-    private String docNo;
+    private String docNo,getFileNameHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +85,10 @@ public class Home extends AppCompatActivity  {
             if(!bundle.getString("docNo").equals(null)){
                 docNo = bundle.getString("docNo");
                 createGirdViewEdit(docNo);
-                bitmap.recycle();
-                //Toast.makeText(Home.this,"null extra",Toast.LENGTH_SHORT).show();
-                //createGirdView();
+
             }
         }else {
+
             createGirdView();
         }
         //Header
@@ -167,10 +164,10 @@ public class Home extends AppCompatActivity  {
                                     if (docNo == null){
                                         docNo = "0";
                                     }
-                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,CreateFile.getFileName(),docNo, false);
+                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,getFileNameHeader,docNo, false);
                                     atlLogin.execute();
                                     dialog.dismiss();
-
+                                    bitmap.recycle();
 
                                 }
                             })
@@ -207,10 +204,10 @@ public class Home extends AppCompatActivity  {
                                     if (docNo == null){
                                         docNo = "0";
                                     }
-                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this, manuInspectModel, basicInfomation, getDeviceImei(Home.this), albumList, CreateFile.getFileName(), docNo, true);
+                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this, manuInspectModel, basicInfomation, getDeviceImei(Home.this), albumList, getFileNameHeader, docNo, true);
                                     atlLogin.execute();
                                     dialog.dismiss();
-
+                                    bitmap.recycle();
                                 }
                             })
                             .setNegativeButton(android.R.string.no, null).show();
@@ -227,6 +224,8 @@ public class Home extends AppCompatActivity  {
             Intent listFuniture = new Intent(Home.this,Allfile.class);
             startActivity(listFuniture);
             System.gc();
+            albumList.clear();
+            finish();
         }
     };
     private  View.OnClickListener onClickBasicInfo = new View.OnClickListener() {
@@ -272,6 +271,7 @@ public class Home extends AppCompatActivity  {
                 if (file !=null) {
                     bitmap = BitmapManager.decode(file.getPath(),300,350);
                     //BitmapFactory.decodeFile(file.getPath());
+                    getFileNameHeader = CreateFile.getFileName();
                     Picasso.with(Home.this).load(Utility.getImageUri(Home.this, bitmap)).fit().centerCrop().into(mainPic);
                     //Picasso.with(Home.this).load(file.getPath()).fit().centerCrop().into(mainPic);
                     mainPic.setAlpha((float) 1.0);
@@ -583,5 +583,14 @@ public class Home extends AppCompatActivity  {
         return telephonyManager.getDeviceId();
     }
 
-
+    @Override
+    protected void onDestroy() {
+        freeMemory();
+        super.onDestroy();
+    }
+    public void freeMemory(){
+        System.runFinalization();
+        Runtime.getRuntime().gc();
+        System.gc();
+    }
 }

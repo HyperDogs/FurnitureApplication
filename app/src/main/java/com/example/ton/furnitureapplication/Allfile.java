@@ -1,43 +1,27 @@
 package com.example.ton.furnitureapplication;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.SearchManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.ManuInspectModel;
-import resource.AsyncTaskSave;
-import resource.CreateFile;
 
 
 public class Allfile extends AppCompatActivity {
@@ -95,6 +79,7 @@ public class Allfile extends AppCompatActivity {
             Album.DETAIL_MEMO = new String[100];
             home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(home);
+            finish();
         }
     };
 
@@ -103,7 +88,9 @@ public class Allfile extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                Intent i = new Intent(Allfile.this,Home.class);
+                startActivity(i);
+                finish();
             }
         });
         search_btn=(Button)findViewById(R.id.search_btn);
@@ -213,8 +200,11 @@ public class Allfile extends AppCompatActivity {
                 Toast.makeText(Allfile.this, "" + model.getDocNo(), Toast.LENGTH_SHORT).show();
                 Intent home = new Intent(Allfile.this,Home.class);
                 home.putExtra("docNo",String.valueOf(model.getDocNo()));
+                Album.DETAIL_FILENAME = new String[100];
+                Album.DETAIL_BITMAP = new Bitmap[100];
+                Album.DETAIL_MEMO = new String[100];
                 startActivity(home);
-                System.gc();
+                modelList.clear();
                 finish();
 
 
@@ -234,5 +224,15 @@ public class Allfile extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        freeMemory();
+        super.onDestroy();
+    }
+    public void freeMemory(){
+        System.runFinalization();
+        Runtime.getRuntime().gc();
+        System.gc();
+    }
 
 }
