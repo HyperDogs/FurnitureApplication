@@ -427,6 +427,7 @@ public class Home extends AppCompatActivity  {
             //Drawable d = new BitmapDrawable(getResources(), bitmap);
             int reqCode = Integer.parseInt(manuInspectImageModel.getMpgDocSeq());
             Album.DETAIL_BITMAP[reqCode] = bitmap;
+            Album.DETAIL_FILENAME[reqCode] = manuInspectImageModel.getMpgImagePath();
             Album.DETAIL_MEMO[reqCode] = manuInspectImageModel.getMpgMemo();
             //Album ab = new Album(manuInspectImageModel.getMpgMemo(),i,R.drawable.example);
             //albumList.set(reqCode,ab);
