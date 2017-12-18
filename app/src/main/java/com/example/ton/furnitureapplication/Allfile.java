@@ -89,7 +89,20 @@ public class Allfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Allfile.this,Home.class);
+                BasicInfomation basicInfomation = new BasicInfomation();
+                basicInfomation.setFileHeader_date(null);
+                basicInfomation.setFileHeader_inspector(null);
+                basicInfomation.setFileHeader_coNo(null);
+                basicInfomation.setFileHeader_colorNo(null);
+                basicInfomation.setFileHeader_itemNo(null);
+                basicInfomation.setFileHeader_customerNo(null);
+                basicInfomation.setFileHeader_mail(null);
+                Album.DETAIL_FILENAME = new String[100];
+                Album.DETAIL_BITMAP = new Bitmap[100];
+                Album.DETAIL_MEMO = new String[100];
                 startActivity(i);
+                modelList.clear();
+                finish();
                 finish();
             }
         });

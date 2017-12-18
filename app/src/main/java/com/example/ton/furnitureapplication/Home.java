@@ -383,10 +383,12 @@ public class Home extends AppCompatActivity  {
         DatabaseHelper helper = new DatabaseHelper(Home.this);
         int no = Integer.parseInt(docNo);
         ManuInspectModel manuInspectModel =  helper.getDataForUpdate(no);
+        getFileNameHeader = manuInspectModel.getMpImagePath();
         File file = new File(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
         //Bitmap bitmapEdit = BitmapManager.decode(file.getPath(),300,350);
         Bitmap bitmapEdit = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
-        if (bitmapEdit !=null) {
+
+        if (manuInspectModel.getMpImagePath() !=null) {
             bitmap = bitmapEdit;
             //Picasso.with(Home.this).load(Uri.fromFile(file)).fit().centerCrop().into(mainPic);
             Glide.with(Home.this).load(Uri.fromFile(file)).override(mainPic.getDrawable().getIntrinsicWidth(),mainPic.getDrawable().getIntrinsicHeight()).fitCenter().centerCrop().into(mainPic);
