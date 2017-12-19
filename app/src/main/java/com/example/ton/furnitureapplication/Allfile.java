@@ -70,7 +70,7 @@ public class Allfile extends AppCompatActivity {
 
         // ButterKnife.bind(this);
         myCalendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         dateFromStr = sdf.format(myCalendar.getTime()).toString();
         dateToStr = sdf.format(myCalendar.getTime()).toString();
         statusStr = null;
@@ -130,7 +130,6 @@ public class Allfile extends AppCompatActivity {
                 startActivity(i);
                 modelList.clear();
                 finish();
-                finish();
             }
         });
         search_btn=(Button)findViewById(R.id.search_btn);
@@ -138,7 +137,7 @@ public class Allfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                MaterialDialog dialog =
+                final MaterialDialog dialog =
                         new MaterialDialog.Builder(Allfile.this)
                                 .title("Search")
                                 .customView(R.layout.dialog_customview, true)
@@ -161,8 +160,10 @@ public class Allfile extends AppCompatActivity {
                             }else {
                                 statusStr = null;
                             }
+                        modelList.clear();
                         setAdapter(dateFromStr,dateToStr,statusStr);
                         mAdapter.notifyDataSetChanged();
+                        dialog.dismiss();
 
 
                     }
@@ -186,7 +187,7 @@ public class Allfile extends AppCompatActivity {
                         myCalendar.set(Calendar.YEAR, year);
                         myCalendar.set(Calendar.MONTH, monthOfYear);
                         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         dateFrom.setText(sdf.format(myCalendar.getTime()));
                     }
 
@@ -198,7 +199,7 @@ public class Allfile extends AppCompatActivity {
                         myCalendar.set(Calendar.YEAR, year);
                         myCalendar.set(Calendar.MONTH, monthOfYear);
                         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                         dateTo.setText(sdf.format(myCalendar.getTime()));
                     }
 
