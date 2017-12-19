@@ -20,7 +20,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,12 +48,15 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count;
         public ImageView thumbnail, overflow;
+        public ImageButton pickImg;
 
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.title);
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             overflow = (ImageView) view.findViewById(R.id.overflow);
+            pickImg = (ImageButton) view.findViewById(R.id.pickImg);
+
         }
     }
 
@@ -135,8 +140,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                         //album1.setName(input.getText().toString());
                         Album.DETAIL_MEMO[position] = input.getText().toString();
                         albumList.set(position, album1);
-
-                        Log.d("MEMOADAPTER*************",input.getText().toString());
                         Home.updateView();
 
                     }
@@ -158,6 +161,15 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             @Override
             public void onClick(View view) {
                 showPopupMenu(holder.overflow, position, holder.thumbnail, holder.overflow);
+            }
+        });
+
+        holder.pickImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                ((Activity) mContext).startActivityForResult(pickPhoto , 1);
             }
         });
 
@@ -201,7 +213,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                     ((Activity) mContext).startActivityForResult(intent, positionCard);
                     return true;
                 case R.id.action_play_next:
-                    //Toast.makeText(mContext, "Play next"+positionCard, Toast.LENGTH_SHORT).show();
                     Album.DETAIL_BITMAP[positionCard] = null;
                     Glide.with(mContext).load(album.getThumbnail()).into(mDetailThumnail);
                     mDetailOverflow.setVisibility(View.GONE);
@@ -214,9 +225,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
 
     }
 
-    public void startActivityForResult(Intent intent, int positionCard) {
-        Toast.makeText(mContext, "Play next"+positionCard, Toast.LENGTH_SHORT).show();
-    }
+   /* public void startActivityForResult(Intent intent, int positionCard) {
+
+    }*/
 
 
 
