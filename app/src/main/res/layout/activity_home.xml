@@ -80,6 +80,15 @@
                         android:alpha="0.5"
                         app:srcCompat="@drawable/camera01" />
 
+                    <ImageButton
+                        android:id="@+id/pickImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|right"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/ic_folder" />
+
                 </FrameLayout>
 
                 <FrameLayout

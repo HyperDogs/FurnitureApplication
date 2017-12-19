@@ -65,7 +65,7 @@ public class Home extends AppCompatActivity  {
     private LinearLayout basicInfo;
     private FloatingActionMenu menuFab;
     private FloatingActionButton fab1,fab2,fab3;
-    private ImageButton saveBtn,saveAndSendBtn;
+    private ImageButton saveBtn,saveAndSendBtn,pickImg;
     private TextView dateV,cusNoV,itemV,colorV,coV,inspV,mailV;
     private BasicInfomation basicInfomation;
     private ManuInspectModel manuInspectModel = new ManuInspectModel();
@@ -98,6 +98,7 @@ public class Home extends AppCompatActivity  {
         menuFab.setClosedOnTouchOutside(true);
         saveBtn.setOnClickListener(onClickSaveBtn);
         saveAndSendBtn.setOnClickListener(onClickSaveAndSend);
+        pickImg.setOnClickListener(onClickPickImg);
 
 
 
@@ -118,6 +119,7 @@ public class Home extends AppCompatActivity  {
         menuFab = (FloatingActionMenu)findViewById(R.id.menu_red);
         saveBtn = (ImageButton) findViewById(R.id.saveBth);
         saveAndSendBtn = (ImageButton) findViewById(R.id.saveAndSendBtn);
+        pickImg = (ImageButton) findViewById(R.id.pickImage);
 
 
         dateV = (TextView)findViewById(R.id.dateV);
@@ -216,6 +218,15 @@ public class Home extends AppCompatActivity  {
             }else{
                 Toast.makeText(Home.this,"กรุณาใส่ข้อมูลให้ครบถ้วนก่อนบันทึก",Toast.LENGTH_LONG).show();
             }
+        }
+    };
+
+    private View.OnClickListener onClickPickImg = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(pickPhoto , 1);
         }
     };
     private View.OnClickListener onClickListFurniture = new View.OnClickListener() {

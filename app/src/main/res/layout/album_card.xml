@@ -24,6 +24,18 @@
                 android:clickable="true"
                 android:scaleType="fitXY"/>
 
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/title"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ic_folder" />
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"

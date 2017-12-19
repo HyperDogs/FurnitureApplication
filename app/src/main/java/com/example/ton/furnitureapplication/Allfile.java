@@ -70,7 +70,7 @@ public class Allfile extends AppCompatActivity {
 
         // ButterKnife.bind(this);
         myCalendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         dateFromStr = sdf.format(myCalendar.getTime()).toString();
         dateToStr = sdf.format(myCalendar.getTime()).toString();
         statusStr = null;
@@ -169,7 +169,7 @@ public class Allfile extends AppCompatActivity {
                 });
                 //noinspection ConstantConditions
                 //Date
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 myCalendar = Calendar.getInstance();
                 dateFrom = dialog.getCustomView().findViewById(R.id.dateFrom);
                 dateTo = dialog.getCustomView().findViewById(R.id.dateTo);
@@ -185,7 +185,7 @@ public class Allfile extends AppCompatActivity {
                         myCalendar.set(Calendar.YEAR, year);
                         myCalendar.set(Calendar.MONTH, monthOfYear);
                         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                         dateFrom.setText(sdf.format(myCalendar.getTime()));
                     }
 
@@ -197,7 +197,7 @@ public class Allfile extends AppCompatActivity {
                         myCalendar.set(Calendar.YEAR, year);
                         myCalendar.set(Calendar.MONTH, monthOfYear);
                         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                         dateTo.setText(sdf.format(myCalendar.getTime()));
                     }
 
