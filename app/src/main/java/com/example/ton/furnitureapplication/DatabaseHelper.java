@@ -773,7 +773,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return manuInspectModel;
     }
 
-    public ArrayList<ManuInspectModel> searchManuInspect(String dateFrom, String dateTo) {
+    public ArrayList<ManuInspectModel> searchManuInspect(String dateFrom, String dateTo, String sendMail) {
         database = this.getReadableDatabase();
         String strSelection = null;
         String[] strSelectionArgs = null;
@@ -781,6 +781,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(!dateFrom.isEmpty() && !dateTo.isEmpty()){
             strSelection = " TODATE("+COL_MPDOCDATE+", 'dd/mm/yyyyy') BETWEEN TODATE( ?, 'dd/mm/yyyyy') AND TODATE(?, 'dd/mm/yyyyy') ";
             strSelectionArgs = new String[]{dateFrom, dateTo};
+        }
+        if(!sendMail.isEmpty()){
+            if(sendMail.equals("Y")){
+                strSelection = strSelection + "AND "+COL_MPLASTSENDMAILBYUSERNO+" IS NOT NULL ";
+            }else{
+                strSelection = strSelection + "AND "+COL_MPLASTSENDMAILBYUSERNO+" IS NULL ";
+            }
+
         }
 
         Cursor cursor = database.query(TABLE_MANUINSPECT, null
@@ -826,20 +834,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return manuInspects;
-    }
-
-    public void isSendMail(ManuInspectModel manuInspect){
-
-        database = this.getReadableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
-        contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
-        contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
-        contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
-        contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
-        database.update(TABLE_MANUINSPECT, contentValues,
-                COL_MPDOCCODE + " = ? AND " + COL_MPDOCUMENT + " = ? AND " + COL_MPDOCUMENTNO + " = ? AND " + COL_MPDOCBRANCH + " = ? AND " + COL_MPDOCSEQ + " = ? ",
-                new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), String.valueOf(manuInspect.getMpDocumentNo()), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq()});
-        database.close();
     }
 }
