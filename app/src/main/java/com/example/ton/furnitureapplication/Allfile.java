@@ -169,6 +169,7 @@ public class Allfile extends AppCompatActivity {
                 });
                 //noinspection ConstantConditions
                 //Date
+
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                 myCalendar = Calendar.getInstance();
                 dateFrom = dialog.getCustomView().findViewById(R.id.dateFrom);
