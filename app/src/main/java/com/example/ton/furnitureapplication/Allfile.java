@@ -1,24 +1,39 @@
 package com.example.ton.furnitureapplication;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.internal.MDTintHelper;
+import com.afollestad.materialdialogs.internal.ThemeSingleton;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import Model.ManuInspectModel;
@@ -27,6 +42,10 @@ import Model.ManuInspectModel;
 public class Allfile extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+    private View positiveAction;
+    private EditText dateFrom,dateTo;
+    private DatePickerDialog.OnDateSetListener datePickFrom,datePickTo;
+    private Calendar myCalendar;
 
     // @BindView(R.id.recycler_view)
     // RecyclerView recyclerView;
@@ -41,6 +60,8 @@ public class Allfile extends AppCompatActivity {
     private RecyclerViewAdapter mAdapter;
     private ArrayList<AbstractModel> modelList = new ArrayList<>();
     private Button back_btn,search_btn;
+    private String dateFromStr,dateToStr,statusStr;
+    private CheckBox sentBox,notSentBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +69,15 @@ public class Allfile extends AppCompatActivity {
         setContentView(R.layout.activity_allfile);
 
         // ButterKnife.bind(this);
+        myCalendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        dateFromStr = sdf.format(myCalendar.getTime()).toString();
+        dateToStr = sdf.format(myCalendar.getTime()).toString();
+        statusStr = null;
+
         findViews();
         initToolbar();
-        setAdapter();
+        setAdapter(dateFromStr,dateToStr,statusStr);
 
 
     }
@@ -110,64 +137,114 @@ public class Allfile extends AppCompatActivity {
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog getDialog = new Dialog(Allfile.this);
-                getDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                getDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                getDialog.setContentView(R.layout.custom_alert_dialog);
-                getDialog.setCanceledOnTouchOutside(false);
-                getDialog.setCancelable(false);
 
-                //Grab the window of the dialog, and change the width
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                Window window = getDialog.getWindow();
-                lp.copyFrom(window.getAttributes());
-                //This makes the dialog take up the full width
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                window.setAttributes(lp);
+                MaterialDialog dialog =
+                        new MaterialDialog.Builder(Allfile.this)
+                                .title("Search")
+                                .customView(R.layout.dialog_customview, true)
+                                .positiveText("OK")
+                                .negativeText(android.R.string.cancel)
+                                .build();
 
-                final EditText dateF_edt= (EditText) getDialog.findViewById(R.id.dateF_edt);
-                final EditText dateT_edt = (EditText) getDialog.findViewById(R.id.dateF_edt);
-                final Button progressCloseBtn = (Button) getDialog.findViewById(R.id.dialogCloseBtn);
-                final Button dialogConfirm = (Button) getDialog.findViewById(R.id.dialogConfirmBtn);
-                final Button dialogCancel = (Button) getDialog.findViewById(R.id.dialogCancelBtn);
-
-                    progressCloseBtn.setVisibility(View.VISIBLE);
-                    progressCloseBtn.setOnClickListener(new View.OnClickListener(){
-                        @Override
-                        public void onClick(View v){
-                            getDialog.dismiss();
-                        }
-                    });
-
-                    dialogConfirm.setOnClickListener(new View.OnClickListener(){
-                        @Override
-                        public void onClick(View v){
-                            getDialog.dismiss();
-                        }
-                    });
-
-                    dialogCancel.setOnClickListener(new View.OnClickListener(){
-                        @Override
-                        public void onClick(View v){
-                            getDialog.dismiss();
-                        }
-                    });
+                positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+                positiveAction.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                            dateFromStr = dateFrom.getText().toString();
+                            dateToStr = dateTo.getText().toString();
+                            if (sentBox.isChecked() && notSentBox.isChecked()){
+                                statusStr = null;
+                            }else if (sentBox.isChecked()){
+                                statusStr = "Y";
+                            }else if (notSentBox.isChecked()){
+                                statusStr = "N";
+                            }else {
+                                statusStr = null;
+                            }
+                        setAdapter(dateFromStr,dateToStr,statusStr);
+                        mAdapter.notifyDataSetChanged();
 
 
-                getDialog.show();
+                    }
+                });
+                //noinspection ConstantConditions
+                //Date
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                myCalendar = Calendar.getInstance();
+                dateFrom = dialog.getCustomView().findViewById(R.id.dateFrom);
+                dateTo = dialog.getCustomView().findViewById(R.id.dateTo);
+                dateFrom.setOnClickListener(pickDateF);
+                dateTo.setOnClickListener(pickDateT);
+                dateFrom.setText(sdf.format(myCalendar.getTime()));
+                dateTo.setText(sdf.format(myCalendar.getTime()));
 
+                datePickFrom = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // TODO Auto-generated method stub
+                        myCalendar.set(Calendar.YEAR, year);
+                        myCalendar.set(Calendar.MONTH, monthOfYear);
+                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        dateFrom.setText(sdf.format(myCalendar.getTime()));
+                    }
+
+                };
+                datePickTo = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        // TODO Auto-generated method stub
+                        myCalendar.set(Calendar.YEAR, year);
+                        myCalendar.set(Calendar.MONTH, monthOfYear);
+                        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        dateTo.setText(sdf.format(myCalendar.getTime()));
+                    }
+
+                };
+
+                // Toggling the show password CheckBox will mask or unmask the password input EditText
+                sentBox = dialog.getCustomView().findViewById(R.id.sent);
+                notSentBox = dialog.getCustomView().findViewById(R.id.notSent);
+
+                int widgetColor = ThemeSingleton.get().widgetColor;
+                MDTintHelper.setTint(
+                        sentBox, widgetColor == 0 ? ContextCompat.getColor(Allfile.this, R.color.colorPrimary) : widgetColor);
+
+                MDTintHelper.setTint(
+                        notSentBox, widgetColor == 0 ? ContextCompat.getColor(Allfile.this, R.color.colorPrimary) : widgetColor);
+               /* MDTintHelper.setTint(
+                        passwordInput,
+                        widgetColor == 0 ? ContextCompat.getColor(Allfile.this, R.color.colorPrimary) : widgetColor);
+*/
+                dialog.show();
+                positiveAction.setEnabled(true); // disabled by default
 
             }
         });
 
     }
-
-    private void setAdapter() {
+    private View.OnClickListener pickDateF = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            new DatePickerDialog(Allfile.this, datePickFrom, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        }
+    };
+    private View.OnClickListener pickDateT = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            new DatePickerDialog(Allfile.this, datePickTo, myCalendar
+                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        }
+    };
+    private void setAdapter(String dateFrom,String dateTo,String status) {
         AbstractModel b;
-        String status;
         DatabaseHelper db = new DatabaseHelper(Allfile.this);
-        List<ManuInspectModel> manuInspectList = db.getAllManuInspect();
+        //List<ManuInspectModel> manuInspectList = db.getAllManuInspect();
+        List<ManuInspectModel> manuInspectList = db.searchManuInspect(dateFrom,dateTo,status);
         for (int i = 0 ;i<manuInspectList.size();i++){
             ManuInspectModel manuInspectModel =  manuInspectList.get(i);
             if (manuInspectModel.getMpLastSendmailByUserName() != null){
@@ -236,7 +313,15 @@ public class Allfile extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    private Toast toast;
+    private void showToast(String message) {
+        if (toast != null) {
+            toast.cancel();
+            toast = null;
+        }
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
     @Override
     protected void onDestroy() {
         freeMemory();
