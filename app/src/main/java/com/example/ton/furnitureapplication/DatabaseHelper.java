@@ -778,11 +778,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String strSelection = null;
         String[] strSelectionArgs = null;
 
-        if(!dateFrom.isEmpty() && !dateTo.isEmpty()){
-            strSelection = " TODATE("+COL_MPDOCDATE+", 'dd/mm/yyyyy') BETWEEN TODATE( ?, 'dd/mm/yyyyy') AND TODATE(?, 'dd/mm/yyyyy') ";
+        if((dateFrom != "" && dateFrom != null) && (dateTo != "" && dateTo != null)){
+            strSelection = " strftime('%d-%m-%Y', "+COL_MPDOCDATE+") BETWEEN ? AND ? ";
             strSelectionArgs = new String[]{dateFrom, dateTo};
         }
-        if(!sendMail.isEmpty()){
+        if(sendMail != "" && sendMail != null){
             if(sendMail.equals("Y")){
                 strSelection = strSelection + "AND "+COL_MPLASTSENDMAILBYUSERNO+" IS NOT NULL ";
             }else{
