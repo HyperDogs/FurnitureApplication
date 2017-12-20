@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.FileProvider;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -29,9 +30,11 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,12 +62,12 @@ public class Home extends AppCompatActivity  {
     private static AlbumsAdapter adapter;
     private List<Album> albumList;
     private  ImageView mainPic,listFurnitureBtn;
-    private int headerImage = 1001;
+    private int headerImage = 1001,headerPickImage = 1002;
     private File file;
     private Uri uri;
     private LinearLayout basicInfo;
     private FloatingActionMenu menuFab;
-    private FloatingActionButton fab1,fab2,fab3;
+    private FloatingActionButton fabAdd,fabSwap,fabRemove;
     private ImageButton saveBtn,saveAndSendBtn,pickImg;
     private TextView dateV,cusNoV,itemV,colorV,coV,inspV,mailV;
     private BasicInfomation basicInfomation;
@@ -72,14 +75,18 @@ public class Home extends AppCompatActivity  {
     private ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
     private Bitmap bitmap, bitmapDtl;
     private String docNo,getFileNameHeader;
+    private RelativeLayout mainLayout,swapLayout,removeLayout;
+    private CollapsingToolbarLayout collapsingToolbar;
+    private AppBarLayout appbar;
+    private Button doneswap,doneremove;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        initCollapsingToolbar();
         Intent intent = getIntent();
         setView();
+        initCollapsingToolbar();
         if(intent.hasExtra("docNo")){
             Bundle bundle  = getIntent().getExtras();
             if(!bundle.getString("docNo").equals(null)){
@@ -99,6 +106,11 @@ public class Home extends AppCompatActivity  {
         saveBtn.setOnClickListener(onClickSaveBtn);
         saveAndSendBtn.setOnClickListener(onClickSaveAndSend);
         pickImg.setOnClickListener(onClickPickImg);
+        fabAdd.setOnClickListener(onClickFabAdd);
+        fabSwap.setOnClickListener(onClickFabSwap);
+        fabRemove.setOnClickListener(onClickFabRemove);
+        doneswap.setOnClickListener(onClickDoneSwap);
+        doneremove.setOnClickListener(onClickDoneRemove);
 
 
 
@@ -113,6 +125,11 @@ public class Home extends AppCompatActivity  {
 
     }
     private void setView(){
+        mainLayout = findViewById(R.id.mainLayout);
+        swapLayout = findViewById(R.id.swapLayout);
+        removeLayout = findViewById(R.id.removeLayout);
+        appbar = findViewById(R.id.appbar);
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         mainPic = (ImageView)findViewById(R.id.mainpic);
         basicInfo = (LinearLayout) findViewById(R.id.info);
         listFurnitureBtn = (ImageView) findViewById(R.id.listFunitueBtn);
@@ -120,6 +137,12 @@ public class Home extends AppCompatActivity  {
         saveBtn = (ImageButton) findViewById(R.id.saveBth);
         saveAndSendBtn = (ImageButton) findViewById(R.id.saveAndSendBtn);
         pickImg = (ImageButton) findViewById(R.id.pickImage);
+        fabAdd = findViewById(R.id.fabAdd);
+        fabSwap = findViewById(R.id.fabSwap);
+        fabRemove = findViewById(R.id.fabRemove);
+        doneswap =findViewById(R.id.swapdone);
+        doneremove = findViewById(R.id.doneremove);
+
 
 
         dateV = (TextView)findViewById(R.id.dateV);
@@ -199,7 +222,7 @@ public class Home extends AppCompatActivity  {
                 }else {
                     new AlertDialog.Builder(Home.this)
                             .setTitle("Send Mail")
-                            .setMessage("Do you want to send mail ?")
+                            .setMessage("Would you like to send E-Mail?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -226,7 +249,7 @@ public class Home extends AppCompatActivity  {
         public void onClick(View view) {
             Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(pickPhoto , 1);
+            startActivityForResult(pickPhoto , headerPickImage);
         }
     };
     private View.OnClickListener onClickListFurniture = new View.OnClickListener() {
@@ -266,6 +289,75 @@ public class Home extends AppCompatActivity  {
 
         }
     };
+    private View.OnClickListener onClickFabAdd = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent home = new Intent(Home.this,Home.class);
+            BasicInfomation basicInfomation = new BasicInfomation();
+            basicInfomation.setFileHeader_date(null);
+            basicInfomation.setFileHeader_inspector(null);
+            basicInfomation.setFileHeader_coNo(null);
+            basicInfomation.setFileHeader_colorNo(null);
+            basicInfomation.setFileHeader_itemNo(null);
+            basicInfomation.setFileHeader_customerNo(null);
+            basicInfomation.setFileHeader_mail(null);
+            Album.DETAIL_FILENAME = new String[100];
+            Album.DETAIL_BITMAP = new Bitmap[100];
+            Album.DETAIL_MEMO = new String[100];
+            startActivity(home);
+            finish();
+        }
+    };
+
+    private View.OnClickListener onClickFabSwap = new View.OnClickListener() {
+        @SuppressLint("WrongConstant")
+        @Override
+        public void onClick(View view) {
+            appbar.setExpanded(true);
+            swapLayout.setVisibility(RelativeLayout.ABOVE);
+            mainLayout.setVisibility(RelativeLayout.GONE);
+            removeLayout.setVisibility(RelativeLayout.GONE);
+            recyclerView.setNestedScrollingEnabled(false);
+            menuFab.close(true);
+        }
+    };
+
+    private View.OnClickListener onClickFabRemove = new View.OnClickListener() {
+        @SuppressLint("WrongConstant")
+        @Override
+        public void onClick(View view) {
+            appbar.setExpanded(true);
+            removeLayout.setVisibility(RelativeLayout.ABOVE);
+            mainLayout.setVisibility(RelativeLayout.GONE);
+            swapLayout.setVisibility(RelativeLayout.GONE);
+            recyclerView.setNestedScrollingEnabled(false);
+            menuFab.close(true);
+        }
+    };
+
+    private View.OnClickListener onClickDoneSwap = new View.OnClickListener() {
+        @SuppressLint("WrongConstant")
+        @Override
+        public void onClick(View view) {
+            swapLayout.setVisibility(RelativeLayout.GONE);
+            mainLayout.setVisibility(RelativeLayout.ABOVE);
+            removeLayout.setVisibility(RelativeLayout.GONE);
+            appbar.setExpanded(false);
+            recyclerView.setNestedScrollingEnabled(true);
+        }
+    };
+
+    private View.OnClickListener onClickDoneRemove = new View.OnClickListener() {
+        @SuppressLint("WrongConstant")
+        @Override
+        public void onClick(View view) {
+            swapLayout.setVisibility(RelativeLayout.GONE);
+            mainLayout.setVisibility(RelativeLayout.ABOVE);
+            removeLayout.setVisibility(RelativeLayout.GONE);
+            appbar.setExpanded(false);
+            recyclerView.setNestedScrollingEnabled(true);
+        }
+    };
 
     public static void updateView(){
         adapter.notifyDataSetChanged();
@@ -290,7 +382,13 @@ public class Home extends AppCompatActivity  {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else {
+        }else if (requestCode == headerPickImage){
+            Uri selectedImage = data.getData();
+            Picasso.with(Home.this).load(selectedImage).fit().centerCrop().into(mainPic);
+            mainPic.setAlpha((float) 1.0);
+
+
+        }else {
             if (Album.DETAIL_FILE != null) {
                 Log.d("POSITION : ", String.valueOf(requestCode));
                 Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 300, 350);
@@ -302,7 +400,6 @@ public class Home extends AppCompatActivity  {
     }
 
     private void initCollapsingToolbar() {
-        final CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbar.setTitle(" ");
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         appBarLayout.setExpanded(true);

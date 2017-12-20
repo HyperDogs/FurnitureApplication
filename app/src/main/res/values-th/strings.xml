@@ -25,4 +25,6 @@
     <string name="update">Update</string>
 
     <string name="login_required">Please enter information.</string>
+    <string name="delete_text">Please select information to delete.</string>
+    <string name="swap_text">Please select information to swap.</string>
 </resources>

@@ -15,12 +15,9 @@ import android.widget.Toast;
 
 import com.example.ton.furnitureapplication.DatabaseHelper;
 import com.example.ton.furnitureapplication.Home;
-import com.example.ton.furnitureapplication.MainActivity;
-import com.example.ton.furnitureapplication.MainMenu;
 
 import java.util.ArrayList;
 
-import Model.EmployeesModel;
 import Model.TBUserLoginModel;
 
 public class AsyncTaskLogin extends AsyncTask<String, Void, String> {

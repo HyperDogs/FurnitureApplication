@@ -39,7 +39,6 @@
         </provider>
 
         <activity android:name=".Home" />
-        <activity android:name=".MainMenu" />
         <activity
             android:name=".info"
             android:label="@string/title_activity_info"

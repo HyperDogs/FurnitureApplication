@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,114 +27,157 @@
             app:expandedTitleTextAppearance="@android:color/transparent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/basicinfo"
-                    android:layout_toRightOf="@+id/basicinfo"
-                    android:id="@+id/frameLayout">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-
-                        android:orientation="vertical">
-
-                        <ImageButton
-                            android:id="@+id/listFunitueBtn"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_list" />
-
-                        <ImageButton
-                            android:id="@+id/saveAndSendBtn"
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:src="@android:drawable/ic_menu_send" />
-
-                        <ImageButton
-                            android:id="@+id/saveBth"
-                            android:layout_width="50dp"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_save" />
-                    </LinearLayout>
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/mainpic_bg"
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/textView4">
-
-                    <ImageView
-                        android:id="@+id/mainpic"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.5"
-                        app:srcCompat="@drawable/camera01" />
-
-                    <ImageButton
-                        android:id="@+id/pickImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom|right"
-                        android:layout_marginBottom="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@drawable/ic_folder" />
-
-                </FrameLayout>
-
-                <FrameLayout
-                    android:id="@+id/basicinfo"
-                    android:layout_width="160dp"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/textView4"
-                    android:layout_toEndOf="@+id/mainpic_bg"
-                    android:background="@drawable/border"
-                    android:layout_toRightOf="@+id/mainpic_bg">
+                <RelativeLayout
+                    android:id="@+id/mainLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                     <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:id="@+id/frameLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/basicinfo"
+                        android:layout_toRightOf="@+id/basicinfo">
 
                         <LinearLayout
-                            android:id="@+id/info"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
 
-                            android:orientation="vertical"
-                            android:paddingLeft="8dp">
+                            android:orientation="vertical">
+
+                            <ImageButton
+                                android:id="@+id/listFunitueBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_list" />
+
+                            <ImageButton
+                                android:id="@+id/saveAndSendBtn"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:src="@android:drawable/ic_menu_send" />
+
+                            <ImageButton
+                                android:id="@+id/saveBth"
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_save" />
+                        </LinearLayout>
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/mainpic_bg"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/textView4"
+                        android:background="@drawable/border">
+
+                        <ImageView
+                            android:id="@+id/mainpic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:alpha="0.5"
+                            app:srcCompat="@drawable/camera01" />
+
+                        <ImageButton
+                            android:id="@+id/pickImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom|right"
+                            android:layout_marginBottom="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@drawable/ic_folder" />
+
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/basicinfo"
+                        android:layout_width="160dp"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/textView4"
+                        android:layout_toEndOf="@+id/mainpic_bg"
+                        android:layout_toRightOf="@+id/mainpic_bg"
+                        android:background="@drawable/border">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
                             <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
+                                android:id="@+id/info"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
 
-                                <TextView
+                                android:orientation="vertical"
+                                android:paddingLeft="8dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="fill|clip_vertical|clip_horizontal|start|end"
+                                        android:paddingTop="2dp"
+                                        android:text="@string/date"
+                                        android:textColor="#FFFFFF"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/dateV"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="left"
+                                        android:layout_weight="1"
+                                        android:gravity="left" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:gravity="fill|clip_vertical|clip_horizontal|start|end"
-                                    android:paddingTop="2dp"
-                                    android:text="@string/date"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/dateV"
-                                    android:layout_width="wrap_content"
+                                    <TextView
+                                        android:layout_width="13dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="left"
+                                        android:paddingTop="2dp"
+                                        android:text="@string/cus_no"
+                                        android:textColor="#FFFFFF"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/cusNoV"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="left"
+                                        android:layout_weight="1"
+                                        android:gravity="left" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
                                     android:layout_weight="1"
+<<<<<<< Updated upstream
                                     android:gravity="left" />
 
                             </LinearLayout>
@@ -157,10 +201,62 @@
 
                                 <TextView
                                     android:id="@+id/cusNoV"
+=======
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="13dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="left"
+                                        android:paddingTop="2dp"
+                                        android:text="@string/item_no"
+                                        android:textColor="#FFFFFF"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/itemV"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="left"
+                                        android:layout_weight="1"
+                                        android:gravity="left" />
+                                </LinearLayout>
+
+                                <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
                                     android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="13dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="left"
+                                        android:paddingTop="2dp"
+                                        android:text="@string/color_no"
+                                        android:textColor="#FFFFFF"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/colorV"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="left"
+                                        android:layout_weight="1"
+                                        android:gravity="left" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+>>>>>>> Stashed changes
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+<<<<<<< Updated upstream
                                     android:gravity="left" />
 
                             </LinearLayout>
@@ -172,25 +268,89 @@
                                 android:orientation="horizontal">
 
                                 <TextView
+=======
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="13dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="left"
+                                        android:paddingTop="2dp"
+                                        android:text="@string/co_no"
+                                        android:textColor="#FFFFFF"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/coV"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="left"
+                                        android:layout_weight="1"
+                                        android:gravity="left" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+>>>>>>> Stashed changes
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:gravity="left"
-                                    android:paddingTop="2dp"
-                                    android:text="@string/item_no"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
+                                    android:orientation="horizontal">
 
-                                <TextView
-                                    android:id="@+id/itemV"
-                                    android:layout_width="wrap_content"
+                                    <TextView
+                                        android:layout_width="13dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="left"
+                                        android:paddingTop="2dp"
+                                        android:text="@string/inspector"
+                                        android:textColor="#FFFFFF"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/inspV"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="left"
+                                        android:layout_weight="1"
+                                        android:gravity="left" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
                                     android:layout_weight="1"
-                                    android:gravity="left" />
-                            </LinearLayout>
+                                    android:orientation="horizontal">
 
+                                    <TextView
+                                        android:layout_width="13dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="left"
+                                        android:paddingTop="2dp"
+                                        android:text="@string/mail"
+                                        android:textColor="#FFFFFF"
+                                        android:textSize="10sp"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:id="@+id/mailV"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="left"
+                                        android:layout_weight="1"
+                                        android:gravity="left" />
+
+                                </LinearLayout>
+                            </LinearLayout>
+                        </FrameLayout>
+                    </FrameLayout>
+
+<<<<<<< Updated upstream
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -215,9 +375,57 @@
                                     android:layout_gravity="left"
                                     android:layout_weight="1"
                                     android:gravity="left" />
+=======
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_toLeftOf="@+id/basicinfo"
+                        android:layout_toStartOf="@+id/basicinfo"
+                        android:background="#497D68"
+                        android:gravity="center"
+                        android:text="Product Photo"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
 
-                            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/textView4"
+                        android:layout_toLeftOf="@+id/frameLayout"
+                        android:layout_toRightOf="@+id/textView4"
+                        android:layout_toStartOf="@+id/frameLayout"
+                        android:layout_weight="1"
+                        android:background="#497D68"
+                        android:gravity="center"
+                        android:text="Basic Infomation"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold" />
 
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/removeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+>>>>>>> Stashed changes
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp" />
+
+<<<<<<< Updated upstream
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -242,9 +450,37 @@
                                     android:layout_gravity="left"
                                     android:layout_weight="1"
                                     android:gravity="left" />
+=======
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/delete_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-                            </LinearLayout>
+                        <Button
+                            android:id="@+id/button4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:text="DELETE" />
+>>>>>>> Stashed changes
 
+                        <Button
+                            android:id="@+id/doneremove"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:text="DONE" />
+
+<<<<<<< Updated upstream
                             <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -296,43 +532,53 @@
                                     android:layout_gravity="left"
                                     android:layout_weight="1"
                                     android:gravity="left" />
+=======
+                    </LinearLayout>
 
-                            </LinearLayout>
-                        </LinearLayout>
-                    </FrameLayout>
-                </FrameLayout>
+                </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_toLeftOf="@+id/basicinfo"
-                    android:layout_toStartOf="@+id/basicinfo"
-                    android:background="#497D68"
-                    android:gravity="center"
-                    android:text="Product Photo"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold" />
+                <RelativeLayout
+                    android:id="@+id/swapLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/textView4"
-                    android:layout_toLeftOf="@+id/frameLayout"
-                    android:layout_toRightOf="@+id/textView4"
-                    android:layout_toStartOf="@+id/frameLayout"
-                    android:layout_weight="1"
-                    android:background="#497D68"
-                    android:gravity="center"
-                    android:text="Basic Infomation"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+>>>>>>> Stashed changes
 
-            </RelativeLayout>
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="25dp" />
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:gravity="center"
+                            android:text="@string/swap_text"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/swapdone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="30dp"
+                            android:layout_marginRight="30dp"
+                            android:text="DONE" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -360,36 +606,36 @@
         fab:menu_labels_singleLine="true">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab1"
+            android:id="@+id/fabRemove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_list"
+            android:src="@drawable/ic_bin"
             app:fab_colorNormal="@android:color/holo_green_dark"
             app:fab_colorPressed="@color/color_green"
+            app:fab_label="REMOVE"
             fab:fab_colorRipple="#99FFFFFF"
-            fab:fab_label="LIST FILE"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab2"
+            android:id="@+id/fabSwap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_send"
+            android:src="@drawable/ic_swap"
             app:fab_colorNormal="@android:color/holo_green_dark"
             app:fab_colorPressed="@color/color_green"
+            app:fab_label="SWAP"
             fab:fab_colorRipple="#99FFFFFF"
-            fab:fab_label="SAVE AND SEND"
             fab:fab_size="mini" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/fab3"
+            android:id="@+id/fabAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_save"
+            android:src="@drawable/ic_plus"
             app:fab_colorNormal="@android:color/holo_green_dark"
             app:fab_colorPressed="@color/color_green"
+            app:fab_label="ADD"
             fab:fab_colorRipple="#99FFFFFF"
-            fab:fab_label="SAVE"
             fab:fab_size="mini" />
 
     </com.github.clans.fab.FloatingActionMenu>
