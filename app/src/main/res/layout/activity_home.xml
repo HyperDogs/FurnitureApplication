@@ -177,31 +177,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-<<<<<<< Updated upstream
-                                    android:gravity="left" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="left"
-                                    android:paddingTop="2dp"
-                                    android:text="@string/cus_no"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/cusNoV"
-=======
                                     android:orientation="horizontal">
 
                                     <TextView
@@ -252,23 +227,9 @@
                                 </LinearLayout>
 
                                 <LinearLayout
->>>>>>> Stashed changes
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-<<<<<<< Updated upstream
-                                    android:gravity="left" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-
-                                <TextView
-=======
                                     android:orientation="horizontal">
 
                                     <TextView
@@ -293,7 +254,6 @@
                                 </LinearLayout>
 
                                 <LinearLayout
->>>>>>> Stashed changes
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
@@ -350,32 +310,6 @@
                         </FrameLayout>
                     </FrameLayout>
 
-<<<<<<< Updated upstream
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="left"
-                                    android:paddingTop="2dp"
-                                    android:text="@string/color_no"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/colorV"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="1"
-                                    android:gravity="left" />
-=======
                     <TextView
                         android:id="@+id/textView4"
                         android:layout_width="wrap_content"
@@ -417,7 +351,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
->>>>>>> Stashed changes
 
                         <TextView
                             android:id="@+id/textView2"
@@ -425,32 +358,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp" />
 
-<<<<<<< Updated upstream
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="left"
-                                    android:paddingTop="2dp"
-                                    android:text="@string/co_no"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/coV"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="1"
-                                    android:gravity="left" />
-=======
                         <TextView
                             android:id="@+id/textView5"
                             android:layout_width="match_parent"
@@ -467,7 +374,6 @@
                             android:layout_marginLeft="30dp"
                             android:layout_marginRight="30dp"
                             android:text="DELETE" />
->>>>>>> Stashed changes
 
                         <Button
                             android:id="@+id/doneremove"
@@ -480,59 +386,6 @@
                             android:layout_marginRight="30dp"
                             android:text="DONE" />
 
-<<<<<<< Updated upstream
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="left"
-                                    android:paddingTop="2dp"
-                                    android:text="@string/inspector"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/inspV"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="1"
-                                    android:gravity="left" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="left"
-                                    android:paddingTop="2dp"
-                                    android:text="@string/mail"
-                                    android:textColor="#FFFFFF"
-                                    android:textSize="10sp"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:id="@+id/mailV"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="left"
-                                    android:layout_weight="1"
-                                    android:gravity="left" />
-=======
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -546,7 +399,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
->>>>>>> Stashed changes
 
                         <TextView
                             android:id="@+id/textView7"
@@ -590,7 +442,7 @@
 
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu_red"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
