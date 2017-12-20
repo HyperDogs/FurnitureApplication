@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import Model.EmployeesModel;
@@ -568,7 +571,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_MPDOCUMENT, manuInspect.getMpDocument());
         contentValues.put(COL_MPDOCBRANCH, manuInspect.getMpDocBranch());
         contentValues.put(COL_MPDOCSEQ, manuInspect.getMpDocSeq());
-        contentValues.put(COL_MPDOCDATE, manuInspect.getMpDocDate());
+        contentValues.put(COL_MPDOCDATE, formatSQLDate(manuInspect.getMpDocDate()));
         contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
         contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
         contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeName());
@@ -631,7 +634,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_MPDOCDATE, manuInspect.getMpDocDate());
+        contentValues.put(COL_MPDOCDATE, formatSQLDate(manuInspect.getMpDocDate()));
         contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
         contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
         contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeName());
@@ -713,7 +716,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             manuInspectModel.setMpDocumentNo(cursor_mp.getInt(2));
             manuInspectModel.setMpDocBranch(cursor_mp.getString(3));
             manuInspectModel.setMpDocSeq(cursor_mp.getString(4));
-            manuInspectModel.setMpDocDate(cursor_mp.getString(5));
+            manuInspectModel.setMpDocDate(formatDate(cursor_mp.getString(5)));
             manuInspectModel.setMpDocTime(cursor_mp.getString(6));
             manuInspectModel.setMpEmployeeNo(cursor_mp.getString(7));
             manuInspectModel.setMpEmployeeName(cursor_mp.getString(8));
@@ -780,7 +783,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if((dateFrom != "" && dateFrom != null) && (dateTo != "" && dateTo != null)){
             strSelection = " strftime('%Y-%m-%d', "+COL_MPDOCDATE+") BETWEEN ? AND ? ";
-            strSelectionArgs = new String[]{dateFrom, dateTo};
+            strSelectionArgs = new String[]{formatSQLDate(dateFrom), formatSQLDate(dateTo)};
         }
         if(sendMail != "" && sendMail != null){
             if(sendMail.equals("Y")){
@@ -806,7 +809,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 manuInspectModel.setMpDocumentNo(cursor.getInt(2));
                 manuInspectModel.setMpDocBranch(cursor.getString(3));
                 manuInspectModel.setMpDocSeq(cursor.getString(4));
-                manuInspectModel.setMpDocDate(cursor.getString(5));
+                manuInspectModel.setMpDocDate(formatDate(cursor.getString(5)));
                 manuInspectModel.setMpDocTime(cursor.getString(6));
                 manuInspectModel.setMpEmployeeNo(cursor.getString(7));
                 manuInspectModel.setMpEmployeeName(cursor.getString(8));
@@ -834,5 +837,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return manuInspects;
+    }
+
+    private String formatDate(String strDate){
+        String dateFormat = null;
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(strDate);
+            dateFormat = new SimpleDateFormat("dd-MM-yyyy").format(date);
+        } catch (ParseException exp) {
+            exp.printStackTrace();
+        }
+        return dateFormat;
+    }
+
+    private String formatSQLDate(String strDate){
+        String dateFormat = null;
+        try {
+            Date date = new SimpleDateFormat("dd-MM-yyyy").parse(strDate);
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        } catch (ParseException exp) {
+            exp.printStackTrace();
+        }
+        return dateFormat;
     }
 }
