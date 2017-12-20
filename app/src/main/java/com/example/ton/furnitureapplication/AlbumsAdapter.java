@@ -44,6 +44,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     private Album album;
     private File file;
     private Uri uri;
+    private int detailPickImage = 1003;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, count;
@@ -169,7 +170,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             public void onClick(View view) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                ((Activity) mContext).startActivityForResult(pickPhoto , 1);
+                pickPhoto.putExtra("position",String.valueOf(position));
+                ((Activity) mContext).startActivityForResult(pickPhoto , position);
             }
         });
 

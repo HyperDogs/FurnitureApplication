@@ -43,7 +43,12 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.picasso.Picasso;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -368,6 +373,8 @@ public class Home extends AppCompatActivity  {
         super.onActivityResult(requestCode, resultCode, data);
 
 
+        Log.d("XXXX",String.valueOf(requestCode));
+
         if (requestCode == headerImage && resultCode == RESULT_OK) {
 
             try {
@@ -388,6 +395,15 @@ public class Home extends AppCompatActivity  {
             mainPic.setAlpha((float) 1.0);
 
 
+        }else if (requestCode <= 100){
+            try {
+            Uri selectedImage = data.getData();
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+            Album.DETAIL_BITMAP[requestCode] = bitmap;
+            updateView();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }else {
             if (Album.DETAIL_FILE != null) {
                 Log.d("POSITION : ", String.valueOf(requestCode));
@@ -400,7 +416,7 @@ public class Home extends AppCompatActivity  {
     }
 
     private void initCollapsingToolbar() {
-        collapsingToolbar.setTitle(" ");
+        collapsingToolbar.setTitle("");
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
         appBarLayout.setExpanded(true);
 
@@ -692,6 +708,7 @@ public class Home extends AppCompatActivity  {
         TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
         return telephonyManager.getDeviceId();
     }
+
 
     @Override
     protected void onDestroy() {
