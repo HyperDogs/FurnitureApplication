@@ -70,7 +70,7 @@ public class Allfile extends AppCompatActivity {
 
         // ButterKnife.bind(this);
         myCalendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         dateFromStr = sdf.format(myCalendar.getTime()).toString();
         dateToStr = sdf.format(myCalendar.getTime()).toString();
         statusStr = null;

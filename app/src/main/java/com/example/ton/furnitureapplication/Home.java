@@ -84,6 +84,7 @@ public class Home extends AppCompatActivity  {
     private CollapsingToolbarLayout collapsingToolbar;
     private AppBarLayout appbar;
     private Button doneswap,doneremove;
+    private boolean headImgStatus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,7 +175,7 @@ public class Home extends AppCompatActivity  {
         @Override
         public void onClick(View v) {
 
-            if (bitmap != null){
+            if (bitmap != null || headImgStatus){
                 if (basicInfomation.getFileHeader_date().equals("")
                         || basicInfomation.getFileHeader_customerNo().equals("")
                         || basicInfomation.getFileHeader_itemNo().equals("")
@@ -197,7 +198,9 @@ public class Home extends AppCompatActivity  {
                                     AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,getFileNameHeader,docNo, false);
                                     atlLogin.execute();
                                     dialog.dismiss();
+                                    if (bitmap != null){
                                     bitmap.recycle();
+                                    }
 
                                 }
                             })
@@ -373,8 +376,6 @@ public class Home extends AppCompatActivity  {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        Log.d("XXXX",String.valueOf(requestCode));
-
         if (requestCode == headerImage && resultCode == RESULT_OK) {
 
             try {
@@ -400,6 +401,7 @@ public class Home extends AppCompatActivity  {
             Uri selectedImage = data.getData();
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
             Album.DETAIL_BITMAP[requestCode] = bitmap;
+            headImgStatus = true;
             updateView();
             } catch (IOException e) {
                 e.printStackTrace();
