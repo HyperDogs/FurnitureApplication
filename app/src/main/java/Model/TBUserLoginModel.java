@@ -5,8 +5,8 @@ package Model;
  */
 
 public class TBUserLoginModel {
-    private String ulUserLoginId;
-    private String ulName;
+    public static String ulUserLoginId;
+    public static String ulName;
     private String ulPass;
     private String ulDesc;
     private String ulGroupId;

@@ -14,13 +14,16 @@ import com.example.ton.furnitureapplication.Allfile;
 import com.example.ton.furnitureapplication.BasicInfomation;
 import com.example.ton.furnitureapplication.DatabaseHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.SimpleTimeZone;
 
 import Model.EmployeesModel;
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
+import Model.TBUserLoginModel;
 
 public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     private Activity activity;
@@ -75,16 +78,19 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                     manuInspectModel.setMpItemNo(basicInfomation.getFileHeader_itemNo());
                     manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
                     manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
+                    manuInspectModel.setMpEmployeeNo(EmployeesModel.id);
                     manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
                     manuInspectModel.setMpImagePath(imgName);
-                    manuInspectModel.setMpLastModifyDate(String.valueOf(Calendar.getInstance().getTime()));
-                    manuInspectModel.setMpLastModifyByUserNo(EmployeesModel.id);
-                    manuInspectModel.setMpLastModifyByUserName(EmployeesModel.employeeName);
+                    manuInspectModel.setMpLastModifyDate(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
+                    manuInspectModel.setMpLastModifyTime(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()));
+                    manuInspectModel.setMpLastModifyByUserNo(TBUserLoginModel.ulUserLoginId);
+                    manuInspectModel.setMpLastModifyByUserName(TBUserLoginModel.ulName);
                     if (!docNo.equals("0")) {
                         manuInspectModel.setMpDocumentNo(Integer.parseInt(docNo));
                     }
                     if(sendMail){
-                        manuInspectModel.setMpLastSendmailDate(String.valueOf(Calendar.getInstance().getTime()));
+                        manuInspectModel.setMpLastSendmailDate(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
+                        manuInspectModel.setMpLastSendmailTime(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()));
                         manuInspectModel.setMpLastSendmailByUserNo(EmployeesModel.id);
                         manuInspectModel.setMpLastSendmailByUserName(EmployeesModel.employeeName);
                     }
@@ -102,9 +108,10 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                             manuInspectImageModel.setMpgDocSeq(String.valueOf(i));
                             manuInspectImageModel.setMpgMemo(Album.DETAIL_MEMO[i]);
                             manuInspectImageModel.setMpgImagePath(Album.DETAIL_FILENAME[i]);
-                            manuInspectImageModel.setMpgLastModifyDate(String.valueOf(Calendar.getInstance().getTime()));
-                            manuInspectImageModel.setMpgLastModifyByUserNo(EmployeesModel.id);
-                            manuInspectImageModel.setMpgLastModifyByUserName(EmployeesModel.employeeName);
+                            manuInspectImageModel.setMpgLastModifyDate(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
+                            manuInspectImageModel.setMpgLastModifyTime(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
+                            manuInspectImageModel.setMpgLastModifyByUserNo(TBUserLoginModel.ulUserLoginId);
+                            manuInspectImageModel.setMpgLastModifyByUserName(TBUserLoginModel.ulName);
                             manuInspectImageModelList.add(manuInspectImageModel);
                             manuInspectModel.setManuInspectImageModelList(manuInspectImageModelList);
 

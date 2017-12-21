@@ -69,6 +69,7 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
                     if (LOGIN_STATUS == true) {
                         /// ให้ไปยังหน้าหลัก
                         mHelper.getEmployee(getUser, getPassword, getDeviceImei(activity));
+                        mHelper.getUserLogin(getUser, getPassword, getDeviceImei(activity));
                         Intent intent = new Intent(activity, Home.class);
                         activity.startActivity(intent);
                     } else if (LOGIN_STATUS == false) {

@@ -175,8 +175,16 @@ public class Allfile extends AppCompatActivity {
                 dateTo = dialog.getCustomView().findViewById(R.id.dateTo);
                 dateFrom.setOnClickListener(pickDateF);
                 dateTo.setOnClickListener(pickDateT);
-                dateFrom.setText(sdf.format(myCalendar.getTime()));
-                dateTo.setText(sdf.format(myCalendar.getTime()));
+                if(!dateFromStr.equals("")){
+                    dateFrom.setText(dateFromStr);
+                }else{
+                    dateFrom.setText(sdf.format(myCalendar.getTime()));
+                }
+                if(!dateToStr.equals("")){
+                    dateTo.setText(dateToStr);
+                }else{
+                    dateTo.setText(sdf.format(myCalendar.getTime()));
+                }
 
                 datePickFrom = new DatePickerDialog.OnDateSetListener() {
                     @Override

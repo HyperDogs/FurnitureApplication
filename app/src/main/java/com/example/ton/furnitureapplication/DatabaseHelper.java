@@ -3,6 +3,7 @@ package com.example.ton.furnitureapplication;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -143,7 +144,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_ULREMOTEADDR + " VARCHAR(15) "
                 + ") ";
         db.execSQL(CREATE_USERLOGIN_TABLE);
-        db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_ULUSERLOGINID + ", " + COL_ULNAME + ", " + COL_ULPASS + ", " + COL_ULDESC + " ) VALUES ('1', 'admin', 'admin', '000000000000000'), ('2', 'admin', 'admin', '357220073447263'), ('3', 'admin', 'admin', '357221073447261');");
+        db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_ULUSERLOGINID + ", " + COL_ULNAME + ", " + COL_ULPASS + ", " + COL_ULDESC + ", "+ COL_ULEMPLOYEEID +", " + COL_ULBRANCHID +" ) " +
+                   "VALUES " +
+                   "('admin', 'admin', '1234', '000000000000000', '01', '01'), " +
+                   "('2', 'admin', 'admin', '357220073447263', '02', '01'), " +
+                   "('3', 'admin', 'admin', '357221073447261', '03', '01');");
     }
     private void createTABLE_MANUINSPECT(SQLiteDatabase db){
         String CREATE_UMANUINSPECT_TABLE = " CREATE TABLE " + TABLE_MANUINSPECT + "("
@@ -234,7 +239,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_WAREHOUSE + " CHAR(2) "
                 + ") ";
         db.execSQL(CREATE_EMPLOYEES_TABLE);
-        db.execSQL("INSERT INTO " + TABLE_EMPLOYEES + " (" + COL_ID + ", " + COL_EMPLOYEENAME + " ) VALUES ('1', 'admin'), ('2', 'admin'), ('3', 'admin');");
+        db.execSQL("INSERT INTO " + TABLE_EMPLOYEES + " (" + COL_ID + ", " + COL_EMPLOYEENAME + " ) " +
+                   "VALUES ('01', 'admin'), ('02', 'admin'), ('03', 'admin');");
     }
 
 
@@ -247,595 +253,774 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertUserLogin(TBUserLoginModel userLogin){
+    public boolean insertUserLogin(TBUserLoginModel userLogin){
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_ULUSERLOGINID, userLogin.getUlBranchId());
-        contentValues.put(COL_ULNAME, userLogin.getUlName());
-        contentValues.put(COL_ULPASS, userLogin.getUlPass());
-        contentValues.put(COL_ULDESC, userLogin.getUlDesc());
-        contentValues.put(COL_ULGROUPID, userLogin.getUlGroupId());
-        contentValues.put(COL_ULSTATUS, userLogin.getUlStatus());
-        contentValues.put(COL_ULEMPLOYEEID, userLogin.getUlEmployeeId());
-        contentValues.put(COL_ULBRANCHID, userLogin.getUlBranchId());
-        contentValues.put(COL_ULSETPERMISSION, userLogin.getUlSetPermission());
-        contentValues.put(COL_ULREMOTEADDR, userLogin.getUlRemoteAddr());
-        database.insert(TABLE_USERLOGIN, null, contentValues);
-        database.close();
+        boolean result = false;
+        try{
+            database.beginTransaction();
+            contentValues.put(COL_ULUSERLOGINID, userLogin.getUlBranchId());
+            contentValues.put(COL_ULNAME, userLogin.getUlName());
+            contentValues.put(COL_ULPASS, userLogin.getUlPass());
+            contentValues.put(COL_ULDESC, userLogin.getUlDesc());
+            contentValues.put(COL_ULGROUPID, userLogin.getUlGroupId());
+            contentValues.put(COL_ULSTATUS, userLogin.getUlStatus());
+            contentValues.put(COL_ULEMPLOYEEID, userLogin.getUlEmployeeId());
+            contentValues.put(COL_ULBRANCHID, userLogin.getUlBranchId());
+            contentValues.put(COL_ULSETPERMISSION, userLogin.getUlSetPermission());
+            contentValues.put(COL_ULREMOTEADDR, userLogin.getUlRemoteAddr());
+            database.insert(TABLE_USERLOGIN, null, contentValues);
+            database.setTransactionSuccessful();
+            result = true;
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return result;
     }
 
-    public void updateUserLogin(TBUserLoginModel userLogin) {
+    public boolean updateUserLogin(TBUserLoginModel userLogin) {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_ULNAME, userLogin.getUlName());
-        contentValues.put(COL_ULPASS, userLogin.getUlPass());
-        contentValues.put(COL_ULDESC, userLogin.getUlDesc());
-        contentValues.put(COL_ULGROUPID, userLogin.getUlGroupId());
-        contentValues.put(COL_ULSTATUS, userLogin.getUlStatus());
-        contentValues.put(COL_ULEMPLOYEEID, userLogin.getUlEmployeeId());
-        contentValues.put(COL_ULBRANCHID, userLogin.getUlBranchId());
-        contentValues.put(COL_ULSETPERMISSION, userLogin.getUlSetPermission());
-        contentValues.put(COL_ULREMOTEADDR, userLogin.getUlRemoteAddr());
-        database.update(TABLE_USERLOGIN, contentValues, COL_ULUSERLOGINID + " = ?", new String[]{userLogin.getUlUserLoginId()});
-        database.close();
+        boolean result = false;
+        try{
+            database.beginTransaction();
+            contentValues.put(COL_ULNAME, userLogin.getUlName());
+            contentValues.put(COL_ULPASS, userLogin.getUlPass());
+            contentValues.put(COL_ULDESC, userLogin.getUlDesc());
+            contentValues.put(COL_ULGROUPID, userLogin.getUlGroupId());
+            contentValues.put(COL_ULSTATUS, userLogin.getUlStatus());
+            contentValues.put(COL_ULEMPLOYEEID, userLogin.getUlEmployeeId());
+            contentValues.put(COL_ULBRANCHID, userLogin.getUlBranchId());
+            contentValues.put(COL_ULSETPERMISSION, userLogin.getUlSetPermission());
+            contentValues.put(COL_ULREMOTEADDR, userLogin.getUlRemoteAddr());
+            database.update(TABLE_USERLOGIN, contentValues, COL_ULUSERLOGINID + " = ?", new String[]{userLogin.getUlUserLoginId()});
+            database.setTransactionSuccessful();
+            result = true;
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return result;
     }
 
-    public void deleteUserLogin(TBUserLoginModel userLogin) {
+    public boolean deleteUserLogin(TBUserLoginModel userLogin) {
         database = this.getReadableDatabase();
-        database.delete(TABLE_USERLOGIN, COL_ULUSERLOGINID + " = ?", new String[]{userLogin.getUlUserLoginId()});
-        database.close();
+        boolean result = false;
+        try{
+            database.beginTransaction();
+            database.delete(TABLE_USERLOGIN, COL_ULUSERLOGINID + " = ?", new String[]{userLogin.getUlUserLoginId()});
+            database.setTransactionSuccessful();
+            result = true;
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return result;
     }
 
     public ArrayList<TBUserLoginModel> getAllUserLogin() {
         database = this.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_USERLOGIN, null, null, null, null, null, null);
         ArrayList<TBUserLoginModel> userLogins = new ArrayList<TBUserLoginModel>();
-        TBUserLoginModel userLoginModel;
-        if (cursor.getCount() > 0) {
-            for (int i = 0; i < cursor.getCount(); i++) {
-                cursor.moveToNext();
-                userLoginModel = new TBUserLoginModel();
-                userLoginModel.setUlUserLoginId(cursor.getString(0));
-                userLoginModel.setUlName(cursor.getString(1));
-                userLoginModel.setUlPass(cursor.getString(2));
-                userLoginModel.setUlDesc(cursor.getString(3));
-                userLoginModel.setUlGroupId(cursor.getString(4));
-                userLoginModel.setUlStatus(cursor.getString(5));
-                userLoginModel.setUlEmployeeId(cursor.getString(6));
-                userLoginModel.setUlBranchId(cursor.getString(7));
-                userLoginModel.setUlSetPermission(cursor.getString(8));
-                userLoginModel.setUlRemoteAddr(cursor.getString(9));
-                userLogins.add(userLoginModel);
+        try{
+            database.beginTransaction();
+            Cursor cursor = database.query(TABLE_USERLOGIN, null, null, null, null, null, null);
+            if (cursor.getCount() > 0) {
+                for (int i = 0; i < cursor.getCount(); i++) {
+                    cursor.moveToNext();
+                    TBUserLoginModel userLoginModel = new TBUserLoginModel();
+                    userLoginModel.setUlUserLoginId(cursor.getString(0));
+                    userLoginModel.setUlName(cursor.getString(1));
+                    userLoginModel.setUlPass(cursor.getString(2));
+                    userLoginModel.setUlDesc(cursor.getString(3));
+                    userLoginModel.setUlGroupId(cursor.getString(4));
+                    userLoginModel.setUlStatus(cursor.getString(5));
+                    userLoginModel.setUlEmployeeId(cursor.getString(6));
+                    userLoginModel.setUlBranchId(cursor.getString(7));
+                    userLoginModel.setUlSetPermission(cursor.getString(8));
+                    userLoginModel.setUlRemoteAddr(cursor.getString(9));
+                    userLogins.add(userLoginModel);
+                }
             }
+            cursor.close();
+            database.setTransactionSuccessful();
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
         }
-        cursor.close();
-        database.close();
         return userLogins;
     }
 
     public boolean checkUserLogin(String userName, String passWord, String imei){
         boolean result = false;
         database = this.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_USERLOGIN, null, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
-        if(cursor.getCount() > 0){
-            result = true;
+        try{
+            database.beginTransaction();
+            Cursor cursor = database.query(TABLE_USERLOGIN, null, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
+            if(cursor.getCount() > 0){
+                result = true;
+            }
+            cursor.close();
+            database.setTransactionSuccessful();
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
         }
-        cursor.close();
-        database.close();
         return result;
     }
 
-    public void insertManuInspect(ManuInspectModel manuInspect){
+    public boolean insertManuInspect(ManuInspectModel manuInspect){
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_MPDOCCODE, manuInspect.getMpDocCode());
-        contentValues.put(COL_MPDOCUMENT, manuInspect.getMpDocument());
-        contentValues.put(COL_MPDOCUMENTNO, manuInspect.getMpDocumentNo());
-        contentValues.put(COL_MPDOCBRANCH, manuInspect.getMpDocBranch());
-        contentValues.put(COL_MPDOCSEQ, manuInspect.getMpDocSeq());
-        contentValues.put(COL_MPDOCDATE, manuInspect.getMpDocDate());
-        contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
-        contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
-        contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
-        contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
-        contentValues.put(COL_MPITEMNO, manuInspect.getMpCustomerName());
-        contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
-        contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
-        contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
-        contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
-        contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
-        contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
-        contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
-        contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
-        contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
-        contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
-        contentValues.put(COL_MPLASTMODIFYDATE, manuInspect.getMpLastModifyDate());
-        contentValues.put(COL_MPLASTMODIFYTIME, manuInspect.getMpLastModifyTime());
-        contentValues.put(COL_MPLASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
-        contentValues.put(COL_MPLASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
-        database.insert(TABLE_MANUINSPECT, null, contentValues);
-        database.close();
+        boolean result = false;
+        try{
+            database.beginTransaction();
+            contentValues.put(COL_MPDOCCODE, manuInspect.getMpDocCode());
+            contentValues.put(COL_MPDOCUMENT, manuInspect.getMpDocument());
+            contentValues.put(COL_MPDOCUMENTNO, manuInspect.getMpDocumentNo());
+            contentValues.put(COL_MPDOCBRANCH, manuInspect.getMpDocBranch());
+            contentValues.put(COL_MPDOCSEQ, manuInspect.getMpDocSeq());
+            contentValues.put(COL_MPDOCDATE, manuInspect.getMpDocDate());
+            contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
+            contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
+            contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeNo());
+            contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
+            contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
+            contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
+            contentValues.put(COL_MPITEMNO, manuInspect.getMpCustomerName());
+            contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
+            contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
+            contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
+            contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
+            contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
+            contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
+            contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
+            contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
+            contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
+            contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
+            contentValues.put(COL_MPLASTMODIFYDATE, manuInspect.getMpLastModifyDate());
+            contentValues.put(COL_MPLASTMODIFYTIME, manuInspect.getMpLastModifyTime());
+            contentValues.put(COL_MPLASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
+            contentValues.put(COL_MPLASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
+            database.insert(TABLE_MANUINSPECT, null, contentValues);
+            database.setTransactionSuccessful();
+            result = true;
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return result;
     }
 
-    public void updateManuInspect(ManuInspectModel manuInspect) {
+    public boolean updateManuInspect(ManuInspectModel manuInspect) {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_MPDOCDATE, manuInspect.getMpDocDate());
-        contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
-        contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
-        contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
-        contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
-        contentValues.put(COL_MPITEMNO, manuInspect.getMpCustomerName());
-        contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
-        contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
-        contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
-        contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
-        contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
-        contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
-        contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
-        contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
-        contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
-        contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
-        contentValues.put(COL_MPLASTMODIFYDATE, manuInspect.getMpLastModifyDate());
-        contentValues.put(COL_MPLASTMODIFYTIME, manuInspect.getMpLastModifyTime());
-        contentValues.put(COL_MPLASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
-        contentValues.put(COL_MPLASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
-        database.update(TABLE_MANUINSPECT, contentValues,
-                COL_MPDOCCODE + " = ? AND " + COL_MPDOCUMENT + " = ? AND " + COL_MPDOCUMENTNO + " = ? AND " + COL_MPDOCBRANCH + " = ? AND " + COL_MPDOCSEQ + " = ? ",
-                new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), String.valueOf(manuInspect.getMpDocumentNo()), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
-        database.close();
+        boolean result = false;
+        try{
+            database.beginTransaction();
+            contentValues.put(COL_MPDOCDATE, manuInspect.getMpDocDate());
+            contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
+            contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
+            contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeNo());
+            contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
+            contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
+            contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
+            contentValues.put(COL_MPITEMNO, manuInspect.getMpCustomerName());
+            contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
+            contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
+            contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
+            contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
+            contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
+            contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
+            contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
+            contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
+            contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
+            contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
+            contentValues.put(COL_MPLASTMODIFYDATE, manuInspect.getMpLastModifyDate());
+            contentValues.put(COL_MPLASTMODIFYTIME, manuInspect.getMpLastModifyTime());
+            contentValues.put(COL_MPLASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
+            contentValues.put(COL_MPLASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
+            database.update(TABLE_MANUINSPECT, contentValues,
+                    COL_MPDOCCODE + " = ? AND " + COL_MPDOCUMENT + " = ? AND " + COL_MPDOCUMENTNO + " = ? AND " + COL_MPDOCBRANCH + " = ? AND " + COL_MPDOCSEQ + " = ? ",
+                    new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), String.valueOf(manuInspect.getMpDocumentNo()), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
+            database.setTransactionSuccessful();
+            result = true;
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return result;
     }
 
     public ArrayList<ManuInspectModel> getAllManuInspect() {
         database = this.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_MANUINSPECT, null, null, null, null, null, null);
         ArrayList<ManuInspectModel> manuInspects = new ArrayList<ManuInspectModel>();
-        ManuInspectModel manuInspectModel;
-        if (cursor.getCount() > 0) {
-            for (int i = 0; i < cursor.getCount(); i++) {
-                cursor.moveToNext();
-                manuInspectModel = new ManuInspectModel();
-                manuInspectModel.setMpDocCode(cursor.getString(0));
-                manuInspectModel.setMpDocument(cursor.getString(1));
-                manuInspectModel.setMpDocumentNo(cursor.getInt(2));
-                manuInspectModel.setMpDocBranch(cursor.getString(3));
-                manuInspectModel.setMpDocSeq(cursor.getString(4));
-                manuInspectModel.setMpDocDate(cursor.getString(5));
-                manuInspectModel.setMpDocTime(cursor.getString(6));
-                manuInspectModel.setMpEmployeeNo(cursor.getString(7));
-                manuInspectModel.setMpEmployeeName(cursor.getString(8));
-                manuInspectModel.setMpCustomerNo(cursor.getString(9));
-                manuInspectModel.setMpCustomerName(cursor.getString(10));
-                manuInspectModel.setMpItemNo(cursor.getString(11));
-                manuInspectModel.setMpItemName(cursor.getString(12));
-                manuInspectModel.setMpColorNo(cursor.getString(13));
-                manuInspectModel.setMpColorName(cursor.getString(14));
-                manuInspectModel.setMpCoNo(cursor.getString(15));
-                manuInspectModel.setMpImagePath(cursor.getString(16));
-                manuInspectModel.setMpImageBlob(cursor.getString(17));
-                manuInspectModel.setMpLastSendBymail(cursor.getString(18));
-                manuInspectModel.setMpLastSendmailByUserNo(cursor.getString(19));
-                manuInspectModel.setMpLastSendmailByUserName(cursor.getString(20));
-                manuInspectModel.setMpLastSendmailDate(cursor.getString(21));
-                manuInspectModel.setMpLastSendmailTime(cursor.getString(22));
-                manuInspectModel.setMpLastModifyDate(cursor.getString(23));
-                manuInspectModel.setMpLastModifyTime(cursor.getString(24));
-                manuInspectModel.setMpLastModifyByUserNo(cursor.getString(25));
-                manuInspectModel.setMpLastModifyByUserName(cursor.getString(26));
-                manuInspects.add(manuInspectModel);
+        try{
+            database.beginTransaction();
+            Cursor cursor = database.query(TABLE_MANUINSPECT, null, null, null, null, null, null);
+            if (cursor.getCount() > 0) {
+                for (int i = 0; i < cursor.getCount(); i++) {
+                    cursor.moveToNext();
+                    ManuInspectModel manuInspectModel = new ManuInspectModel();
+                    manuInspectModel.setMpDocCode(cursor.getString(0));
+                    manuInspectModel.setMpDocument(cursor.getString(1));
+                    manuInspectModel.setMpDocumentNo(cursor.getInt(2));
+                    manuInspectModel.setMpDocBranch(cursor.getString(3));
+                    manuInspectModel.setMpDocSeq(cursor.getString(4));
+                    manuInspectModel.setMpDocDate(cursor.getString(5));
+                    manuInspectModel.setMpDocTime(cursor.getString(6));
+                    manuInspectModel.setMpEmployeeNo(cursor.getString(7));
+                    manuInspectModel.setMpEmployeeName(cursor.getString(8));
+                    manuInspectModel.setMpCustomerNo(cursor.getString(9));
+                    manuInspectModel.setMpCustomerName(cursor.getString(10));
+                    manuInspectModel.setMpItemNo(cursor.getString(11));
+                    manuInspectModel.setMpItemName(cursor.getString(12));
+                    manuInspectModel.setMpColorNo(cursor.getString(13));
+                    manuInspectModel.setMpColorName(cursor.getString(14));
+                    manuInspectModel.setMpCoNo(cursor.getString(15));
+                    manuInspectModel.setMpImagePath(cursor.getString(16));
+                    manuInspectModel.setMpImageBlob(cursor.getString(17));
+                    manuInspectModel.setMpLastSendBymail(cursor.getString(18));
+                    manuInspectModel.setMpLastSendmailByUserNo(cursor.getString(19));
+                    manuInspectModel.setMpLastSendmailByUserName(cursor.getString(20));
+                    manuInspectModel.setMpLastSendmailDate(cursor.getString(21));
+                    manuInspectModel.setMpLastSendmailTime(cursor.getString(22));
+                    manuInspectModel.setMpLastModifyDate(cursor.getString(23));
+                    manuInspectModel.setMpLastModifyTime(cursor.getString(24));
+                    manuInspectModel.setMpLastModifyByUserNo(cursor.getString(25));
+                    manuInspectModel.setMpLastModifyByUserName(cursor.getString(26));
+                    manuInspects.add(manuInspectModel);
+                }
             }
+            cursor.close();
+            database.setTransactionSuccessful();
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
         }
-        cursor.close();
-        database.close();
         return manuInspects;
     }
 
-    public void insertManuInspectImage(ManuInspectImageModel manuInspectImage){
+    public boolean insertManuInspectImage(ManuInspectImageModel manuInspectImage){
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_MPGDOCCODE, manuInspectImage.getMpgDoccode());
-        contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDoccode());
-        contentValues.put(COL_MPGDOCUMENTNO, manuInspectImage.getMpgDocumentno());
-        contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
-        contentValues.put(COL_MPGDOCSEQ, manuInspectImage.getMpgDocSeq());
-        contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
-        contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
-        contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
-        contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
-        contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
-        contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
-        contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
-        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
-        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
-        contentValues.put(COL_MPGLASTMODIFYDATE, manuInspectImage.getMpgLastModifyDate());
-        contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
-        contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
-        contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
-        database.insert(TABLE_MANUINSPECTIMAGE, null, contentValues);
-        database.close();
+        boolean result = false;
+        try{
+            database.beginTransaction();
+            contentValues.put(COL_MPGDOCCODE, manuInspectImage.getMpgDoccode());
+            contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDoccode());
+            contentValues.put(COL_MPGDOCUMENTNO, manuInspectImage.getMpgDocumentno());
+            contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
+            contentValues.put(COL_MPGDOCSEQ, manuInspectImage.getMpgDocSeq());
+            contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
+            contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
+            contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
+            contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
+            contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
+            contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
+            contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
+            contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
+            contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
+            contentValues.put(COL_MPGLASTMODIFYDATE, manuInspectImage.getMpgLastModifyDate());
+            contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
+            contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
+            contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
+            database.insert(TABLE_MANUINSPECTIMAGE, null, contentValues);
+            database.setTransactionSuccessful();
+            result = true;
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return result;
     }
 
-    public void updateManuInspectImage(ManuInspectImageModel manuInspectImage) {
+    public boolean updateManuInspectImage(ManuInspectImageModel manuInspectImage) {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
-        contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
-        contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
-        contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
-        contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
-        contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
-        contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
-        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
-        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
-        contentValues.put(COL_MPGLASTMODIFYDATE, manuInspectImage.getMpgLastModifyDate());
-        contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
-        contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
-        contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
-        database.update(TABLE_MANUINSPECTIMAGE, contentValues,
-                COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? AND " + COL_MPGDOCSEQ + " = ? ",
-                new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), String.valueOf(manuInspectImage.getMpgDocumentno()), manuInspectImage.getMpgDocBranch(), manuInspectImage.getMpgDocSeq()});
-        database.close();
+        boolean result = false;
+        try{
+            database.beginTransaction();
+            contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
+            contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
+            contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
+            contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
+            contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
+            contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
+            contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
+            contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
+            contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
+            contentValues.put(COL_MPGLASTMODIFYDATE, manuInspectImage.getMpgLastModifyDate());
+            contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
+            contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
+            contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
+            database.update(TABLE_MANUINSPECTIMAGE, contentValues,
+                    COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? AND " + COL_MPGDOCSEQ + " = ? ",
+                    new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), String.valueOf(manuInspectImage.getMpgDocumentno()), manuInspectImage.getMpgDocBranch(), manuInspectImage.getMpgDocSeq()});
+            database.setTransactionSuccessful();
+            result = true;
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return result;
     }
 
-    public void deleteManuInspectImage(ManuInspectImageModel manuInspectImage) {
+    public boolean deleteManuInspectImage(ManuInspectImageModel manuInspectImage) {
         database = this.getReadableDatabase();
-        database.delete(TABLE_MANUINSPECTIMAGE,
-                COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? AND " + COL_MPGDOCSEQ + " = ? ",
-                new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), String.valueOf(manuInspectImage.getMpgDocumentno()), manuInspectImage.getMpgDocBranch(), manuInspectImage.getMpgDocSeq()});
-        database.close();
-    }
-
-    public void deleteManuInspectImageByDocNo(ManuInspectImageModel manuInspectImage) {
-        database = this.getReadableDatabase();
-        database.delete(TABLE_MANUINSPECTIMAGE,
-                COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? ",
-                new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), String.valueOf(manuInspectImage.getMpgDocumentno()), manuInspectImage.getMpgDocBranch()});
+        boolean result = false;
+        try{
+            database.beginTransaction();
+            database.delete(TABLE_MANUINSPECTIMAGE,
+                    COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? AND " + COL_MPGDOCSEQ + " = ? ",
+                    new String[]{manuInspectImage.getMpgDoccode(), manuInspectImage.getMpgDocument(), String.valueOf(manuInspectImage.getMpgDocumentno()), manuInspectImage.getMpgDocBranch(), manuInspectImage.getMpgDocSeq()});
+            database.setTransactionSuccessful();
+            result = true;
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return result;
     }
 
     public ArrayList<ManuInspectImageModel> getAllManuInspectImage() {
         database = this.getReadableDatabase();
-        Cursor cursor = database.query(TABLE_MANUINSPECTIMAGE, null, null, null, null, null, null);
         ArrayList<ManuInspectImageModel> manuInspectImages = new ArrayList<ManuInspectImageModel>();
-        ManuInspectImageModel manuInspectImageModel;
-        if (cursor.getCount() > 0) {
-            for (int i = 0; i < cursor.getCount(); i++) {
-                cursor.moveToNext();
-                manuInspectImageModel = new ManuInspectImageModel();
-                manuInspectImageModel.setMpgDoccode(cursor.getString(0));
-                manuInspectImageModel.setMpgDocument(cursor.getString(1));
-                manuInspectImageModel.setMpgDocumentno(cursor.getInt(2));
-                manuInspectImageModel.setMpgDocBranch(cursor.getString(3));
-                manuInspectImageModel.setMpgDocSeq(cursor.getString(4));
-                manuInspectImageModel.setMpgCause(cursor.getString(5));
-                manuInspectImageModel.setMpgSolution(cursor.getString(6));
-                manuInspectImageModel.setMpgMemo(cursor.getString(7));
-                manuInspectImageModel.setMpgImagePath(cursor.getString(8));
-                manuInspectImageModel.setMpgImageBlob(cursor.getString(9));
-                manuInspectImageModel.setMpgCauseByEmployeeNo(cursor.getString(10));
-                manuInspectImageModel.setMpgCauseByEmployeeName(cursor.getString(11));
-                manuInspectImageModel.setMpgSolutionByEmployeeNo(cursor.getString(12));
-                manuInspectImageModel.setMpgSolutionByEmployeeName(cursor.getString(13));
-                manuInspectImageModel.setMpgLastModifyDate(cursor.getString(14));
-                manuInspectImageModel.setMpgLastModifyTime(cursor.getString(15));
-                manuInspectImageModel.setMpgLastModifyByUserNo(cursor.getString(16));
-                manuInspectImageModel.setMpgLastModifyByUserName(cursor.getString(17));
-                manuInspectImages.add(manuInspectImageModel);
+        try{
+            database.beginTransaction();
+            Cursor cursor = database.query(TABLE_MANUINSPECTIMAGE, null, null, null, null, null, null);
+            if (cursor.getCount() > 0) {
+                for (int i = 0; i < cursor.getCount(); i++) {
+                    cursor.moveToNext();
+                    ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
+                    manuInspectImageModel.setMpgDoccode(cursor.getString(0));
+                    manuInspectImageModel.setMpgDocument(cursor.getString(1));
+                    manuInspectImageModel.setMpgDocumentno(cursor.getInt(2));
+                    manuInspectImageModel.setMpgDocBranch(cursor.getString(3));
+                    manuInspectImageModel.setMpgDocSeq(cursor.getString(4));
+                    manuInspectImageModel.setMpgCause(cursor.getString(5));
+                    manuInspectImageModel.setMpgSolution(cursor.getString(6));
+                    manuInspectImageModel.setMpgMemo(cursor.getString(7));
+                    manuInspectImageModel.setMpgImagePath(cursor.getString(8));
+                    manuInspectImageModel.setMpgImageBlob(cursor.getString(9));
+                    manuInspectImageModel.setMpgCauseByEmployeeNo(cursor.getString(10));
+                    manuInspectImageModel.setMpgCauseByEmployeeName(cursor.getString(11));
+                    manuInspectImageModel.setMpgSolutionByEmployeeNo(cursor.getString(12));
+                    manuInspectImageModel.setMpgSolutionByEmployeeName(cursor.getString(13));
+                    manuInspectImageModel.setMpgLastModifyDate(cursor.getString(14));
+                    manuInspectImageModel.setMpgLastModifyTime(cursor.getString(15));
+                    manuInspectImageModel.setMpgLastModifyByUserNo(cursor.getString(16));
+                    manuInspectImageModel.setMpgLastModifyByUserName(cursor.getString(17));
+                    manuInspectImages.add(manuInspectImageModel);
+                }
             }
+            cursor.close();
+            database.setTransactionSuccessful();
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
         }
-        cursor.close();
-        database.close();
         return manuInspectImages;
     }
 
     public EmployeesModel getEmployee(String userName, String passWord, String imei){
         String employeeId = "";
-        String employeeName = "";
         EmployeesModel employeesModel = new EmployeesModel();
         database = this.getReadableDatabase();
-        //get userLoginId
-        Cursor cursor_log = database.query(TABLE_USERLOGIN, new String[]{COL_ULUSERLOGINID}, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
-        if(cursor_log.getCount() > 0){
-            cursor_log.moveToNext();
-            employeeId = cursor_log.getString(0);
+        try{
+            database.beginTransaction();
+            //get userLoginId
+            Cursor cursor_log = database.query(TABLE_USERLOGIN, new String[]{COL_ULEMPLOYEEID}, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
+            if(cursor_log.getCount() > 0){
+                cursor_log.moveToNext();
+                employeeId = cursor_log.getString(0);
+            }
+            //get employeeName
+            Cursor cursor_emp = database.query(TABLE_EMPLOYEES, new String[]{COL_ID, COL_EMPLOYEENAME, COL_BRANCH}, COL_ID + " = ? ", new String[]{employeeId}, null, null, null);
+            if(cursor_emp.getCount() > 0){
+                cursor_emp.moveToNext();
+                employeesModel.setId(cursor_emp.getString(0));
+                employeesModel.setEmployeeName(cursor_emp.getString(1));
+                employeesModel.setBranch(cursor_emp.getString(2));
+            }
+            cursor_log.close();
+            cursor_emp.close();
+            database.setTransactionSuccessful();
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
         }
-        //get employeeName
-        Cursor cursor_emp = database.query(TABLE_EMPLOYEES, new String[]{COL_ID, COL_EMPLOYEENAME, COL_BRANCH}, COL_ID + " = ? ", new String[]{employeeId}, null, null, null);
-        if(cursor_emp.getCount() > 0){
-            cursor_emp.moveToNext();
-            employeesModel.setId(cursor_emp.getString(0));
-            employeesModel.setEmployeeName(cursor_emp.getString(1));
-            employeesModel.setBranch(cursor_emp.getString(2));
-        }
-        cursor_log.close();
-        cursor_emp.close();
-        database.close();
         return employeesModel;
     }
 
-    public void save(ManuInspectModel manuInspect){
-        if(manuInspect.getMpDocumentNo()> 0){
-            update(manuInspect);
-        }else{
-            insert(manuInspect);
-        }
-    }
-
-    public void insert(ManuInspectModel manuInspect){
+    public TBUserLoginModel getUserLogin(String userName, String passWord, String imei){
+        TBUserLoginModel tbUserLoginModel = new TBUserLoginModel();
         database = this.getReadableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_MPDOCCODE, manuInspect.getMpDocCode());
-        contentValues.put(COL_MPDOCUMENT, manuInspect.getMpDocument());
-        contentValues.put(COL_MPDOCBRANCH, manuInspect.getMpDocBranch());
-        contentValues.put(COL_MPDOCSEQ, manuInspect.getMpDocSeq());
-        contentValues.put(COL_MPDOCDATE, formatSQLDate(manuInspect.getMpDocDate()));
-        contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
-        contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeName());
-        contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
-        contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
-        contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
-        contentValues.put(COL_MPITEMNAME, manuInspect.getMpItemName());
-        contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
-        contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
-        contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
-        contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
-        contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
-        contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
-        contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
-        contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
-        contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
-        contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
-        contentValues.put(COL_MPLASTMODIFYDATE, manuInspect.getMpLastModifyDate());
-        contentValues.put(COL_MPLASTMODIFYTIME, manuInspect.getMpLastModifyTime());
-        contentValues.put(COL_MPLASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
-        contentValues.put(COL_MPLASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
-        long success = database.insert(TABLE_MANUINSPECT, null, contentValues);
-
-        if(success > 0){
-            Cursor cursor = database.query(TABLE_MANUINSPECT, new String[]{COL_MPDOCUMENTNO}, null, null, null, null, null);
-            cursor.moveToLast();
-            int mpgDocumentNo = cursor.getInt(0);
-            if(manuInspect.getManuInspectImageModelList() != null){
-               List<ManuInspectImageModel> manuInspectImageModelList = manuInspect.getManuInspectImageModelList();
-                for (int i = 0; i < manuInspectImageModelList.size(); i++) {
-                    ManuInspectImageModel manuInspectImage = manuInspectImageModelList.get(i);
-                    contentValues = new ContentValues();
-                    contentValues.put(COL_MPGDOCCODE, manuInspectImage.getMpgDoccode());
-                    contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDocument());
-                    contentValues.put(COL_MPGDOCUMENTNO, mpgDocumentNo);
-                    contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
-                    contentValues.put(COL_MPGDOCSEQ, manuInspectImage.getMpgDocSeq());
-                    contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
-                    contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
-                    contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
-                    contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
-                    contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
-                    contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
-                    contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
-                    contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
-                    contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
-                    contentValues.put(COL_MPGLASTMODIFYDATE, manuInspectImage.getMpgLastModifyDate());
-                    contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
-                    contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
-                    contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
-                    database.insert(TABLE_MANUINSPECTIMAGE, null, contentValues);
-                }
-            }
-            cursor.close();
-        }
-        database.close();
-    }
-
-    public void update(ManuInspectModel manuInspect){
-
-        database = this.getReadableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_MPDOCDATE, formatSQLDate(manuInspect.getMpDocDate()));
-        contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
-        contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
-        contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeName());
-        contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
-        contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
-        contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
-        contentValues.put(COL_MPITEMNAME, manuInspect.getMpItemName());
-        contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
-        contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
-        contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
-        contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
-        contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
-        contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
-        contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
-        contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
-        contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
-        contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
-        contentValues.put(COL_MPLASTMODIFYDATE, manuInspect.getMpLastModifyDate());
-        contentValues.put(COL_MPLASTMODIFYTIME, manuInspect.getMpLastModifyTime());
-        contentValues.put(COL_MPLASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
-        contentValues.put(COL_MPLASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
-        long success = database.update(TABLE_MANUINSPECT, contentValues,
-                COL_MPDOCCODE + " = ? AND " + COL_MPDOCUMENT + " = ? AND " + COL_MPDOCUMENTNO + " = ? AND " + COL_MPDOCBRANCH + " = ? AND " + COL_MPDOCSEQ + " = ? ",
-                new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), String.valueOf(manuInspect.getMpDocumentNo()), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
-
-        if(success > 0){
-            Cursor cursor = database.query(TABLE_MANUINSPECTIMAGE, new String[]{COL_MPGDOCCODE, COL_MPGDOCUMENT, COL_MPGDOCUMENTNO, COL_MPGDOCBRANCH}
-                    , COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? "
-                    , new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), String.valueOf(manuInspect.getMpDocumentNo()), manuInspect.getMpDocBranch()}, null, null, null);
-            if(cursor.getCount() > 0) {
+        try{
+            database.beginTransaction();
+            Cursor cursor = database.query(TABLE_USERLOGIN, new String[]{COL_ULUSERLOGINID, COL_ULNAME, COL_ULEMPLOYEEID, COL_ULBRANCHID}, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
+            if(cursor.getCount() > 0){
                 cursor.moveToNext();
-                ManuInspectImageModel manuInspectImageTmp = new ManuInspectImageModel();
-                manuInspectImageTmp.setMpgDoccode(cursor.getString(0));
-                manuInspectImageTmp.setMpgDocument(cursor.getString(1));
-                manuInspectImageTmp.setMpgDocumentno(cursor.getInt(2));
-                manuInspectImageTmp.setMpgDocBranch(cursor.getString(3));
-                deleteManuInspectImageByDocNo(manuInspectImageTmp);
-            }
-
-            if(manuInspect.getManuInspectImageModelList() != null){
-                List<ManuInspectImageModel> manuInspectImageModelList = manuInspect.getManuInspectImageModelList();
-                for (int i = 0; i < manuInspectImageModelList.size(); i++) {
-                    ManuInspectImageModel manuInspectImage = manuInspectImageModelList.get(i);
-                    contentValues = new ContentValues();
-                    contentValues.put(COL_MPGDOCCODE, manuInspectImage.getMpgDoccode());
-                    contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDocument());
-                    contentValues.put(COL_MPGDOCUMENTNO, manuInspectImage.getMpgDocumentno());
-                    contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
-                    contentValues.put(COL_MPGDOCSEQ, manuInspectImage.getMpgDocSeq());
-                    contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
-                    contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
-                    contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
-                    contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
-                    contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
-                    contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
-                    contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
-                    contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
-                    contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
-                    contentValues.put(COL_MPGLASTMODIFYDATE, manuInspectImage.getMpgLastModifyDate());
-                    contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
-                    contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
-                    contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
-                    database.insert(TABLE_MANUINSPECTIMAGE, null, contentValues);
-                }
+                tbUserLoginModel.setUlUserLoginId(cursor.getString(0));
+                tbUserLoginModel.setUlName(cursor.getString(1));
+                tbUserLoginModel.setUlEmployeeId(cursor.getString(2));
+                tbUserLoginModel.setUlBranchId(cursor.getString(3));
             }
             cursor.close();
+            database.setTransactionSuccessful();
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
         }
-        database.close();
+        return tbUserLoginModel;
+    }
+
+    public boolean save(ManuInspectModel manuInspect){
+        boolean result = false;
+        try{
+            if(manuInspect.getMpDocumentNo()> 0){
+                result = update(manuInspect);
+            }else{
+                result = insert(manuInspect);
+            }
+        }catch (Exception e){
+            e.getMessage();
+        }
+        return result;
+    }
+
+    public boolean insert(ManuInspectModel manuInspect){
+        database = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        boolean result = false;
+        try{
+            database.beginTransaction();
+            contentValues.put(COL_MPDOCCODE, manuInspect.getMpDocCode());
+            contentValues.put(COL_MPDOCUMENT, manuInspect.getMpDocument());
+            contentValues.put(COL_MPDOCBRANCH, manuInspect.getMpDocBranch());
+            contentValues.put(COL_MPDOCSEQ, manuInspect.getMpDocSeq());
+            contentValues.put(COL_MPDOCDATE, formatSQLDate(manuInspect.getMpDocDate()));
+            contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
+            contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
+            contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeName());
+            contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
+            contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
+            contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
+            contentValues.put(COL_MPITEMNAME, manuInspect.getMpItemName());
+            contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
+            contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
+            contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
+            contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
+            contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
+            contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
+            contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
+            contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
+            contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
+            contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
+            long success = database.insert(TABLE_MANUINSPECT, null, contentValues);
+
+            if(success > 0){
+                Cursor cursor = database.query(TABLE_MANUINSPECT, new String[]{COL_MPDOCUMENTNO}, null, null, null, null, null);
+                cursor.moveToLast();
+                int mpgDocumentNo = cursor.getInt(0);
+                if(manuInspect.getManuInspectImageModelList() != null){
+                   List<ManuInspectImageModel> manuInspectImageModelList = manuInspect.getManuInspectImageModelList();
+                    for (int i = 0; i < manuInspectImageModelList.size(); i++) {
+                        ManuInspectImageModel manuInspectImage = manuInspectImageModelList.get(i);
+                        contentValues = new ContentValues();
+                        contentValues.put(COL_MPGDOCCODE, manuInspectImage.getMpgDoccode());
+                        contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDocument());
+                        contentValues.put(COL_MPGDOCUMENTNO, mpgDocumentNo);
+                        contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
+                        contentValues.put(COL_MPGDOCSEQ, manuInspectImage.getMpgDocSeq());
+                        contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
+                        contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
+                        contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
+                        contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
+                        contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
+                        contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
+                        contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
+                        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
+                        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
+                        database.insert(TABLE_MANUINSPECTIMAGE, null, contentValues);
+                    }
+                }
+                cursor.close();
+            }
+            database.setTransactionSuccessful();
+            result = true;
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return result;
+    }
+
+    public boolean update(ManuInspectModel manuInspect){
+        database = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        boolean result = false;
+        try{
+            database.beginTransaction();
+            contentValues.put(COL_MPDOCDATE, formatSQLDate(manuInspect.getMpDocDate()));
+            contentValues.put(COL_MPDOCTIME, manuInspect.getMpDocTime());
+            contentValues.put(COL_MPEMPLOYEENO, manuInspect.getMpEmployeeNo());
+            contentValues.put(COL_MPEMPLOYEENAME, manuInspect.getMpEmployeeName());
+            contentValues.put(COL_MPCUSTOMERNO, manuInspect.getMpCustomerNo());
+            contentValues.put(COL_MPCUSTOMERNAME, manuInspect.getMpCustomerName());
+            contentValues.put(COL_MPITEMNO, manuInspect.getMpItemNo());
+            contentValues.put(COL_MPITEMNAME, manuInspect.getMpItemName());
+            contentValues.put(COL_MPCOLORNO, manuInspect.getMpColorNo());
+            contentValues.put(COL_MPCOLORNAME, manuInspect.getMpColorName());
+            contentValues.put(COL_MPCONO, manuInspect.getMpCoNo());
+            contentValues.put(COL_MPIMAGEPATH, manuInspect.getMpImagePath());
+            contentValues.put(COL_MPIMAGEBLOB, manuInspect.getMpImageBlob());
+            contentValues.put(COL_MPLASTSENDBYMAIL, manuInspect.getMpLastSendBymail());
+            contentValues.put(COL_MPLASTSENDMAILBYUSERNO, manuInspect.getMpLastSendmailByUserNo());
+            contentValues.put(COL_MPLASTSENDMAILBYUSERNAME, manuInspect.getMpLastSendmailByUserName());
+            contentValues.put(COL_MPLASTSENDMAILDATE, manuInspect.getMpLastSendmailDate());
+            contentValues.put(COL_MPLASTSENDMAILTIME, manuInspect.getMpLastSendmailTime());
+            contentValues.put(COL_MPLASTMODIFYDATE, manuInspect.getMpLastModifyDate());
+            contentValues.put(COL_MPLASTMODIFYTIME, manuInspect.getMpLastModifyTime());
+            contentValues.put(COL_MPLASTMODIFYBYUSERNO, manuInspect.getMpLastModifyByUserNo());
+            contentValues.put(COL_MPLASTMODIFYBYUSERNAME, manuInspect.getMpLastModifyByUserName());
+            long success = database.update(TABLE_MANUINSPECT, contentValues,
+                    COL_MPDOCCODE + " = ? AND " + COL_MPDOCUMENT + " = ? AND " + COL_MPDOCUMENTNO + " = ? AND " + COL_MPDOCBRANCH + " = ? AND " + COL_MPDOCSEQ + " = ? ",
+                    new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), String.valueOf(manuInspect.getMpDocumentNo()), manuInspect.getMpDocBranch(), manuInspect.getMpDocSeq() });
+
+            if(success > 0){
+                Cursor cursor = database.query(TABLE_MANUINSPECTIMAGE, new String[]{COL_MPGDOCCODE, COL_MPGDOCUMENT, COL_MPGDOCUMENTNO, COL_MPGDOCBRANCH}
+                        , COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? "
+                        , new String[]{manuInspect.getMpDocCode(), manuInspect.getMpDocument(), String.valueOf(manuInspect.getMpDocumentNo()), manuInspect.getMpDocBranch()}, null, null, null);
+                if(cursor.getCount() > 0) {
+                    cursor.moveToNext();
+                    ManuInspectImageModel manuInspectImageTmp = new ManuInspectImageModel();
+                    manuInspectImageTmp.setMpgDoccode(cursor.getString(0));
+                    manuInspectImageTmp.setMpgDocument(cursor.getString(1));
+                    manuInspectImageTmp.setMpgDocumentno(cursor.getInt(2));
+                    manuInspectImageTmp.setMpgDocBranch(cursor.getString(3));
+
+                    database.delete(TABLE_MANUINSPECTIMAGE,
+                            COL_MPGDOCCODE + " = ? AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? ",
+                            new String[]{manuInspectImageTmp.getMpgDoccode(), manuInspectImageTmp.getMpgDocument(), String.valueOf(manuInspectImageTmp.getMpgDocumentno()), manuInspectImageTmp.getMpgDocBranch()});
+
+                }
+
+                if(manuInspect.getManuInspectImageModelList() != null){
+                    List<ManuInspectImageModel> manuInspectImageModelList = manuInspect.getManuInspectImageModelList();
+                    for (int i = 0; i < manuInspectImageModelList.size(); i++) {
+                        ManuInspectImageModel manuInspectImage = manuInspectImageModelList.get(i);
+                        contentValues = new ContentValues();
+                        contentValues.put(COL_MPGDOCCODE, manuInspectImage.getMpgDoccode());
+                        contentValues.put(COL_MPGDOCUMENT, manuInspectImage.getMpgDocument());
+                        contentValues.put(COL_MPGDOCUMENTNO, manuInspectImage.getMpgDocumentno());
+                        contentValues.put(COL_MPGDOCBRANCH, manuInspectImage.getMpgDocBranch());
+                        contentValues.put(COL_MPGDOCSEQ, manuInspectImage.getMpgDocSeq());
+                        contentValues.put(COL_MPGCAUSE, manuInspectImage.getMpgCause());
+                        contentValues.put(COL_MPGSOLUTION, manuInspectImage.getMpgSolution());
+                        contentValues.put(COL_MPGMEMO, manuInspectImage.getMpgMemo());
+                        contentValues.put(COL_MPGIMAGEPATH, manuInspectImage.getMpgImagePath());
+                        contentValues.put(COL_MPGIMAGEBLOB, manuInspectImage.getMpgImageBlob());
+                        contentValues.put(COL_MPGCAUSEBYEMPLOYEENO, manuInspectImage.getMpgCauseByEmployeeNo());
+                        contentValues.put(COL_MPGCAUSEBYEMPLOYEENAME, manuInspectImage.getMpgCauseByEmployeeName());
+                        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENO, manuInspectImage.getMpgSolutionByEmployeeNo());
+                        contentValues.put(COL_MPGSOLUTIONBYEMPLOYEENAME, manuInspectImage.getMpgSolutionByEmployeeName());
+                        contentValues.put(COL_MPGLASTMODIFYDATE, manuInspectImage.getMpgLastModifyDate());
+                        contentValues.put(COL_MPGLASTMODIFYTIME, manuInspectImage.getMpgLastModifyTime());
+                        contentValues.put(COL_MPGLASTMODIFYBYUSERNO, manuInspectImage.getMpgLastModifyByUserNo());
+                        contentValues.put(COL_MPGLASTMODIFYBYUSERNAME, manuInspectImage.getMpgLastModifyByUserName());
+                        database.insert(TABLE_MANUINSPECTIMAGE, null, contentValues);
+                    }
+                }
+                cursor.close();
+            }
+            database.setTransactionSuccessful();
+            result = true;
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return result;
     }
 
     public ManuInspectModel getDataForUpdate(int documentNo) {
         database = this.getReadableDatabase();
-        Cursor cursor_mp = database.query(TABLE_MANUINSPECT, null, COL_MPDOCUMENTNO + " = ? ", new String[]{String.valueOf(documentNo)}, null, null, null);
         ManuInspectModel manuInspectModel =  new ManuInspectModel();
-        if (cursor_mp.getCount() > 0) {
-            cursor_mp.moveToNext();
-            manuInspectModel.setMpDocCode(cursor_mp.getString(0));
-            manuInspectModel.setMpDocument(cursor_mp.getString(1));
-            manuInspectModel.setMpDocumentNo(cursor_mp.getInt(2));
-            manuInspectModel.setMpDocBranch(cursor_mp.getString(3));
-            manuInspectModel.setMpDocSeq(cursor_mp.getString(4));
-            manuInspectModel.setMpDocDate(formatDate(cursor_mp.getString(5)));
-            manuInspectModel.setMpDocTime(cursor_mp.getString(6));
-            manuInspectModel.setMpEmployeeNo(cursor_mp.getString(7));
-            manuInspectModel.setMpEmployeeName(cursor_mp.getString(8));
-            manuInspectModel.setMpCustomerNo(cursor_mp.getString(9));
-            manuInspectModel.setMpCustomerName(cursor_mp.getString(10));
-            manuInspectModel.setMpItemNo(cursor_mp.getString(11));
-            manuInspectModel.setMpItemName(cursor_mp.getString(12));
-            manuInspectModel.setMpColorNo(cursor_mp.getString(13));
-            manuInspectModel.setMpColorName(cursor_mp.getString(14));
-            manuInspectModel.setMpCoNo(cursor_mp.getString(15));
-            manuInspectModel.setMpImagePath(cursor_mp.getString(16));
-            manuInspectModel.setMpImageBlob(cursor_mp.getString(17));
-            manuInspectModel.setMpLastSendBymail(cursor_mp.getString(18));
-            manuInspectModel.setMpLastSendmailByUserNo(cursor_mp.getString(19));
-            manuInspectModel.setMpLastSendmailByUserName(cursor_mp.getString(20));
-            manuInspectModel.setMpLastSendmailDate(cursor_mp.getString(21));
-            manuInspectModel.setMpLastSendmailTime(cursor_mp.getString(22));
-            manuInspectModel.setMpLastModifyDate(cursor_mp.getString(23));
-            manuInspectModel.setMpLastModifyTime(cursor_mp.getString(24));
-            manuInspectModel.setMpLastModifyByUserNo(cursor_mp.getString(25));
-            manuInspectModel.setMpLastModifyByUserName(cursor_mp.getString(26));
+        try{
+            database.beginTransaction();
+            Cursor cursor_mp = database.query(TABLE_MANUINSPECT, null, COL_MPDOCUMENTNO + " = ? ", new String[]{String.valueOf(documentNo)}, null, null, null);
+            if (cursor_mp.getCount() > 0) {
+                cursor_mp.moveToNext();
+                manuInspectModel.setMpDocCode(cursor_mp.getString(0));
+                manuInspectModel.setMpDocument(cursor_mp.getString(1));
+                manuInspectModel.setMpDocumentNo(cursor_mp.getInt(2));
+                manuInspectModel.setMpDocBranch(cursor_mp.getString(3));
+                manuInspectModel.setMpDocSeq(cursor_mp.getString(4));
+                manuInspectModel.setMpDocDate(formatDate(cursor_mp.getString(5)));
+                manuInspectModel.setMpDocTime(cursor_mp.getString(6));
+                manuInspectModel.setMpEmployeeNo(cursor_mp.getString(7));
+                manuInspectModel.setMpEmployeeName(cursor_mp.getString(8));
+                manuInspectModel.setMpCustomerNo(cursor_mp.getString(9));
+                manuInspectModel.setMpCustomerName(cursor_mp.getString(10));
+                manuInspectModel.setMpItemNo(cursor_mp.getString(11));
+                manuInspectModel.setMpItemName(cursor_mp.getString(12));
+                manuInspectModel.setMpColorNo(cursor_mp.getString(13));
+                manuInspectModel.setMpColorName(cursor_mp.getString(14));
+                manuInspectModel.setMpCoNo(cursor_mp.getString(15));
+                manuInspectModel.setMpImagePath(cursor_mp.getString(16));
+                manuInspectModel.setMpImageBlob(cursor_mp.getString(17));
+                manuInspectModel.setMpLastSendBymail(cursor_mp.getString(18));
+                manuInspectModel.setMpLastSendmailByUserNo(cursor_mp.getString(19));
+                manuInspectModel.setMpLastSendmailByUserName(cursor_mp.getString(20));
+                manuInspectModel.setMpLastSendmailDate(cursor_mp.getString(21));
+                manuInspectModel.setMpLastSendmailTime(cursor_mp.getString(22));
+                manuInspectModel.setMpLastModifyDate(cursor_mp.getString(23));
+                manuInspectModel.setMpLastModifyTime(cursor_mp.getString(24));
+                manuInspectModel.setMpLastModifyByUserNo(cursor_mp.getString(25));
+                manuInspectModel.setMpLastModifyByUserName(cursor_mp.getString(26));
 
-            Cursor cursor_mpg = database.query(TABLE_MANUINSPECTIMAGE, null
-                    ,COL_MPGDOCCODE + " = ?  AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? "
-                    , new String[]{manuInspectModel.getMpDocCode(), manuInspectModel.getMpDocument(), String.valueOf(manuInspectModel.getMpDocumentNo()), manuInspectModel.getMpDocBranch()}, null, null, null);
-            List<ManuInspectImageModel> manuInspectImageList = new ArrayList<ManuInspectImageModel>();
-            if (cursor_mpg.getCount() > 0) {
-                for (int i = 0; i < cursor_mpg.getCount(); i++) {
-                    cursor_mpg.moveToNext();
-                    ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
-                    manuInspectImageModel.setMpgDoccode(cursor_mpg.getString(0));
-                    manuInspectImageModel.setMpgDocument(cursor_mpg.getString(1));
-                    manuInspectImageModel.setMpgDocumentno(cursor_mpg.getInt(2));
-                    manuInspectImageModel.setMpgDocBranch(cursor_mpg.getString(3));
-                    manuInspectImageModel.setMpgDocSeq(cursor_mpg.getString(4));
-                    manuInspectImageModel.setMpgCause(cursor_mpg.getString(5));
-                    manuInspectImageModel.setMpgSolution(cursor_mpg.getString(6));
-                    manuInspectImageModel.setMpgMemo(cursor_mpg.getString(7));
-                    manuInspectImageModel.setMpgImagePath(cursor_mpg.getString(8));
-                    manuInspectImageModel.setMpgImageBlob(cursor_mpg.getString(9));
-                    manuInspectImageModel.setMpgCauseByEmployeeNo(cursor_mpg.getString(10));
-                    manuInspectImageModel.setMpgCauseByEmployeeName(cursor_mpg.getString(11));
-                    manuInspectImageModel.setMpgSolutionByEmployeeNo(cursor_mpg.getString(12));
-                    manuInspectImageModel.setMpgSolutionByEmployeeName(cursor_mpg.getString(13));
-                    manuInspectImageModel.setMpgLastModifyDate(cursor_mpg.getString(14));
-                    manuInspectImageModel.setMpgLastModifyTime(cursor_mpg.getString(15));
-                    manuInspectImageModel.setMpgLastModifyByUserNo(cursor_mpg.getString(16));
-                    manuInspectImageModel.setMpgLastModifyByUserName(cursor_mpg.getString(17));
-                    manuInspectImageList.add(manuInspectImageModel);
+                Cursor cursor_mpg = database.query(TABLE_MANUINSPECTIMAGE, null
+                        ,COL_MPGDOCCODE + " = ?  AND " + COL_MPGDOCUMENT + " = ? AND " + COL_MPGDOCUMENTNO + " = ? AND " + COL_MPGDOCBRANCH + " = ? "
+                        , new String[]{manuInspectModel.getMpDocCode(), manuInspectModel.getMpDocument(), String.valueOf(manuInspectModel.getMpDocumentNo()), manuInspectModel.getMpDocBranch()}, null, null, null);
+                List<ManuInspectImageModel> manuInspectImageList = new ArrayList<ManuInspectImageModel>();
+                if (cursor_mpg.getCount() > 0) {
+                    for (int i = 0; i < cursor_mpg.getCount(); i++) {
+                        cursor_mpg.moveToNext();
+                        ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
+                        manuInspectImageModel.setMpgDoccode(cursor_mpg.getString(0));
+                        manuInspectImageModel.setMpgDocument(cursor_mpg.getString(1));
+                        manuInspectImageModel.setMpgDocumentno(cursor_mpg.getInt(2));
+                        manuInspectImageModel.setMpgDocBranch(cursor_mpg.getString(3));
+                        manuInspectImageModel.setMpgDocSeq(cursor_mpg.getString(4));
+                        manuInspectImageModel.setMpgCause(cursor_mpg.getString(5));
+                        manuInspectImageModel.setMpgSolution(cursor_mpg.getString(6));
+                        manuInspectImageModel.setMpgMemo(cursor_mpg.getString(7));
+                        manuInspectImageModel.setMpgImagePath(cursor_mpg.getString(8));
+                        manuInspectImageModel.setMpgImageBlob(cursor_mpg.getString(9));
+                        manuInspectImageModel.setMpgCauseByEmployeeNo(cursor_mpg.getString(10));
+                        manuInspectImageModel.setMpgCauseByEmployeeName(cursor_mpg.getString(11));
+                        manuInspectImageModel.setMpgSolutionByEmployeeNo(cursor_mpg.getString(12));
+                        manuInspectImageModel.setMpgSolutionByEmployeeName(cursor_mpg.getString(13));
+                        manuInspectImageModel.setMpgLastModifyDate(cursor_mpg.getString(14));
+                        manuInspectImageModel.setMpgLastModifyTime(cursor_mpg.getString(15));
+                        manuInspectImageModel.setMpgLastModifyByUserNo(cursor_mpg.getString(16));
+                        manuInspectImageModel.setMpgLastModifyByUserName(cursor_mpg.getString(17));
+                        manuInspectImageList.add(manuInspectImageModel);
+                    }
                 }
+                cursor_mpg.close();
+                manuInspectModel.setManuInspectImageModelList(manuInspectImageList);
             }
-            cursor_mpg.close();
-            manuInspectModel.setManuInspectImageModelList(manuInspectImageList);
+            cursor_mp.close();
+            database.setTransactionSuccessful();
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
         }
-        cursor_mp.close();
-        database.close();
         return manuInspectModel;
     }
 
     public ArrayList<ManuInspectModel> searchManuInspect(String dateFrom, String dateTo, String sendMail) {
         database = this.getReadableDatabase();
+        ArrayList<ManuInspectModel> manuInspects = new ArrayList<ManuInspectModel>();
         String strSelection = null;
         String[] strSelectionArgs = null;
+        try{
 
-        if((dateFrom != "" && dateFrom != null) && (dateTo != "" && dateTo != null)){
-            strSelection = " strftime('%Y-%m-%d', "+COL_MPDOCDATE+") BETWEEN ? AND ? ";
-            strSelectionArgs = new String[]{formatSQLDate(dateFrom), formatSQLDate(dateTo)};
-        }
-        if(sendMail != "" && sendMail != null){
-            if(sendMail.equals("Y")){
-                strSelection = strSelection + "AND "+COL_MPLASTSENDMAILBYUSERNO+" IS NOT NULL ";
-            }else{
-                strSelection = strSelection + "AND "+COL_MPLASTSENDMAILBYUSERNO+" IS NULL ";
+            if((dateFrom != "" && dateFrom != null) && (dateTo != "" && dateTo != null)){
+                strSelection = " strftime('%Y-%m-%d', "+COL_MPDOCDATE+") BETWEEN ? AND ? ";
+                strSelectionArgs = new String[]{formatSQLDate(dateFrom), formatSQLDate(dateTo)};
+            }
+            if(sendMail != "" && sendMail != null){
+                if(sendMail.equals("Y")){
+                    strSelection = strSelection + "AND "+COL_MPLASTSENDMAILBYUSERNO+" IS NOT NULL ";
+                }else{
+                    strSelection = strSelection + "AND "+COL_MPLASTSENDMAILBYUSERNO+" IS NULL ";
+                }
+
             }
 
-        }
+            database.beginTransaction();
+            Cursor cursor = database.query(TABLE_MANUINSPECT, null
+                    , strSelection
+                    , strSelectionArgs, null, null, null);
 
-        Cursor cursor = database.query(TABLE_MANUINSPECT, null
-                , strSelection
-                , strSelectionArgs, null, null, null);
-
-        ArrayList<ManuInspectModel> manuInspects = new ArrayList<ManuInspectModel>();
-        ManuInspectModel manuInspectModel;
-        if (cursor.getCount() > 0) {
-            for (int i = 0; i < cursor.getCount(); i++) {
-                cursor.moveToNext();
-                manuInspectModel = new ManuInspectModel();
-                manuInspectModel.setMpDocCode(cursor.getString(0));
-                manuInspectModel.setMpDocument(cursor.getString(1));
-                manuInspectModel.setMpDocumentNo(cursor.getInt(2));
-                manuInspectModel.setMpDocBranch(cursor.getString(3));
-                manuInspectModel.setMpDocSeq(cursor.getString(4));
-                manuInspectModel.setMpDocDate(formatDate(cursor.getString(5)));
-                manuInspectModel.setMpDocTime(cursor.getString(6));
-                manuInspectModel.setMpEmployeeNo(cursor.getString(7));
-                manuInspectModel.setMpEmployeeName(cursor.getString(8));
-                manuInspectModel.setMpCustomerNo(cursor.getString(9));
-                manuInspectModel.setMpCustomerName(cursor.getString(10));
-                manuInspectModel.setMpItemNo(cursor.getString(11));
-                manuInspectModel.setMpItemName(cursor.getString(12));
-                manuInspectModel.setMpColorNo(cursor.getString(13));
-                manuInspectModel.setMpColorName(cursor.getString(14));
-                manuInspectModel.setMpCoNo(cursor.getString(15));
-                manuInspectModel.setMpImagePath(cursor.getString(16));
-                manuInspectModel.setMpImageBlob(cursor.getString(17));
-                manuInspectModel.setMpLastSendBymail(cursor.getString(18));
-                manuInspectModel.setMpLastSendmailByUserNo(cursor.getString(19));
-                manuInspectModel.setMpLastSendmailByUserName(cursor.getString(20));
-                manuInspectModel.setMpLastSendmailDate(cursor.getString(21));
-                manuInspectModel.setMpLastSendmailTime(cursor.getString(22));
-                manuInspectModel.setMpLastModifyDate(cursor.getString(23));
-                manuInspectModel.setMpLastModifyTime(cursor.getString(24));
-                manuInspectModel.setMpLastModifyByUserNo(cursor.getString(25));
-                manuInspectModel.setMpLastModifyByUserName(cursor.getString(26));
-                manuInspects.add(manuInspectModel);
+            if (cursor.getCount() > 0) {
+                for (int i = 0; i < cursor.getCount(); i++) {
+                    cursor.moveToNext();
+                    ManuInspectModel manuInspectModel = new ManuInspectModel();
+                    manuInspectModel.setMpDocCode(cursor.getString(0));
+                    manuInspectModel.setMpDocument(cursor.getString(1));
+                    manuInspectModel.setMpDocumentNo(cursor.getInt(2));
+                    manuInspectModel.setMpDocBranch(cursor.getString(3));
+                    manuInspectModel.setMpDocSeq(cursor.getString(4));
+                    manuInspectModel.setMpDocDate(formatDate(cursor.getString(5)));
+                    manuInspectModel.setMpDocTime(cursor.getString(6));
+                    manuInspectModel.setMpEmployeeNo(cursor.getString(7));
+                    manuInspectModel.setMpEmployeeName(cursor.getString(8));
+                    manuInspectModel.setMpCustomerNo(cursor.getString(9));
+                    manuInspectModel.setMpCustomerName(cursor.getString(10));
+                    manuInspectModel.setMpItemNo(cursor.getString(11));
+                    manuInspectModel.setMpItemName(cursor.getString(12));
+                    manuInspectModel.setMpColorNo(cursor.getString(13));
+                    manuInspectModel.setMpColorName(cursor.getString(14));
+                    manuInspectModel.setMpCoNo(cursor.getString(15));
+                    manuInspectModel.setMpImagePath(cursor.getString(16));
+                    manuInspectModel.setMpImageBlob(cursor.getString(17));
+                    manuInspectModel.setMpLastSendBymail(cursor.getString(18));
+                    manuInspectModel.setMpLastSendmailByUserNo(cursor.getString(19));
+                    manuInspectModel.setMpLastSendmailByUserName(cursor.getString(20));
+                    manuInspectModel.setMpLastSendmailDate(cursor.getString(21));
+                    manuInspectModel.setMpLastSendmailTime(cursor.getString(22));
+                    manuInspectModel.setMpLastModifyDate(cursor.getString(23));
+                    manuInspectModel.setMpLastModifyTime(cursor.getString(24));
+                    manuInspectModel.setMpLastModifyByUserNo(cursor.getString(25));
+                    manuInspectModel.setMpLastModifyByUserName(cursor.getString(26));
+                    manuInspects.add(manuInspectModel);
+                }
             }
+            cursor.close();
+            database.setTransactionSuccessful();
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
         }
-        cursor.close();
-        database.close();
         return manuInspects;
     }
 
