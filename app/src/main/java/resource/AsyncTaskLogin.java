@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.ton.furnitureapplication.DatabaseHelper;
@@ -18,6 +19,7 @@ import com.example.ton.furnitureapplication.Home;
 
 import java.util.ArrayList;
 
+import Model.BranchCompanyCodeModel;
 import Model.TBUserLoginModel;
 
 public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
@@ -70,6 +72,7 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
                         /// ให้ไปยังหน้าหลัก
                         mHelper.getEmployee(getUser, getPassword, getDeviceImei(activity));
                         mHelper.getUserLogin(getUser, getPassword, getDeviceImei(activity));
+                        mHelper.getBranchCompanyCode(getUser, getPassword, getDeviceImei(activity));
                         Intent intent = new Intent(activity, Home.class);
                         activity.startActivity(intent);
                     } else if (LOGIN_STATUS == false) {

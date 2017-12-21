@@ -5,10 +5,10 @@ package Model;
  */
 
 public class BranchCompanyCodeModel {
-    private String bcCompanyCode;
-    private String bcBranchCode;
-    private String bcCode;
-    private String bcBranchName;
+    public static String bcCompanyCode;
+    public static String bcBranchCode;
+    public static String bcCode;
+    public static String bcBranchName;
     private String bcAddress1;
     private String bcAddress2;
     private String bcKhet;

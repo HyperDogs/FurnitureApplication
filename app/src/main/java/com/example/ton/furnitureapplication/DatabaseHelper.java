@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import Model.BranchCompanyCodeModel;
 import Model.EmployeesModel;
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
@@ -152,6 +153,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         createTABLE_MANUINSPECT(db);
         createTABLE_MANUINSPECTIMAGE(db);
         createTABLE_EMPLOYEES(db);
+        createTABLE_BRANCHCOMPANYCODE(db);
     }
 
     private void createTABLE_USERLOGIN(SQLiteDatabase db){
@@ -294,7 +296,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COL_BCFAXENG + " VARCHAR(30) "
                 + ") ";
         db.execSQL(CREATE_BRANCHCOMPANYCODE_TABLE);
-        db.execSQL("INSERT INTO " + TABLE_BRANCHCOMPANYCODE + " (" + COL_BCCOMPANYCODE + ", " + COL_BCBRANCHCODE + ", " + COL_BCCODE + ", " + COL_BCBRANCHCODE + ") VALUES ('0', '1', '01', 'สำนักงานใหญ่');");
+        db.execSQL("INSERT INTO " + TABLE_BRANCHCOMPANYCODE + " (" + COL_BCCOMPANYCODE + ", " + COL_BCBRANCHCODE + ", " + COL_BCCODE + ", " + COL_BCBRANCHNAME + ") VALUES ('0', '1', '01', 'สำนักงานใหญ่');");
     }
 
     @Override
@@ -303,6 +305,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_MANUINSPECT);
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_MANUINSPECTIMAGE);
         db.execSQL("DROP TABLE IF EXISTS " +TABLE_EMPLOYEES);
+        db.execSQL("DROP TABLE IF EXISTS " +TABLE_BRANCHCOMPANYCODE);
         onCreate(db);
     }
 
@@ -754,6 +757,39 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             database.close();
         }
         return tbUserLoginModel;
+    }
+
+    public BranchCompanyCodeModel getBranchCompanyCode(String userName, String passWord, String imei){
+        String branchCode = "";
+        BranchCompanyCodeModel branchCompanyCodeModel = new BranchCompanyCodeModel();
+        database = this.getReadableDatabase();
+        try{
+            database.beginTransaction();
+            //get userLoginId
+            Cursor cursor_log = database.query(TABLE_USERLOGIN, new String[]{COL_ULBRANCHID}, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
+            if(cursor_log.getCount() > 0){
+                cursor_log.moveToNext();
+                branchCode = cursor_log.getString(0);
+            }
+            //get employeeName
+            Cursor cursor_bc = database.query(TABLE_BRANCHCOMPANYCODE, new String[]{COL_BCCOMPANYCODE, COL_BCBRANCHCODE, COL_BCCODE, COL_BCBRANCHNAME}, COL_BCCODE + " = ? ", new String[]{branchCode}, null, null, null);
+            if(cursor_bc.getCount() > 0){
+                cursor_bc.moveToNext();
+                branchCompanyCodeModel.setBcCompanyCode(cursor_bc.getString(0));
+                branchCompanyCodeModel.setBcBranchCode(cursor_bc.getString(1));
+                branchCompanyCodeModel.setBcCode(cursor_bc.getString(2));
+                branchCompanyCodeModel.setBcBranchName(cursor_bc.getString(3));
+            }
+            cursor_log.close();
+            cursor_bc.close();
+            database.setTransactionSuccessful();
+        }catch (SQLException e){
+            e.getMessage();
+        }finally {
+            database.endTransaction();
+            database.close();
+        }
+        return branchCompanyCodeModel;
     }
 
     public boolean save(ManuInspectModel manuInspect){
