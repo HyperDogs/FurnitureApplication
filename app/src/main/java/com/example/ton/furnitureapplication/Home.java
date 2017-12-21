@@ -396,7 +396,7 @@ public class Home extends AppCompatActivity  {
             mainPic.setAlpha((float) 1.0);
 
 
-        }else if (requestCode <= 100){
+        }/*else if (requestCode <= 100){
             try {
             Uri selectedImage = data.getData();
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
@@ -406,7 +406,7 @@ public class Home extends AppCompatActivity  {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else {
+        }*/else {
             if (Album.DETAIL_FILE != null) {
                 Log.d("POSITION : ", String.valueOf(requestCode));
                 Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 300, 350);
