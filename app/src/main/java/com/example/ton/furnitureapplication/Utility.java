@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
  */
 
 public class Utility {
+
     public static Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
