@@ -1,17 +1,11 @@
 package resource;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,7 +13,6 @@ import com.example.ton.furnitureapplication.Album;
 import com.example.ton.furnitureapplication.Allfile;
 import com.example.ton.furnitureapplication.BasicInfomation;
 import com.example.ton.furnitureapplication.DatabaseHelper;
-import com.example.ton.furnitureapplication.Home;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,7 +21,6 @@ import java.util.List;
 import Model.EmployeesModel;
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
-import Model.TBUserLoginModel;
 
 public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     private Activity activity;
@@ -156,10 +148,6 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
         
     }
     private void clearActivity(Activity activity){
-        //bitmap = null;
-        //bitmapDtl = null;
-        //file = null;
-        //Album.DETAIL_FILE = null;
         Album.DETAIL_BITMAP = new Bitmap[100];
         Album.DETAIL_MEMO = new String[100];
         Album.DETAIL_FILENAME = new String[100];

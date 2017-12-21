@@ -188,7 +188,7 @@ public class Home extends AppCompatActivity  {
                 }else {
                     new AlertDialog.Builder(Home.this)
                             .setTitle("Save")
-                            .setMessage("Do you want to save ?")
+                            .setMessage("Would you like to save ?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -379,7 +379,6 @@ public class Home extends AppCompatActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if (requestCode == headerImage && resultCode == RESULT_OK) {
 
             try {
@@ -400,17 +399,18 @@ public class Home extends AppCompatActivity  {
             mainPic.setAlpha((float) 1.0);
 
 
-        }/*else if (requestCode <= 100){
-            try {
+        }else if (requestCode == 1003){
             Uri selectedImage = data.getData();
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+            Bundle bundle = data.getExtras();
+            String position = bundle.getString("position");
+            Toast.makeText(Home.this,position,Toast.LENGTH_SHORT).show();
+
+             /*Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
             Album.DETAIL_BITMAP[requestCode] = bitmap;
             headImgStatus = true;
-            updateView();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/else {
+            updateView();*/
+
+        }else {
             if (Album.DETAIL_FILE != null) {
                 Log.d("POSITION : ", String.valueOf(requestCode));
                 Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 300, 350);
