@@ -296,7 +296,6 @@ public class Allfile extends AppCompatActivity {
             public void onItemClick(View view, int position, AbstractModel model) {
 
                 //handle item click events here
-                Toast.makeText(Allfile.this, "" + model.getDocNo(), Toast.LENGTH_SHORT).show();
                 Intent home = new Intent(Allfile.this,Home.class);
                 home.putExtra("docNo",String.valueOf(model.getDocNo()));
                 Album.DETAIL_FILENAME = new String[100];
@@ -327,15 +326,6 @@ public class Allfile extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-    private Toast toast;
-    private void showToast(String message) {
-        if (toast != null) {
-            toast.cancel();
-            toast = null;
-        }
-        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.show();
     }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

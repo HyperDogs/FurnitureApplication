@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
+import resource.BitmapManager;
+
 public class PreveiwImage extends AppCompatActivity {
     ImageView preview;
 
@@ -30,7 +32,8 @@ public class PreveiwImage extends AppCompatActivity {
 
 
         SubsamplingScaleImageView imageView = (SubsamplingScaleImageView)findViewById(R.id.previewImg);
-        imageView.setImage(ImageSource.bitmap(Album.DETAIL_BITMAP[imgIndex]));
+        imageView.setImage(ImageSource.cachedBitmap(Album.DETAIL_BITMAP[imgIndex]));
+        //imageView.setImage(ImageSource.resource(R.drawable.example));
 
        // preview = (ImageView)findViewById(R.id.previewImg);
        // Glide.with(PreveiwImage.this).load(R.drawable.example).into(preview);
