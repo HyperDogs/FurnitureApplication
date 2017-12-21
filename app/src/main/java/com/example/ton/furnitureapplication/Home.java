@@ -208,7 +208,7 @@ public class Home extends AppCompatActivity  {
                 }
 
             }else{
-                Toast.makeText(Home.this,"กรุณาใส่ข้อมูลให้ครบถ้วนก่อนบันทึก",Toast.LENGTH_LONG).show();
+                Toast.makeText(Home.this,R.string.alertInfo,Toast.LENGTH_LONG).show();
             }
 
         }
@@ -225,7 +225,7 @@ public class Home extends AppCompatActivity  {
                         || basicInfomation.getFileHeader_coNo().equals("")
                         || basicInfomation.getFileHeader_inspector().equals("")) {
 
-                    Toast.makeText(Home.this,"กรณากรอกข้อมูลสินค้าให้ครบถ้วน",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Home.this,R.string.alertInfo,Toast.LENGTH_SHORT).show();
 
                 }else {
                     new AlertDialog.Builder(Home.this)
@@ -247,7 +247,7 @@ public class Home extends AppCompatActivity  {
                 }
 
             }else{
-                Toast.makeText(Home.this,"กรุณาใส่ข้อมูลให้ครบถ้วนก่อนบันทึก",Toast.LENGTH_LONG).show();
+                Toast.makeText(Home.this,R.string.alertInfo,Toast.LENGTH_LONG).show();
             }
         }
     };
@@ -326,6 +326,7 @@ public class Home extends AppCompatActivity  {
             mainLayout.setVisibility(RelativeLayout.GONE);
             removeLayout.setVisibility(RelativeLayout.GONE);
             recyclerView.setNestedScrollingEnabled(false);
+            menuFab.hideMenu(true);
             menuFab.close(true);
         }
     };
@@ -339,6 +340,7 @@ public class Home extends AppCompatActivity  {
             mainLayout.setVisibility(RelativeLayout.GONE);
             swapLayout.setVisibility(RelativeLayout.GONE);
             recyclerView.setNestedScrollingEnabled(false);
+            menuFab.hideMenu(true);
             menuFab.close(true);
         }
     };
@@ -352,6 +354,7 @@ public class Home extends AppCompatActivity  {
             removeLayout.setVisibility(RelativeLayout.GONE);
             appbar.setExpanded(false);
             recyclerView.setNestedScrollingEnabled(true);
+            menuFab.showMenu(true);
         }
     };
 
@@ -364,6 +367,7 @@ public class Home extends AppCompatActivity  {
             removeLayout.setVisibility(RelativeLayout.GONE);
             appbar.setExpanded(false);
             recyclerView.setNestedScrollingEnabled(true);
+            menuFab.showMenu(true);
         }
     };
 

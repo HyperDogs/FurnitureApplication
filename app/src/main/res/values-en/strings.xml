@@ -22,7 +22,7 @@
     <string name="mail">Status :</string>
 
     <string name="alertInfo">Please fill in all information.</string>
-    <string name="delete_text">Please select information to delete.</string>
-    <string name="swap_text">Please select information to swap.</string>
+    <string name="delete_text">Please choose image to delete.</string>
+    <string name="swap_text">Please choose image to swap.</string>
     <string name="update">Update</string>
 </resources>

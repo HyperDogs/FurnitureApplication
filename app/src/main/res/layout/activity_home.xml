@@ -83,7 +83,7 @@
 
                         <ImageView
                             android:id="@+id/mainpic"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:alpha="0.5"
                             app:srcCompat="@drawable/camera01" />
@@ -132,8 +132,8 @@
                                         android:gravity="fill|clip_vertical|clip_horizontal|start|end"
                                         android:paddingTop="2dp"
                                         android:text="@string/date"
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="10sp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp"
                                         android:textStyle="bold" />
 
                                     <TextView
@@ -141,53 +141,58 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:layout_weight="1"
-                                        android:gravity="left" />
+                                        android:gravity="bottom|left"
+                                        android:paddingLeft="2dp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp" />
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:layout_width="13dp"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:gravity="left"
                                         android:paddingTop="2dp"
                                         android:text="@string/cus_no"
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="10sp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp"
                                         android:textStyle="bold" />
+                                    />
 
                                     <TextView
                                         android:id="@+id/cusNoV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:layout_weight="1"
-                                        android:gravity="left" />
+                                        android:gravity="bottom|left"
+                                        android:paddingLeft="2dp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp" />
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:layout_width="13dp"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:gravity="left"
                                         android:paddingTop="2dp"
                                         android:text="@string/item_no"
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="10sp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp"
                                         android:textStyle="bold" />
 
                                     <TextView
@@ -195,25 +200,27 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:layout_weight="1"
-                                        android:gravity="left" />
+                                        android:gravity="bottom|left"
+                                        android:paddingLeft="2dp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp" />
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:layout_width="13dp"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:gravity="left"
                                         android:paddingTop="2dp"
                                         android:text="@string/color_no"
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="10sp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp"
                                         android:textStyle="bold" />
 
                                     <TextView
@@ -221,26 +228,28 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:layout_weight="1"
-                                        android:gravity="left" />
+                                        android:gravity="bottom|left"
+                                        android:paddingLeft="2dp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp" />
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:layout_width="13dp"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:gravity="left"
                                         android:paddingTop="2dp"
                                         android:text="@string/co_no"
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="10sp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp"
                                         android:textStyle="bold" />
 
                                     <TextView
@@ -248,26 +257,28 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:layout_weight="1"
-                                        android:gravity="left" />
+                                        android:gravity="bottom|left"
+                                        android:paddingLeft="2dp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp" />
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:layout_width="13dp"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:gravity="left"
                                         android:paddingTop="2dp"
                                         android:text="@string/inspector"
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="10sp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp"
                                         android:textStyle="bold" />
 
                                     <TextView
@@ -275,26 +286,28 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:layout_weight="1"
-                                        android:gravity="left" />
+                                        android:gravity="bottom|left"
+                                        android:paddingLeft="2dp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp" />
 
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:layout_width="13dp"
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
                                         android:gravity="left"
                                         android:paddingTop="2dp"
                                         android:text="@string/mail"
-                                        android:textColor="#FFFFFF"
-                                        android:textSize="10sp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp"
                                         android:textStyle="bold" />
 
                                     <TextView
@@ -302,8 +315,10 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:layout_weight="1"
-                                        android:gravity="left" />
+                                        android:gravity="bottom|left"
+                                        android:paddingLeft="2dp"
+                                        android:textColor="@color/white"
+                                        android:textSize="11sp" />
 
                                 </LinearLayout>
                             </LinearLayout>

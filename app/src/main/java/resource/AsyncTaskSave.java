@@ -135,8 +135,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
 
                     if (SAVE_STATUS == true) {
                         // ให้ไปยังหน้าหลัก
-                        activity.finish();
-                        Intent intent = new Intent(activity, Home.class);
+                        Intent intent = new Intent(activity, Allfile.class);
                         activity.startActivity(intent);
                         activity.finish();
                     } else if (SAVE_STATUS == false) {

@@ -1,13 +1,16 @@
 package com.example.ton.furnitureapplication;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +19,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -24,6 +28,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -62,6 +67,7 @@ public class Allfile extends AppCompatActivity {
     private Button back_btn,search_btn;
     private String dateFromStr,dateToStr,statusStr;
     private CheckBox sentBox,notSentBox;
+    private RelativeLayout nodatalayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +93,8 @@ public class Allfile extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(fabClick);
+        nodatalayout =findViewById(R.id.nodatelayout);
+        nodatalayout.setVisibility(RelativeLayout.GONE);
 
     }
     private View.OnClickListener fabClick = new View.OnClickListener() {
@@ -242,7 +250,8 @@ public class Allfile extends AppCompatActivity {
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         }
     };
-    private void setAdapter(String dateFrom,String dateTo,String status) {
+    @SuppressLint("WrongConstant")
+    private void setAdapter(String dateFrom, String dateTo, String status) {
         AbstractModel b;
         DatabaseHelper db = new DatabaseHelper(Allfile.this);
         //List<ManuInspectModel> manuInspectList = db.getAllManuInspect();
@@ -303,6 +312,12 @@ public class Allfile extends AppCompatActivity {
             }
         });
 
+        if (modelList.size() == 0){
+            recyclerView.setVisibility(RecyclerView.GONE);
+            nodatalayout.setVisibility(RelativeLayout.ABOVE);
+            fab.setVisibility(FloatingActionButton.GONE);
+        }
+
 
     }
     @Override
@@ -323,6 +338,28 @@ public class Allfile extends AppCompatActivity {
         }
         toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
         toast.show();
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent i = new Intent(Allfile.this,Home.class);
+            BasicInfomation basicInfomation = new BasicInfomation();
+            basicInfomation.setFileHeader_date(null);
+            basicInfomation.setFileHeader_inspector(null);
+            basicInfomation.setFileHeader_coNo(null);
+            basicInfomation.setFileHeader_colorNo(null);
+            basicInfomation.setFileHeader_itemNo(null);
+            basicInfomation.setFileHeader_customerNo(null);
+            basicInfomation.setFileHeader_mail(null);
+            Album.DETAIL_FILENAME = new String[100];
+            Album.DETAIL_BITMAP = new Bitmap[100];
+            Album.DETAIL_MEMO = new String[100];
+            startActivity(i);
+            modelList.clear();
+            finish();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
     }
     @Override
     protected void onDestroy() {
