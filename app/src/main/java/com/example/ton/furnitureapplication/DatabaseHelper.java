@@ -31,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_MANUINSPECT = "ManuInspect";
     public static final String TABLE_MANUINSPECTIMAGE = "ManuInspectImage";
     public static final String TABLE_EMPLOYEES = "Employees";
+    public static final String TABLE_BRANCHCOMPANYCODE = "sysBranchCompanyCode";
 
     public static final String COL_ULUSERLOGINID = "ulUserLoginId";
     public static final String COL_ULNAME = "ulName";
@@ -118,6 +119,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_BRANCH = "branch";
     public static final String COL_WAREHOUSE = "warehouse";
 
+    public static final String COL_BCCOMPANYCODE = "bcCompanyCode";
+    public static final String COL_BCBRANCHCODE = "bcBranchCode";
+    public static final String COL_BCCODE = "bcCode";
+    public static final String COL_BCBRANCHNAME = "bcBranchName";
+    public static final String COL_BCADDRESS1 = "bcAddress1";
+    public static final String COL_BCADDRESS2 = "bcAddress2";
+    public static final String COL_BCKHET = "bcKhet";
+    public static final String COL_BCPROVINCE = "bcProvince";
+    public static final String COL_BCZIPCODE = "bcZipCode";
+    public static final String COL_BCTEL = "bcTel";
+    public static final String COL_BCFAX = "bcFax";
+    public static final String COL_BCEMAIL = "bcEmail";
+    public static final String COL_BCTAXID = "bcTaxID";
+    public static final String COL_BCTAXBRANCH = "bcTaxBranch";
+    public static final String COL_BCBRANCHNAMEENG = "bcBranchNameEng";
+    public static final String COL_BCADDRESS1ENG = "bcAddress1Eng";
+    public static final String COL_BCADDRESS2ENG = "bcAddress2Eng";
+    public static final String COL_BCKHETENG = "bcKhetEng";
+    public static final String COL_BCPROVINCEENG = "bcProvinceEng";
+    public static final String COL_BCZIPCODEENG = "bcZipCodeEng";
+    public static final String COL_BCTELENG = "bcTelEng";
+    public static final String COL_BCFAXENG = "bcFaxEng";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -150,6 +174,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                    "('2', 'admin', 'admin', '357220073447263', '02', '01'), " +
                    "('3', 'admin', 'admin', '357221073447261', '03', '01');");
     }
+
     private void createTABLE_MANUINSPECT(SQLiteDatabase db){
         String CREATE_UMANUINSPECT_TABLE = " CREATE TABLE " + TABLE_MANUINSPECT + "("
                 + COL_MPDOCCODE  + " CHAR(4), "
@@ -243,6 +268,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                    "VALUES ('01', 'admin'), ('02', 'admin'), ('03', 'admin');");
     }
 
+    private void createTABLE_BRANCHCOMPANYCODE(SQLiteDatabase db){
+        String CREATE_BRANCHCOMPANYCODE_TABLE = "CREATE TABLE " + TABLE_BRANCHCOMPANYCODE + "("
+                + COL_BCCOMPANYCODE + " VARCHAR(5), "
+                + COL_BCBRANCHCODE + " VARCHAR(5), "
+                + COL_BCCODE + " VARCHAR(5), "
+                + COL_BCBRANCHNAME + " VARCHAR(80), "
+                + COL_BCADDRESS1 + " VARCHAR(80), "
+                + COL_BCADDRESS2 + " VARCHAR(80), "
+                + COL_BCKHET + " VARCHAR(80), "
+                + COL_BCPROVINCE + " VARCHAR(30), "
+                + COL_BCZIPCODE + " VARCHAR(30), "
+                + COL_BCTEL + " VARCHAR(30), "
+                + COL_BCFAX + " VARCHAR(30), "
+                + COL_BCEMAIL + " VARCHAR(80), "
+                + COL_BCTAXID + " VARCHAR(20), "
+                + COL_BCTAXBRANCH + " VARCHAR(50), "
+                + COL_BCBRANCHNAMEENG + " VARCHAR(80), "
+                + COL_BCADDRESS1ENG + " VARCHAR(80), "
+                + COL_BCADDRESS2ENG + " VARCHAR(80), "
+                + COL_BCKHETENG + " VARCHAR(80), "
+                + COL_BCPROVINCEENG + " VARCHAR(30), "
+                + COL_BCZIPCODEENG + " VARCHAR(30), "
+                + COL_BCTELENG + " VARCHAR(30), "
+                + COL_BCFAXENG + " VARCHAR(30) "
+                + ") ";
+        db.execSQL(CREATE_BRANCHCOMPANYCODE_TABLE);
+        db.execSQL("INSERT INTO " + TABLE_BRANCHCOMPANYCODE + " (" + COL_BCCOMPANYCODE + ", " + COL_BCBRANCHCODE + ", " + COL_BCCODE + ", " + COL_BCBRANCHCODE + ") VALUES ('0', '1', '01', 'สำนักงานใหญ่');");
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
