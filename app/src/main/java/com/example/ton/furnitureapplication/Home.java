@@ -556,7 +556,7 @@ public class Home extends AppCompatActivity  {
         for (int i = 0;i<dtlList.size();i++){
             ManuInspectImageModel manuInspectImageModel = dtlList.get(i);
             File fileIm = new File(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectImageModel.getMpgImagePath());
-            Bitmap bitmap = BitmapManager.decode(fileIm.getPath(),300,350);
+            Bitmap bitmap = BitmapManager.decode(fileIm.getPath(),1000,1500);
             //Drawable d = new BitmapDrawable(getResources(), bitmap);
             int reqCode = Integer.parseInt(manuInspectImageModel.getMpgDocSeq());
             Album.DETAIL_BITMAP[reqCode] = bitmap;
