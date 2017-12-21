@@ -413,7 +413,7 @@ public class Home extends AppCompatActivity  {
         }else {
             if (Album.DETAIL_FILE != null) {
                 Log.d("POSITION : ", String.valueOf(requestCode));
-                Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 300, 350);
+                Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 1000, 1500);
                 Album.DETAIL_BITMAP[requestCode] = bitmap;
                 Album.DETAIL_FILENAME[requestCode] = CreateFile.getFileName();
                 updateView();

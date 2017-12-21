@@ -162,8 +162,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             @Override
             public void onClick(View view) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-//                Toast.makeText(mContext,position,Toast.LENGTH_SHORT).show();
                 pickPhoto.putExtra("position","xxxx");
                 ((Activity) mContext).startActivityForResult(pickPhoto , detailPickImage);
             }

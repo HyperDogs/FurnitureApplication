@@ -75,7 +75,7 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
                     } else if (LOGIN_STATUS == false) {
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(activity, "ชื่อผู้ใช้หรือรหัสผ่านผิดพลาด กรุณาลองใหม่", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, "Login Failed", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
