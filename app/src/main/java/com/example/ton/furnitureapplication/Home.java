@@ -223,7 +223,6 @@ public class Home extends AppCompatActivity  {
     private View.OnClickListener onClickSaveBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
             if (bitmap != null || headImgStatus){
                 if (basicInfomation.getFileHeader_date().equals("")
                         || basicInfomation.getFileHeader_customerNo().equals("")
@@ -498,7 +497,7 @@ public class Home extends AppCompatActivity  {
         if (requestCode == headerImage) {
 
             try {
-                if (file !=null) {
+                if (file !=null && resultCode == RESULT_OK) {
                     bitmap = BitmapManager.decode(file.getPath(),300,350);
                     //BitmapFactory.decodeFile(file.getPath());
                     getFileNameHeader = CreateFile.getFileName();
