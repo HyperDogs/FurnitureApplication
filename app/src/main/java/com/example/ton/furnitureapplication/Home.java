@@ -517,14 +517,47 @@ public class Home extends AppCompatActivity  {
 
         }else if (requestCode == 1003){
             Uri selectedImage = data.getData();
-            Bundle bundle = data.getExtras();
-            String position = bundle.getString("position");
-            Toast.makeText(Home.this,position,Toast.LENGTH_SHORT).show();
 
-             /*Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-            Album.DETAIL_BITMAP[requestCode] = bitmap;
-            headImgStatus = true;
-            updateView();*/
+            Bitmap bitmap2 = null;
+
+            try {
+                bitmap2 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //create a file to write bitmap data
+            /*file = CreateFile.createUnique();
+
+            OutputStream os = null;
+            try {
+                os = new BufferedOutputStream(new FileOutputStream(file));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            bitmap2.compress(Bitmap.CompressFormat.JPEG, 60, os);
+            try {
+                os.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
+
+            progressDialog = ProgressDialog.show(Home.this, "",
+                    "Loading...", true);
+
+            final Bitmap finalBitmap = bitmap2;
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    headImgStatus = true;
+                    CreateFileFromBitmap createFileFromBitmap = new CreateFileFromBitmap(finalBitmap,getApplicationContext());
+                    createFileFromBitmap.execute();
+                    progressDialog.dismiss();
+                }
+            }, 3500);
+
+
 
         }else {
             if (Album.DETAIL_FILE != null) {

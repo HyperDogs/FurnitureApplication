@@ -17,6 +17,7 @@ public class Album {
     public static String[] DETAIL_MEMO = new String[100];
     public static String[] DETAIL_FILENAME = new String[100];
     public static ArrayList<Integer> DETAIL_REMOVED_INDEX = new ArrayList<Integer>();
+    public static int CURRENT_PICK_IMG_POSITION;
     public Album(){
 
     }

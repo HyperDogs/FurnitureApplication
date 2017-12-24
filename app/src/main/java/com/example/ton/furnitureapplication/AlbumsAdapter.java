@@ -25,15 +25,12 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import resource.CreateFile;
@@ -289,6 +286,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             public void onClick(View view) {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 pickPhoto.putExtra("position","xxxx");
+                Album.CURRENT_PICK_IMG_POSITION = position;
                 ((Activity) mContext).startActivityForResult(pickPhoto , detailPickImage);
             }
         });
