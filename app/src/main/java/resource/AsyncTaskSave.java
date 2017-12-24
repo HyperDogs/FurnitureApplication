@@ -12,18 +12,25 @@ import android.widget.Toast;
 import com.example.ton.furnitureapplication.Album;
 import com.example.ton.furnitureapplication.Allfile;
 import com.example.ton.furnitureapplication.BasicInfomation;
+import com.example.ton.furnitureapplication.CopyImageToServer;
 import com.example.ton.furnitureapplication.DatabaseHelper;
+import com.example.ton.furnitureapplication.OkHttpHelper;
+import com.example.ton.furnitureapplication.WebServiceURL;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.SimpleTimeZone;
 
 import Model.EmployeesModel;
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
 import Model.TBUserLoginModel;
+import okhttp3.FormBody;
 
 public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     private Activity activity;
@@ -34,6 +41,12 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     private Handler handler = new Handler();
     private String docNo;
     private boolean sendMail = false;
+
+    private OkHttpHelper mOkHttpHelper;
+    private WebServiceURL mWebServiceURL;
+    private CopyImageToServer mUploadPhoto;
+    private int mNewDocumentNo = 0;
+
     ManuInspectModel manuInspectModel;
     BasicInfomation basicInfomation;
     List<Album> albumList;
@@ -48,6 +61,10 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
         this.imgName = imgName;
         this.docNo = docNo;
         this.sendMail = sendMail;
+
+        this.mOkHttpHelper = new OkHttpHelper();
+        this.mWebServiceURL = new WebServiceURL();
+        this.mUploadPhoto = new CopyImageToServer();
     }
 
     @Override
@@ -67,6 +84,10 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                 if (Imei.equals("")){
                     SAVE_STATUS = false;
                 }else {
+                    String errDesc = "";
+                    String detailMemo = "";
+
+
                     List<ManuInspectImageModel> manuInspectImageModelList = new ArrayList<>();
                     //Header
                     manuInspectModel.setMpDocCode("IN01");
@@ -79,22 +100,25 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                     manuInspectModel.setMpColorNo(basicInfomation.getFileHeader_colorNo());
                     manuInspectModel.setMpCoNo(basicInfomation.getFileHeader_coNo());
                     manuInspectModel.setMpEmployeeNo(EmployeesModel.id);
-                    manuInspectModel.setMpEmployeeName(basicInfomation.getFileHeader_inspector());
+                    manuInspectModel.setMpEmployeeName(EmployeesModel.employeeName);
                     manuInspectModel.setMpImagePath(imgName);
-                    manuInspectModel.setMpLastModifyDate(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
-                    manuInspectModel.setMpLastModifyTime(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()));
-                    manuInspectModel.setMpLastModifyByUserNo(TBUserLoginModel.ulUserLoginId);
-                    manuInspectModel.setMpLastModifyByUserName(TBUserLoginModel.ulName);
+
                     if (!docNo.equals("0")) {
+                        manuInspectModel.setMpLastModifyDate(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
+                        manuInspectModel.setMpLastModifyTime(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()));
+                        manuInspectModel.setMpLastModifyByUserNo(TBUserLoginModel.ulUserLoginId);
+                        manuInspectModel.setMpLastModifyByUserName(TBUserLoginModel.ulName);
                         manuInspectModel.setMpDocumentNo(Integer.parseInt(docNo));
                     }
+
+
                     if(sendMail){
                         manuInspectModel.setMpLastSendmailDate(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
                         manuInspectModel.setMpLastSendmailTime(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime()));
-                        manuInspectModel.setMpLastSendmailByUserNo(EmployeesModel.id);
-                        manuInspectModel.setMpLastSendmailByUserName(EmployeesModel.employeeName);
+                        manuInspectModel.setMpLastSendmailByUserNo(TBUserLoginModel.ulUserLoginId);
+                        manuInspectModel.setMpLastSendmailByUserName(TBUserLoginModel.ulName);
+                        errDesc = sendHeaderToServer();
                     }
-
 
                     //Detail
                     for (int i = 0; i < albumList.size(); i++) {
@@ -108,16 +132,30 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                             manuInspectImageModel.setMpgDocSeq(String.valueOf(i));
                             manuInspectImageModel.setMpgMemo(Album.DETAIL_MEMO[i]);
                             manuInspectImageModel.setMpgImagePath(Album.DETAIL_FILENAME[i]);
-                            manuInspectImageModel.setMpgLastModifyDate(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
-                            manuInspectImageModel.setMpgLastModifyTime(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
-                            manuInspectImageModel.setMpgLastModifyByUserNo(TBUserLoginModel.ulUserLoginId);
-                            manuInspectImageModel.setMpgLastModifyByUserName(TBUserLoginModel.ulName);
+
+                            if (!docNo.equals("0")) {
+                                manuInspectImageModel.setMpgLastModifyDate(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
+                                manuInspectImageModel.setMpgLastModifyTime(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
+                                manuInspectImageModel.setMpgLastModifyByUserNo(TBUserLoginModel.ulUserLoginId);
+                                manuInspectImageModel.setMpgLastModifyByUserName(TBUserLoginModel.ulName);
+                            }
+
                             manuInspectImageModelList.add(manuInspectImageModel);
                             manuInspectModel.setManuInspectImageModelList(manuInspectImageModelList);
 
+
+
                             if (Album.DETAIL_MEMO[i]!= null) {
                                 Log.d("MEMO__________: ", Album.DETAIL_MEMO[i]);
+                                detailMemo = Album.DETAIL_MEMO[i];
+                            } else {
+                                detailMemo = "";
                             }
+
+                            if(sendMail == true){
+                                errDesc = sendDetailToServer(String.valueOf(i), detailMemo, Album.DETAIL_FILENAME[i]);
+                            }
+
 
                         }
                     }
@@ -133,6 +171,16 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                         progressDialog.dismiss();
 
                     if (SAVE_STATUS == true) {
+                        activity.runOnUiThread(new Runnable() {
+                            public void run() {
+                            if (!docNo.equals("0")) {
+                                Toast.makeText(activity, "Successfully Updated.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(activity, "Successfully Created.", Toast.LENGTH_SHORT).show();
+                            }
+                            }
+                        });
+
                         // ให้ไปยังหน้าหลัก
                         Intent intent = new Intent(activity, Allfile.class);
                         activity.startActivity(intent);
@@ -170,4 +218,75 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
         basicInfomation.setFileHeader_mail(null);
     }
 
+    private String sendHeaderToServer(){
+        mUploadPhoto.sendFileToServer(imgName, mWebServiceURL.URL_uploadFile,"HEADER");
+
+        FormBody params = new FormBody.Builder()
+                .add("ACTION_MODE","HEADER")
+                .add("DOC_CODE", "IN01")
+                .add("DOCUMENT", Imei)
+                .add("DOC_BRANCH", "01")
+                .add("DEC_SEQ","0")
+                .add("DOC_DATE",basicInfomation.getFileHeader_date())
+                .add("CUTOMER_NO",basicInfomation.getFileHeader_customerNo())
+                .add("ITEM_NO",basicInfomation.getFileHeader_itemNo())
+                .add("COLOR_NO",basicInfomation.getFileHeader_colorNo())
+                .add("CO_NO",basicInfomation.getFileHeader_coNo())
+                .add("EMPLOYEE_NO",EmployeesModel.id)
+                .add("EMPLOYEE_NAME",EmployeesModel.employeeName)
+                .add("IMG_PATH",imgName)
+                .add("USER_NO",TBUserLoginModel.ulUserLoginId)
+                .add("USERNAME",TBUserLoginModel.ulName)
+                .build();
+
+
+        try {
+            JSONArray data = new JSONArray(mOkHttpHelper.serverRequest(mWebServiceURL.URL_createNew,params));
+            JSONObject c = data.getJSONObject(0);
+
+            Log.d("NEW_DOCUMENT_NO",String.valueOf(c.getInt("NEW_DOCNO")));
+            mNewDocumentNo = c.getInt("NEW_DOCNO");
+            if(c.getInt("STATUS") == 0){
+                return c.getString("DESCRIPTION");
+            } else {
+                return "";
+            }
+        } catch (JSONException e) {
+            return e.getMessage().toString();
+        }
+    }
+
+    private String sendDetailToServer(String seq, String memo, String fileName){
+        FormBody params = new FormBody.Builder()
+                .add("ACTION_MODE","DETAIL")
+                .add("NEW_DOCUMENT_NO",String.valueOf(mNewDocumentNo))
+                .add("DOC_CODE", "IN01")
+                .add("DOC_CODE", "IN01")
+                .add("DOCUMENT", Imei)
+                .add("DOC_BRANCH", "01")
+                .add("DEC_SEQ",seq)
+                .add("MEMO",memo)
+                .add("EMPLOYEE_NO",EmployeesModel.id)
+                .add("EMPLOYEE_NAME",EmployeesModel.employeeName)
+                .add("USER_NO",TBUserLoginModel.ulUserLoginId)
+                .add("USERNAME",TBUserLoginModel.ulName)
+                .add("IMG_PATH",fileName)
+                .build();
+
+        mUploadPhoto.sendFileToServer(fileName, mWebServiceURL.URL_uploadFile,"DETAIL");
+
+        try {
+            JSONArray data = new JSONArray(mOkHttpHelper.serverRequest(mWebServiceURL.URL_createNew,params));
+            JSONObject c = data.getJSONObject(0);
+
+
+            if(c.getInt("STATUS") == 0){
+                return c.getString("DESCRIPTION");
+            } else {
+                return "";
+            }
+        } catch (JSONException e) {
+            return e.getMessage().toString();
+        }
+    }
 }

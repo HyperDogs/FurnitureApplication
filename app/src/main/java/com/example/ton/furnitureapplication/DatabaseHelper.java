@@ -27,7 +27,7 @@ import Model.TBUserLoginModel;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase database;
     private static final String DATABASE_NAME = "SQLiteDatabase.db";
-    public static final int DATABASE_VERSION = 2;
+    public static final int DATABASE_VERSION = 4;
     public static final String TABLE_USERLOGIN = "TBUserLogin";
     public static final String TABLE_MANUINSPECT = "ManuInspect";
     public static final String TABLE_MANUINSPECTIMAGE = "ManuInspectImage";
@@ -172,9 +172,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_USERLOGIN_TABLE);
         db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_ULUSERLOGINID + ", " + COL_ULNAME + ", " + COL_ULPASS + ", " + COL_ULDESC + ", "+ COL_ULEMPLOYEEID +", " + COL_ULBRANCHID +" ) " +
                    "VALUES " +
-                   "('admin', 'admin', '1234', '000000000000000', '01', '01'), " +
-                   "('2', 'admin', 'admin', '357220073447263', '02', '01'), " +
-                   "('3', 'admin', 'admin', '357221073447261', '03', '01');");
+        "('admin', 'admin', '1234', '867007020839046', '01', '01'), " +
+                "('party', '1589', 'Party Suwit', '867007020839046', '04', '01'), " +
+                "('2', 'admin', 'admin', '357220073447263', '02', '01'), " +
+                "('3', 'admin', 'admin', '357221073447261', '03', '01');");
     }
 
     private void createTABLE_MANUINSPECT(SQLiteDatabase db){
@@ -415,23 +416,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return userLogins;
     }
 
-    public boolean checkUserLogin(String userName, String passWord, String imei){
-        boolean result = false;
+    public String checkUserLogin(String userName, String passWord, String imei){
+        String result = "";
+
         database = this.getReadableDatabase();
         try{
             database.beginTransaction();
-            Cursor cursor = database.query(TABLE_USERLOGIN, null, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
+
+
+            // CHECK USERNAME, PASSWORD
+            Cursor cursor = database.query(TABLE_USERLOGIN, null, COL_ULUSERLOGINID + " = ? AND " + COL_ULPASS + " = ? ", new String[]{userName, passWord}, null, null, null);
             if(cursor.getCount() > 0){
-                result = true;
+                result = "";
+            } else {
+                result = "Invalid Username or Password";
             }
             cursor.close();
+
+            // CHECK LOGIN
+            if(result.equals("")) {
+                cursor = database.query(TABLE_USERLOGIN, null, COL_ULUSERLOGINID + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
+                if (cursor.getCount() > 0) {
+                    result = "";
+                } else {
+                    result = "Your device is not support !!";
+                }
+                cursor.close();
+            }
             database.setTransactionSuccessful();
         }catch (SQLException e){
-            e.getMessage();
+            result = e.getMessage();
         }finally {
             database.endTransaction();
             database.close();
         }
+
         return result;
     }
 

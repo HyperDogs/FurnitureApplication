@@ -1,8 +1,10 @@
 package com.example.ton.furnitureapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
@@ -50,6 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return new ViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         try {
@@ -74,6 +77,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 genericViewHolder.inspV.setText(model.getInspector());
                 genericViewHolder.mailV.setText(model.getMail());
 
+                if(model.getMail().equals("Sent")){
+                    genericViewHolder.mailV.setTextColor(Color.parseColor("#52b071"));
+                } else {
+                    genericViewHolder.mailV.setTextColor(Color.parseColor("#C3333A"));
+                }
         }
         }catch (Exception e){
             throw e;

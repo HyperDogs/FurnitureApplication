@@ -2,18 +2,23 @@ package com.example.ton.furnitureapplication;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -30,6 +35,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -42,6 +48,10 @@ import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -56,6 +66,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
+import okhttp3.FormBody;
 import resource.AsyncTaskLogin;
 import resource.AsyncTaskSave;
 import resource.BitmapManager;
@@ -83,9 +94,13 @@ public class Home extends AppCompatActivity  {
     private RelativeLayout mainLayout,swapLayout,removeLayout;
     private CollapsingToolbarLayout collapsingToolbar;
     private AppBarLayout appbar;
-    private Button doneswap,doneremove;
+    private Button doneswap,doneremove,onfirmRemove;
     private boolean headImgStatus = false;
+    private ActionClass actionClass;
+    private ProgressDialog progressDialog;
+    private Handler mHandler = new Handler();
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +112,18 @@ public class Home extends AppCompatActivity  {
             Bundle bundle  = getIntent().getExtras();
             if(!bundle.getString("docNo").equals(null)){
                 docNo = bundle.getString("docNo");
-                createGirdViewEdit(docNo);
+
+
+                progressDialog = ProgressDialog.show(Home.this, "",
+                        "Loading...", true);
+
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        createGirdViewEdit(docNo);
+                        progressDialog.dismiss();
+                    }
+                }, 4500);
 
             }
         }else {
@@ -117,7 +143,7 @@ public class Home extends AppCompatActivity  {
         fabRemove.setOnClickListener(onClickFabRemove);
         doneswap.setOnClickListener(onClickDoneSwap);
         doneremove.setOnClickListener(onClickDoneRemove);
-
+        onfirmRemove.setOnClickListener(onClickConfirmRemove);
 
 
         //InfoHeader
@@ -127,9 +153,30 @@ public class Home extends AppCompatActivity  {
         colorV.setText(basicInfomation.getFileHeader_colorNo());
         coV.setText(basicInfomation.getFileHeader_coNo());
         inspV.setText(basicInfomation.getFileHeader_inspector());
-        mailV.setText(basicInfomation.getFileHeader_mail());
 
+        String sentMailStatus = "";
+
+        if(basicInfomation.getFileHeader_mail() != null){
+            sentMailStatus = basicInfomation.getFileHeader_mail();
+        }
+
+        mailV.setText(sentMailStatus);
+
+        if(!sentMailStatus.equals("")) {
+            if (sentMailStatus.equals("Sent")) {
+                mailV.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                mailV.setTextColor(Color.parseColor("#52b071"));
+            } else {
+                mailV.setTextColor(Color.parseColor("#C3333A"));
+                mailV.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        } else {
+            mailV.setBackgroundColor(Color.parseColor("#00000000"));
+        }
+
+        actionClass = new ActionClass();
     }
+
     private void setView(){
         mainLayout = findViewById(R.id.mainLayout);
         swapLayout = findViewById(R.id.swapLayout);
@@ -148,7 +195,7 @@ public class Home extends AppCompatActivity  {
         fabRemove = findViewById(R.id.fabRemove);
         doneswap =findViewById(R.id.swapdone);
         doneremove = findViewById(R.id.doneremove);
-
+        onfirmRemove = findViewById(R.id.confirmRemove);
 
 
         dateV = (TextView)findViewById(R.id.dateV);
@@ -267,9 +314,10 @@ public class Home extends AppCompatActivity  {
             startActivity(listFuniture);
             System.gc();
             albumList.clear();
-            finish();
+            //finish();
         }
     };
+
     private  View.OnClickListener onClickBasicInfo = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -328,6 +376,11 @@ public class Home extends AppCompatActivity  {
             recyclerView.setNestedScrollingEnabled(false);
             menuFab.hideMenu(true);
             menuFab.close(true);
+
+
+            actionClass.setOnSwap(true);
+            adapter.setOnSwap(actionClass.getOnSwap());
+            adapter.notifyDataSetChanged();
         }
     };
 
@@ -342,6 +395,10 @@ public class Home extends AppCompatActivity  {
             recyclerView.setNestedScrollingEnabled(false);
             menuFab.hideMenu(true);
             menuFab.close(true);
+
+            actionClass.setOnRemove(true);
+            adapter.setOnRemove(actionClass.getOnRemove());
+            adapter.notifyDataSetChanged();
         }
     };
 
@@ -355,6 +412,60 @@ public class Home extends AppCompatActivity  {
             appbar.setExpanded(false);
             recyclerView.setNestedScrollingEnabled(true);
             menuFab.showMenu(true);
+
+            actionClass.setOnSwap(false);
+            adapter.setOnSwap(actionClass.getOnSwap());
+            adapter.notifyDataSetChanged();
+        }
+    };
+
+
+
+
+    private View.OnClickListener onClickConfirmRemove = new View.OnClickListener() {
+        @SuppressLint("WrongConstant")
+        @Override
+        public void onClick(View view) {
+
+            new AlertDialog.Builder(Home.this)
+                    .setTitle("Remove Photos")
+                    .setMessage("Would you like to remove ?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.dismiss();
+
+                            progressDialog = ProgressDialog.show(Home.this, "",
+                                    "Removing. Please wait...", true);
+
+                            mHandler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    swapLayout.setVisibility(RelativeLayout.GONE);
+                                    mainLayout.setVisibility(RelativeLayout.ABOVE);
+                                    removeLayout.setVisibility(RelativeLayout.GONE);
+                                    appbar.setExpanded(false);
+                                    recyclerView.setNestedScrollingEnabled(true);
+                                    menuFab.showMenu(true);
+
+                                    for(int i=0; i<Album.DETAIL_REMOVED_INDEX.size(); i++){
+                                        Album.DETAIL_BITMAP[Album.DETAIL_REMOVED_INDEX.get(i)] = null;
+                                    }
+                                    Album.DETAIL_REMOVED_INDEX = new ArrayList<Integer>();
+
+                                    actionClass.setOnRemove(false);
+                                    adapter.setOnRemove(actionClass.getOnRemove());
+                                    adapter.notifyDataSetChanged();
+
+                                    progressDialog.dismiss();
+                                }
+                            }, 500);
+
+
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
+
         }
     };
 
@@ -368,8 +479,14 @@ public class Home extends AppCompatActivity  {
             appbar.setExpanded(false);
             recyclerView.setNestedScrollingEnabled(true);
             menuFab.showMenu(true);
+
+            actionClass.setOnRemove(false);
+            adapter.setOnRemove(actionClass.getOnRemove());
+            adapter.notifyDataSetChanged();
         }
     };
+
+
 
     public static void updateView(){
         adapter.notifyDataSetChanged();
@@ -379,7 +496,7 @@ public class Home extends AppCompatActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == headerImage && resultCode == RESULT_OK) {
+        if (requestCode == headerImage) {
 
             try {
                 if (file !=null) {
@@ -507,6 +624,8 @@ public class Home extends AppCompatActivity  {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         prepareAlbumsEdit(docNo);
+
+
     }
     private void prepareAlbumsEdit(String docNo) {
         String status;
@@ -570,6 +689,7 @@ public class Home extends AppCompatActivity  {
         }
         adapter.notifyDataSetChanged();
     }
+
     private void createGirdView(){
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         albumList = new ArrayList<>();
@@ -685,7 +805,7 @@ public class Home extends AppCompatActivity  {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             new AlertDialog.Builder(Home.this)
                     .setTitle("Logout")
-                    .setMessage("Do you want to logout ?")
+                    .setMessage("Would you like to logout ?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int whichButton) {

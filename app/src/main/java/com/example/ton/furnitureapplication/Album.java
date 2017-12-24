@@ -3,6 +3,7 @@ package com.example.ton.furnitureapplication;
 import android.graphics.Bitmap;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by Lincoln on 18/05/16.
@@ -15,6 +16,7 @@ public class Album {
     public static Bitmap[] DETAIL_BITMAP = new Bitmap[100];
     public static String[] DETAIL_MEMO = new String[100];
     public static String[] DETAIL_FILENAME = new String[100];
+    public static ArrayList<Integer> DETAIL_REMOVED_INDEX = new ArrayList<Integer>();
     public Album(){
 
     }

@@ -28,7 +28,6 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
     private ProgressDialog progressDialog;
     private Dialog dialog;
     private String url,getUser,getPassword;
-    private boolean LOGIN_STATUS = false;
     private Handler handler = new Handler();
 
     //DB
@@ -54,34 +53,28 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                /// เขียนโค้ด Login ไว้ตรงนี้และเซ็ทตัวแปร Login Status
-                /// Return from SQLite >> LOGIN_STATUS = true หรือ false
                 createDB();
+
                 /// Login
-                if(mHelper.checkUserLogin(getUser,getPassword,getDeviceImei(activity))){
-                    LOGIN_STATUS = true;
-                } else {
-                    LOGIN_STATUS = false;
-                }
+                final String errDesc = mHelper.checkUserLogin(getUser,getPassword,getDeviceImei(activity));
 
                 handler.postDelayed(new Runnable() {
                     public void run() {
                         progressDialog.dismiss();
 
-                    if (LOGIN_STATUS == true) {
-                        /// ให้ไปยังหน้าหลัก
+                    if (errDesc.equals("")) {
                         mHelper.getEmployee(getUser, getPassword, getDeviceImei(activity));
                         mHelper.getUserLogin(getUser, getPassword, getDeviceImei(activity));
                         mHelper.getBranchCompanyCode(getUser, getPassword, getDeviceImei(activity));
                         Intent intent = new Intent(activity, Home.class);
                         activity.startActivity(intent);
-                    } else if (LOGIN_STATUS == false) {
+                    } else {
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
-                                Toast.makeText(activity, "Login Failed", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, errDesc, Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
+                      }
                     }
                 }, 1500);
             }
@@ -90,7 +83,7 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String result)  {
-        
+
     }
     private void createDB(){
         //SQLite

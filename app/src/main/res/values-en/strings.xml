@@ -6,20 +6,20 @@
 
     <string name="dateInfo">Date</string>
     <string name="customer_noInfo">Customer No</string>
-    <string name="cus_noInfo">Customer No</string>
+    <string name="cus_noInfo">Cust. No</string>
     <string name="item_noInfo">Item No</string>
     <string name="color_noInfo">Color No</string>
     <string name="co_noInfo">Co No</string>
     <string name="inspectorInfo">Inspector</string>
 
-    <string name="date">Date :</string>
-    <string name="customer_no">Customer No :</string>
-    <string name="cus_no">Customer No :</string>
-    <string name="item_no">Item No :</string>
-    <string name="color_no">Color No :</string>
-    <string name="co_no">Co No :</string>
-    <string name="inspector">Inspector :</string>
-    <string name="mail">Status :</string>
+    <string name="date">Date</string>
+    <string name="customer_no">Cust. No</string>
+    <string name="cus_no">Cust. No</string>
+    <string name="item_no">Item No</string>
+    <string name="color_no">Color No</string>
+    <string name="co_no">Co No</string>
+    <string name="inspector">Inspector</string>
+    <string name="mail">Status</string>
 
     <string name="alertInfo">Please fill in all information.</string>
     <string name="delete_text">Please choose image to delete.</string>

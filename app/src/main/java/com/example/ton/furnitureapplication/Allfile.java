@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,9 +27,12 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.internal.MDTintHelper;
 import com.afollestad.materialdialogs.internal.ThemeSingleton;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import Model.ManuInspectModel;
@@ -58,6 +62,7 @@ public class Allfile extends AppCompatActivity {
     private String dateFromStr,dateToStr,statusStr;
     private CheckBox sentBox,notSentBox;
     private RelativeLayout nodatalayout;
+    private boolean sent,notSent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,8 @@ public class Allfile extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         dateFromStr = sdf.format(myCalendar.getTime()).toString();
         dateToStr = sdf.format(myCalendar.getTime()).toString();
+        sent = false;
+        notSent = false;
         statusStr = null;
 
         findViews();
@@ -83,7 +90,7 @@ public class Allfile extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(fabClick);
-        nodatalayout =findViewById(R.id.nodatelayout);
+        nodatalayout = findViewById(R.id.nodatelayout);
         nodatalayout.setVisibility(RelativeLayout.GONE);
 
     }
@@ -113,8 +120,13 @@ public class Allfile extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Allfile.this,Home.class);
-                BasicInfomation basicInfomation = new BasicInfomation();
+                /*Intent i = new Intent(Allfile.this,Home.class);
+                startActivity(i);*/
+                onBackPressed();
+                modelList.clear();
+                finish();
+
+                /*BasicInfomation basicInfomation = new BasicInfomation();
                 basicInfomation.setFileHeader_date(null);
                 basicInfomation.setFileHeader_inspector(null);
                 basicInfomation.setFileHeader_coNo(null);
@@ -127,7 +139,8 @@ public class Allfile extends AppCompatActivity {
                 Album.DETAIL_MEMO = new String[100];
                 startActivity(i);
                 modelList.clear();
-                finish();
+                finish();*/
+
             }
         });
         search_btn=(Button)findViewById(R.id.search_btn);
@@ -147,22 +160,39 @@ public class Allfile extends AppCompatActivity {
                 positiveAction.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        try {
                             dateFromStr = dateFrom.getText().toString();
                             dateToStr = dateTo.getText().toString();
+                            Date dateFrom = stringToDate(dateFromStr);
+                            Date dateTo = stringToDate(dateToStr);
+                        if (dateFrom.before(dateTo)){
                             if (sentBox.isChecked() && notSentBox.isChecked()){
                                 statusStr = null;
+                                sent = true;
+                                notSent = true;
                             }else if (sentBox.isChecked()){
                                 statusStr = "Y";
+                                sent = true;
+                                notSent = false;
                             }else if (notSentBox.isChecked()){
                                 statusStr = "N";
+                                sent = false;
+                                notSent = true;
                             }else {
                                 statusStr = null;
+                                sent = false;
+                                notSent = false;
                             }
                         modelList.clear();
                         setAdapter(dateFromStr,dateToStr,statusStr);
                         mAdapter.notifyDataSetChanged();
                         dialog.dismiss();
-
+                        }else {
+                            Toast.makeText(Allfile.this,"Rang of Date Wrong",Toast.LENGTH_SHORT).show();
+                        }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 });
@@ -175,6 +205,7 @@ public class Allfile extends AppCompatActivity {
                 dateTo = dialog.getCustomView().findViewById(R.id.dateTo);
                 dateFrom.setOnClickListener(pickDateF);
                 dateTo.setOnClickListener(pickDateT);
+                //check Date
                 if(!dateFromStr.equals("")){
                     dateFrom.setText(dateFromStr);
                 }else{
@@ -184,6 +215,23 @@ public class Allfile extends AppCompatActivity {
                     dateTo.setText(dateToStr);
                 }else{
                     dateTo.setText(sdf.format(myCalendar.getTime()));
+                }
+                //check Status Sent
+                if (sent && notSent){
+                    sentBox.setChecked(true);
+                    notSentBox.setChecked(true);
+                }else{
+                    if (sent){
+                        sentBox.setChecked(true);
+                        notSentBox.setChecked(false);
+                    }else if (notSent){
+                        sentBox.setChecked(false);
+                        notSentBox.setChecked(true);
+                    } else {
+                        sentBox.setChecked(false);
+                        notSentBox.setChecked(false);
+                    }
+
                 }
 
                 datePickFrom = new DatePickerDialog.OnDateSetListener() {
@@ -256,6 +304,7 @@ public class Allfile extends AppCompatActivity {
         List<ManuInspectModel> manuInspectList = db.searchManuInspect(dateFrom,dateTo,status);
         for (int i = 0 ;i<manuInspectList.size();i++){
             ManuInspectModel manuInspectModel =  manuInspectList.get(i);
+
             if (manuInspectModel.getMpLastSendmailByUserName() != null){
                 status = "Sent";
             }else {
@@ -304,14 +353,16 @@ public class Allfile extends AppCompatActivity {
                 startActivity(home);
                 modelList.clear();
                 finish();
-
-
             }
         });
 
         if (modelList.size() == 0){
             recyclerView.setVisibility(RecyclerView.GONE);
             nodatalayout.setVisibility(RelativeLayout.ABOVE);
+            fab.setVisibility(FloatingActionButton.GONE);
+        }else {
+            recyclerView.setVisibility(RecyclerView.VISIBLE);
+            nodatalayout.setVisibility(RelativeLayout.GONE);
             fab.setVisibility(FloatingActionButton.GONE);
         }
 
@@ -330,7 +381,7 @@ public class Allfile extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent i = new Intent(Allfile.this,Home.class);
+            /*Intent i = new Intent(Allfile.this,Home.class);
             BasicInfomation basicInfomation = new BasicInfomation();
             basicInfomation.setFileHeader_date(null);
             basicInfomation.setFileHeader_inspector(null);
@@ -343,7 +394,8 @@ public class Allfile extends AppCompatActivity {
             Album.DETAIL_BITMAP = new Bitmap[100];
             Album.DETAIL_MEMO = new String[100];
             startActivity(i);
-            modelList.clear();
+            modelList.clear();*/
+            onBackPressed();
             finish();
             return false;
         }
@@ -358,6 +410,18 @@ public class Allfile extends AppCompatActivity {
         System.runFinalization();
         Runtime.getRuntime().gc();
         System.gc();
+    }
+    private Date stringToDate(String dateStr) throws ParseException {
+        String str_date="11-June-07";
+        DateFormat formatter ;
+        Date date = null;
+        try {
+            formatter = new SimpleDateFormat("dd-MMM-yy");
+            date = formatter.parse(str_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 
 }

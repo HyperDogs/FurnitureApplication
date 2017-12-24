@@ -12,14 +12,14 @@
     <string name="co_noInfo">Co No</string>
     <string name="inspectorInfo">Inspector</string>
 
-    <string name="date">Date :</string>
-    <string name="customer_no">Customer No :</string>
-    <string name="cus_no">Customer No :</string>
-    <string name="item_no">Item No :</string>
-    <string name="color_no">Color No :</string>
-    <string name="co_no">Co No :</string>
-    <string name="inspector">Inspector :</string>
-    <string name="mail">Status :</string>
+    <string name="date">Date</string>
+    <string name="customer_no">Cust. No</string>
+    <string name="cus_no">Cust. No</string>
+    <string name="item_no">Item No</string>
+    <string name="color_no">Color No</string>
+    <string name="co_no">Co No</string>
+    <string name="inspector">Inspector</string>
+    <string name="mail">Status</string>
 
     <string name="alertInfo">Please fill in all information.</string>
     <string name="update">Update</string>

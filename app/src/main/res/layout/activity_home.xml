@@ -122,27 +122,30 @@
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="20dp"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:layout_width="match_parent"
+                                        android:layout_width="60dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
-                                        android:gravity="fill|clip_vertical|clip_horizontal|start|end"
-                                        android:paddingTop="2dp"
                                         android:text="@string/date"
                                         android:textColor="@color/white"
                                         android:textSize="11sp"
                                         android:textStyle="bold" />
-
+                                    <TextView
+                                        android:layout_width="15dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:textSize="11sp"
+                                        android:text=":"/>
                                     <TextView
                                         android:id="@+id/dateV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:gravity="bottom|left"
                                         android:paddingLeft="2dp"
+                                        android:paddingTop="1dp"
                                         android:textColor="@color/white"
                                         android:textSize="11sp" />
 
@@ -150,29 +153,32 @@
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="20dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
+
                                     <TextView
-                                        android:layout_width="match_parent"
+                                        android:layout_width="60dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
-                                        android:gravity="left"
-                                        android:paddingTop="2dp"
                                         android:text="@string/cus_no"
                                         android:textColor="@color/white"
                                         android:textSize="11sp"
                                         android:textStyle="bold" />
-                                    />
-
+                                    <TextView
+                                        android:layout_width="15dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:textSize="11sp"
+                                        android:text=":"/>
                                     <TextView
                                         android:id="@+id/cusNoV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:gravity="bottom|left"
                                         android:paddingLeft="2dp"
+                                        android:paddingTop="1dp"
                                         android:textColor="@color/white"
                                         android:textSize="11sp" />
 
@@ -180,85 +186,95 @@
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="22dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
+
                                     <TextView
-                                        android:layout_width="match_parent"
+                                        android:layout_width="60dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
-                                        android:gravity="left"
-                                        android:paddingTop="2dp"
                                         android:text="@string/item_no"
                                         android:textColor="@color/white"
                                         android:textSize="11sp"
                                         android:textStyle="bold" />
-
+                                    <TextView
+                                        android:layout_width="15dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:textSize="11sp"
+                                        android:text=":"/>
                                     <TextView
                                         android:id="@+id/itemV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:gravity="bottom|left"
                                         android:paddingLeft="2dp"
+                                        android:paddingTop="1dp"
                                         android:textColor="@color/white"
                                         android:textSize="11sp" />
                                 </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="22dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:layout_width="match_parent"
+                                        android:layout_width="60dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
-                                        android:gravity="left"
-                                        android:paddingTop="2dp"
                                         android:text="@string/color_no"
                                         android:textColor="@color/white"
                                         android:textSize="11sp"
                                         android:textStyle="bold" />
-
+                                    <TextView
+                                        android:layout_width="15dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:textSize="11sp"
+                                        android:text=":"/>
                                     <TextView
                                         android:id="@+id/colorV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:gravity="bottom|left"
                                         android:paddingLeft="2dp"
+                                        android:paddingTop="1dp"
                                         android:textColor="@color/white"
                                         android:textSize="11sp" />
-
                                 </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="22dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
+
                                     <TextView
-                                        android:layout_width="match_parent"
+                                        android:layout_width="60dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
-                                        android:gravity="left"
-                                        android:paddingTop="2dp"
                                         android:text="@string/co_no"
                                         android:textColor="@color/white"
                                         android:textSize="11sp"
                                         android:textStyle="bold" />
-
+                                    <TextView
+                                        android:layout_width="15dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:textSize="11sp"
+                                        android:text=":"/>
                                     <TextView
                                         android:id="@+id/coV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:gravity="bottom|left"
                                         android:paddingLeft="2dp"
+                                        android:paddingTop="1dp"
                                         android:textColor="@color/white"
                                         android:textSize="11sp" />
 
@@ -266,57 +282,62 @@
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="22dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
-
                                     <TextView
-                                        android:layout_width="match_parent"
+                                        android:layout_width="60dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
-                                        android:gravity="left"
-                                        android:paddingTop="2dp"
                                         android:text="@string/inspector"
                                         android:textColor="@color/white"
                                         android:textSize="11sp"
                                         android:textStyle="bold" />
-
+                                    <TextView
+                                        android:layout_width="15dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:textSize="11sp"
+                                        android:text=":"/>
                                     <TextView
                                         android:id="@+id/inspV"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="left"
-                                        android:gravity="bottom|left"
                                         android:paddingLeft="2dp"
+                                        android:paddingTop="1dp"
                                         android:textColor="@color/white"
                                         android:textSize="11sp" />
-
                                 </LinearLayout>
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="22dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
                                     <TextView
-                                        android:layout_width="match_parent"
+                                        android:layout_width="60dp"
                                         android:layout_height="wrap_content"
                                         android:layout_weight="1"
-                                        android:gravity="left"
-                                        android:paddingTop="2dp"
                                         android:text="@string/mail"
                                         android:textColor="@color/white"
                                         android:textSize="11sp"
                                         android:textStyle="bold" />
-
+                                    <TextView
+                                        android:layout_width="15dp"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:textSize="11sp"
+                                        android:text=":"/>
                                     <TextView
                                         android:id="@+id/mailV"
-                                        android:layout_width="wrap_content"
+                                        android:layout_width="65dp"
                                         android:layout_height="wrap_content"
-                                        android:layout_gravity="left"
-                                        android:gravity="bottom|left"
+                                        android:gravity="center"
                                         android:paddingLeft="2dp"
+                                        android:textStyle="bold"
+                                        android:paddingTop="1dp"
                                         android:textColor="@color/white"
                                         android:textSize="11sp" />
 
@@ -383,7 +404,7 @@
                             android:textStyle="bold" />
 
                         <Button
-                            android:id="@+id/button4"
+                            android:id="@+id/confirmRemove"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30dp"
@@ -419,7 +440,7 @@
                             android:id="@+id/textView7"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="25dp" />
+                            android:layout_marginBottom="22dp" />
 
                         <TextView
                             android:id="@+id/textView6"
@@ -468,7 +489,7 @@
         app:menu_colorPressed="@color/color_green"
         fab:menu_backgroundColor="#ccffffff"
         fab:menu_colorRipple="#99FFFFFF"
-        fab:menu_fab_label="Menu label"
+        fab:menu_fab_label="Close"
         fab:menu_labels_ellipsize="end"
         fab:menu_labels_singleLine="true">
 
@@ -501,7 +522,7 @@
             android:src="@drawable/ic_plus"
             app:fab_colorNormal="@android:color/holo_green_dark"
             app:fab_colorPressed="@color/color_green"
-            app:fab_label="ADD"
+            app:fab_label="New File"
             fab:fab_colorRipple="#99FFFFFF"
             fab:fab_size="mini" />
 

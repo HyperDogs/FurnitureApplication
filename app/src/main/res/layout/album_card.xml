@@ -23,7 +23,15 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:scaleType="fitXY"/>
-
+            <CheckBox
+                android:id="@+id/removeCheckbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:button="@xml/custom_checkbox"
+                android:text="" />
             <ImageButton
                 android:id="@+id/pickImg"
                 android:layout_width="wrap_content"

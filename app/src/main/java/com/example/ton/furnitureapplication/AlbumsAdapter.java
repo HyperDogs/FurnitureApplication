@@ -3,10 +3,13 @@ package com.example.ton.furnitureapplication;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.PopupMenu;
@@ -17,9 +20,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import resource.CreateFile;
@@ -39,11 +46,25 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
     private File file;
     private Uri uri;
     private int detailPickImage = 1003;
+    private boolean onSwap = false, onRemove= false;
+    private int firstSelected=-1;
+    private ProgressDialog progressDialog;
+    private Handler mHandler = new Handler();
+
+    public void setOnSwap(boolean swap){
+        onSwap = swap;
+    }
+
+    public void setOnRemove(boolean remove){
+        onRemove= remove;
+    }
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public ImageView thumbnail, overflow;
         public ImageButton pickImg;
+        public CheckBox removeChk;
 
         public MyViewHolder(View view) {
             super(view);
@@ -51,7 +72,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
             thumbnail = (ImageView) view.findViewById(R.id.thumbnail);
             overflow = (ImageView) view.findViewById(R.id.overflow);
             pickImg = (ImageButton) view.findViewById(R.id.pickImg);
-
+            removeChk = (CheckBox) view.findViewById(R.id.removeCheckbox);
         }
     }
 
@@ -70,6 +91,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
         return new MyViewHolder(itemView);
     }
 
+
+
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         album = albumList.get(position);
@@ -81,80 +104,183 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                     .fit().centerCrop().into(holder.thumbnail);
             holder.overflow.setVisibility(View.VISIBLE);
 
+            if(onRemove){
+                holder.removeChk.setVisibility(View.VISIBLE);
+            } else {
+                holder.removeChk.setVisibility(View.GONE);
+            }
         } else {
             holder.overflow.setVisibility(View.GONE);
         }
 
         if(Album.DETAIL_MEMO[position] !=null){
             holder.title.setText(Album.DETAIL_MEMO[position]);
+        } else {
+            holder.title.setText("");
         }
 
         // loading album cover using Glide library
         Glide.with(mContext).load(album.getThumbnail()).into(holder.thumbnail);
 
-        //กดที่รูป
-        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Album.DETAIL_BITMAP[position] != null){
-                    Intent fullSizeIMG = new Intent(mContext,PreveiwImage.class);
-                    fullSizeIMG.putExtra("IMG_INDEX",position);
-                    mContext.startActivity(fullSizeIMG);
-                } else {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    Album.DETAIL_FILE= CreateFile.createUnique();
-                    album.setFileName(CreateFile.getFileName());
-                    uri = FileProvider.getUriForFile(mContext,BuildConfig.APPLICATION_ID + ".provider",Album.DETAIL_FILE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-                    ((Activity) mContext).startActivityForResult(intent, position);
-                }
-            }
-        });
+
         //กดที่Text
-        holder.title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Album album1 = albumList.get(position);
-                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                builder.setTitle("Memo");
+        if(onSwap){
+            holder.title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(firstSelected == -1) {
+                        v.setAlpha((float) 0.3);
+                        holder.thumbnail.setAlpha((float) 0.3);
+                        firstSelected = position;
+                    } else {
+                        final View view2 = v;
+                        progressDialog = ProgressDialog.show(mContext, "",
+                                "Moving...", true);
 
-                // Set up the input
-                final EditText input = new EditText(mContext);
-                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                input.setText(Album.DETAIL_MEMO[position]);
-                builder.setView(input);
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(firstSelected != position){
+                                    Bitmap firstBMP = Album.DETAIL_BITMAP[firstSelected];
+                                    Bitmap lastBMP = Album.DETAIL_BITMAP[position];
 
-                // Set up the buttons
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @SuppressLint("LongLogTag")
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                                    Album.DETAIL_BITMAP[firstSelected] = lastBMP;
+                                    Album.DETAIL_BITMAP[position] = firstBMP;
+                                }
 
-                        //album1.setName(input.getText().toString());
-                        Album.DETAIL_MEMO[position] = input.getText().toString();
-                        albumList.set(position, album1);
-                        Home.updateView();
+                                firstSelected = -1;
+                                view2.setAlpha(1);
+                                holder.thumbnail.setAlpha(1);
+                                notifyDataSetChanged();
+                                progressDialog.dismiss();
+                            }
+                        }, 500);
+                    }
+                }
+            });
+
+            //กดที่รูป
+            holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(firstSelected == -1) {
+                        v.setAlpha((float) 0.3);
+                        holder.thumbnail.setAlpha((float) 0.3);
+                        firstSelected = position;
+                    } else {
+
+                        final View view2 = v;
+                        progressDialog = ProgressDialog.show(mContext, "",
+                                "Moving...", true);
+
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(firstSelected != position){
+                                    Bitmap firstBMP = Album.DETAIL_BITMAP[firstSelected];
+                                    Bitmap lastBMP = Album.DETAIL_BITMAP[position];
+
+                                    Album.DETAIL_BITMAP[firstSelected] = lastBMP;
+                                    Album.DETAIL_BITMAP[position] = firstBMP;
+                                }
+
+                                firstSelected = -1;
+                                view2.setAlpha(1);
+                                holder.thumbnail.setAlpha(1);
+                                notifyDataSetChanged();
+                                progressDialog.dismiss();
+                            }
+                        }, 1000);
 
                     }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
+                }
+            });
+        } else {
+            holder.title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Album album1 = albumList.get(position);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle("Memo");
+
+                    // Set up the input
+                    final EditText input = new EditText(mContext);
+                    // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    input.setText(Album.DETAIL_MEMO[position]);
+                    builder.setView(input);
+
+                    // Set up the buttons
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @SuppressLint("LongLogTag")
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            //album1.setName(input.getText().toString());
+                            Album.DETAIL_MEMO[position] = input.getText().toString();
+                            albumList.set(position, album1);
+                            Home.updateView();
+
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+
+                }
+            });
+
+            //กดที่รูป
+            holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(Album.DETAIL_BITMAP[position] != null){
+                        Intent fullSizeIMG = new Intent(mContext,PreveiwImage.class);
+                        fullSizeIMG.putExtra("IMG_INDEX",position);
+                        mContext.startActivity(fullSizeIMG);
+                    } else {
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        Album.DETAIL_FILE= CreateFile.createUnique();
+                        album.setFileName(CreateFile.getFileName());
+                        uri = FileProvider.getUriForFile(mContext,BuildConfig.APPLICATION_ID + ".provider",Album.DETAIL_FILE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                        ((Activity) mContext).startActivityForResult(intent, position);
                     }
-                });
-
-                builder.show();
-
-            }
-        });
+                }
+            });
+        }
 
 
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showPopupMenu(holder.overflow, position, holder.thumbnail, holder.overflow);
+            }
+        });
+
+        holder.removeChk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                //Toast.makeText(mContext,position+" : "+String.valueOf(isChecked),Toast.LENGTH_LONG).show();
+
+                if(isChecked == true){
+                    Album.DETAIL_REMOVED_INDEX.add(position);///memo filename
+                } else {
+                    int detailIndex = Album.DETAIL_REMOVED_INDEX.indexOf(position);
+                    Album.DETAIL_REMOVED_INDEX.remove(detailIndex);
+                }
+
+                String allPos = "";
+                for(int i=0; i<Album.DETAIL_REMOVED_INDEX.size(); i++){
+                    allPos += String.valueOf(i);
+                }
+
+                //Toast.makeText(mContext,allPos, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -166,6 +292,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
                 ((Activity) mContext).startActivityForResult(pickPhoto , detailPickImage);
             }
         });
+
 
 
 
@@ -218,6 +345,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.MyViewHold
 
 
     }
+
+
 
    /* public void startActivityForResult(Intent intent, int positionCard) {
 

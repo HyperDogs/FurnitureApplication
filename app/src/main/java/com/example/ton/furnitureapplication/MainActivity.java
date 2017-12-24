@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -28,6 +29,8 @@ import java.util.List;
 import Model.ManuInspectImageModel;
 import Model.TBUserLoginModel;
 import resource.AsyncTaskLogin;
+
+import static com.example.ton.furnitureapplication.Home.getDeviceImei;
 
 public class MainActivity extends Activity {
 
@@ -51,6 +54,8 @@ public class MainActivity extends Activity {
         accessPermission();
         createDB();
 
+        Log.d("IMEI",getDeviceImei(MainActivity.this));
+
     }
 
     private View.OnClickListener doLogin = new View.OnClickListener() {
@@ -59,8 +64,12 @@ public class MainActivity extends Activity {
             usernameTxt = username.getText().toString();
             passwordTxt = password.getText().toString();
 
-            if (usernameTxt.matches("") || passwordTxt.matches("")){
-                Toast.makeText(MainActivity.this,"Please enter information.",Toast.LENGTH_LONG).show();
+            if (usernameTxt.matches("")){
+                Intent i = new Intent(MainActivity.this,Home.class);
+                startActivity(i);
+                Toast.makeText(MainActivity.this,"Please enter Username !!",Toast.LENGTH_LONG).show();
+            } else if (passwordTxt.matches("")){
+                Toast.makeText(MainActivity.this,"Please enter Password !!",Toast.LENGTH_LONG).show();
             }else {
                 AsyncTaskLogin atlLogin = new AsyncTaskLogin(MainActivity.this,usernameTxt,passwordTxt);
                 atlLogin.execute();
