@@ -729,7 +729,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try{
             database.beginTransaction();
             //get userLoginId
-            Cursor cursor_log = database.query(TABLE_USERLOGIN, new String[]{COL_ULEMPLOYEEID}, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
+            Cursor cursor_log = database.query(TABLE_USERLOGIN, new String[]{COL_ULEMPLOYEEID}, COL_ULUSERLOGINID + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
             if(cursor_log.getCount() > 0){
                 cursor_log.moveToNext();
                 employeeId = cursor_log.getString(0);
@@ -759,7 +759,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database = this.getReadableDatabase();
         try{
             database.beginTransaction();
-            Cursor cursor = database.query(TABLE_USERLOGIN, new String[]{COL_ULUSERLOGINID, COL_ULNAME, COL_ULEMPLOYEEID, COL_ULBRANCHID}, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
+            Cursor cursor = database.query(TABLE_USERLOGIN, new String[]{COL_ULUSERLOGINID, COL_ULNAME, COL_ULEMPLOYEEID, COL_ULBRANCHID}, COL_ULUSERLOGINID + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
             if(cursor.getCount() > 0){
                 cursor.moveToNext();
                 tbUserLoginModel.setUlUserLoginId(cursor.getString(0));
@@ -785,7 +785,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         try{
             database.beginTransaction();
             //get userLoginId
-            Cursor cursor_log = database.query(TABLE_USERLOGIN, new String[]{COL_ULBRANCHID}, COL_ULNAME + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
+            Cursor cursor_log = database.query(TABLE_USERLOGIN, new String[]{COL_ULBRANCHID}, COL_ULUSERLOGINID + " = ? AND " + COL_ULPASS + " = ? AND " + COL_ULDESC + " = ? ", new String[]{userName, passWord, imei}, null, null, null);
             if(cursor_log.getCount() > 0){
                 cursor_log.moveToNext();
                 branchCode = cursor_log.getString(0);
