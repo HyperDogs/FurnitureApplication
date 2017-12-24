@@ -184,7 +184,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                         // ให้ไปยังหน้าหลัก
                         Intent intent = new Intent(activity, Allfile.class);
                         activity.startActivity(intent);
-                        activity.finish();
+                        //activity.finish();
                     } else if (SAVE_STATUS == false) {
                         activity.runOnUiThread(new Runnable() {
                             public void run() {
@@ -203,19 +203,18 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
         
     }
     private void clearActivity(Activity activity){
-        Album.DETAIL_BITMAP = new Bitmap[100];
+        /*Album.DETAIL_BITMAP = new Bitmap[100];
         Album.DETAIL_MEMO = new String[100];
         Album.DETAIL_FILENAME = new String[100];
         Album album = new Album();
         ManuInspectModel manuInspectModel = new ManuInspectModel();
         ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
         basicInfomation.setFileHeader_date(null);
-        basicInfomation.setFileHeader_inspector(null);
         basicInfomation.setFileHeader_coNo(null);
         basicInfomation.setFileHeader_colorNo(null);
         basicInfomation.setFileHeader_itemNo(null);
         basicInfomation.setFileHeader_customerNo(null);
-        basicInfomation.setFileHeader_mail(null);
+        basicInfomation.setFileHeader_mail(null);*/
     }
 
     private String sendHeaderToServer(){

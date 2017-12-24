@@ -27,7 +27,7 @@ import Model.TBUserLoginModel;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase database;
     private static final String DATABASE_NAME = "SQLiteDatabase.db";
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String TABLE_USERLOGIN = "TBUserLogin";
     public static final String TABLE_MANUINSPECT = "ManuInspect";
     public static final String TABLE_MANUINSPECTIMAGE = "ManuInspectImage";
@@ -175,7 +175,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         "('admin', 'admin', '1234', '867007020839046', '01', '01'), " +
                 "('party', '1589', 'Party Suwit', '867007020839046', '04', '01'), " +
                 "('2', 'admin', 'admin', '357220073447263', '02', '01'), " +
-                "('3', 'admin', 'admin', '357221073447261', '03', '01');");
+                "('3', 'admin', 'admin', '357221073447261', '03', '01'), " +
+                "('4', 'admin', 'admin', '000000000000000', '01', '01');");
     }
 
     private void createTABLE_MANUINSPECT(SQLiteDatabase db){

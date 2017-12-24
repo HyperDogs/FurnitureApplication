@@ -64,6 +64,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingDeque;
 
+import Model.EmployeesModel;
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
 import okhttp3.FormBody;
@@ -152,13 +153,14 @@ public class Home extends AppCompatActivity  {
         itemV.setText(basicInfomation.getFileHeader_itemNo());
         colorV.setText(basicInfomation.getFileHeader_colorNo());
         coV.setText(basicInfomation.getFileHeader_coNo());
-        inspV.setText(basicInfomation.getFileHeader_inspector());
+        inspV.setText(EmployeesModel.employeeName);
 
         String sentMailStatus = "";
 
         if(basicInfomation.getFileHeader_mail() != null){
             sentMailStatus = basicInfomation.getFileHeader_mail();
         }
+
 
         mailV.setText(sentMailStatus);
 
@@ -215,7 +217,7 @@ public class Home extends AppCompatActivity  {
         itemV.setText(basicInfomation.getFileHeader_itemNo());
         colorV.setText(basicInfomation.getFileHeader_colorNo());
         coV.setText(basicInfomation.getFileHeader_coNo());
-        inspV.setText(basicInfomation.getFileHeader_inspector());
+        inspV.setText(EmployeesModel.employeeName);
     }
 
     private View.OnClickListener onClickSaveBtn = new View.OnClickListener() {
@@ -349,7 +351,6 @@ public class Home extends AppCompatActivity  {
             Intent home = new Intent(Home.this,Home.class);
             BasicInfomation basicInfomation = new BasicInfomation();
             basicInfomation.setFileHeader_date(null);
-            basicInfomation.setFileHeader_inspector(null);
             basicInfomation.setFileHeader_coNo(null);
             basicInfomation.setFileHeader_colorNo(null);
             basicInfomation.setFileHeader_itemNo(null);
@@ -651,13 +652,32 @@ public class Home extends AppCompatActivity  {
         }else {
             status = "Not Sent";
         }
+        Log.d("XXXXXX",manuInspectModel.getMpDocDate().toString());
         basicInfomation.setFileHeader_date(manuInspectModel.getMpDocDate().toString());
         basicInfomation.setFileHeader_customerNo(manuInspectModel.getMpCustomerNo());
         basicInfomation.setFileHeader_itemNo(manuInspectModel.getMpItemNo());
         basicInfomation.setFileHeader_colorNo(manuInspectModel.getMpColorNo());
         basicInfomation.setFileHeader_coNo(manuInspectModel.getMpCoNo());
-        basicInfomation.setFileHeader_inspector(manuInspectModel.getMpEmployeeName());
+        basicInfomation.setFileHeader_inspector(EmployeesModel.employeeName);
         basicInfomation.setFileHeader_mail(status);
+
+
+        //InfoHeader
+        dateV.setText(basicInfomation.getFileHeader_date());
+        cusNoV.setText(basicInfomation.getFileHeader_customerNo());
+        itemV.setText(basicInfomation.getFileHeader_itemNo());
+        colorV.setText(basicInfomation.getFileHeader_colorNo());
+        coV.setText(basicInfomation.getFileHeader_coNo());
+        inspV.setText(basicInfomation.getFileHeader_inspector());
+        mailV.setText(basicInfomation.getFileHeader_mail());
+
+            if (mailV.getText().toString().equals("Sent")) {
+                mailV.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                mailV.setTextColor(Color.parseColor("#52b071"));
+            } else {
+                mailV.setTextColor(Color.parseColor("#C3333A"));
+                mailV.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
 
         Album b;
         String coverStr = "xxx";
@@ -679,11 +699,6 @@ public class Home extends AppCompatActivity  {
             Album.DETAIL_BITMAP[reqCode] = bitmap;
             Album.DETAIL_FILENAME[reqCode] = manuInspectImageModel.getMpgImagePath();
             Album.DETAIL_MEMO[reqCode] = manuInspectImageModel.getMpgMemo();
-            //Album ab = new Album(manuInspectImageModel.getMpgMemo(),i,R.drawable.example);
-            //albumList.set(reqCode,ab);
-            Log.d("BITMAP-------------",String.valueOf(bitmap));
-            Log.d("PATH-------------",Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectImageModel.getMpgImagePath());
-
         }
         adapter.notifyDataSetChanged();
     }

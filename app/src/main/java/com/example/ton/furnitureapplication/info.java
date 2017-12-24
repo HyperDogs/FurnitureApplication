@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import Model.EmployeesModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -77,7 +78,7 @@ public class info extends AppCompatActivity {
         item_no_edt.setText(bundle.getString("itemNo"));
         color_no_edt.setText(bundle.getString("colorNo"));
         co_no_edt.setText(bundle.getString("coNo"));
-        inspector_edt.setText(bundle.getString("inspector"));
+        inspector_edt.setText(EmployeesModel.employeeName);
 
 
 
@@ -93,10 +94,9 @@ public class info extends AppCompatActivity {
                     itemStr = item_no_edt.getText().toString().trim(),
                     colorStr = color_no_edt.getText().toString().trim(),
                     coNoStr = co_no_edt.getText().toString().trim(),
-                    inspStr = inspector_edt.getText().toString().trim(),
                     alertMsg = getString(R.string.alertInfo);
 
-            if (dateStr.equals("") || cusNoStr.equals("") || itemStr.equals("") || colorStr.equals("") || coNoStr.equals("") || inspStr.equals("")){
+            if (dateStr.equals("") || cusNoStr.equals("") || itemStr.equals("") || colorStr.equals("") || coNoStr.equals("")){
                 Toast.makeText(info.this,alertMsg,Toast.LENGTH_SHORT).show();
             }else {
                 basicInfo = new BasicInfomation();

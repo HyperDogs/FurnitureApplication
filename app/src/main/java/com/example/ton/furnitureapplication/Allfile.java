@@ -2,9 +2,11 @@ package com.example.ton.furnitureapplication;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -63,6 +65,8 @@ public class Allfile extends AppCompatActivity {
     private CheckBox sentBox,notSentBox;
     private RelativeLayout nodatalayout;
     private boolean sent,notSent;
+    private ProgressDialog progressDialog;
+    private Handler mHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +84,16 @@ public class Allfile extends AppCompatActivity {
 
         findViews();
         initToolbar();
-        setAdapter(dateFromStr,dateToStr,statusStr);
+        progressDialog = ProgressDialog.show(Allfile.this, "",
+                "Loading...", true);
+
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setAdapter(dateFromStr,dateToStr,statusStr);
+                progressDialog.dismiss();
+            }
+        }, 3000);
 
 
     }
@@ -120,26 +133,10 @@ public class Allfile extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent i = new Intent(Allfile.this,Home.class);
-                startActivity(i);*/
                 onBackPressed();
                 modelList.clear();
                 finish();
 
-                /*BasicInfomation basicInfomation = new BasicInfomation();
-                basicInfomation.setFileHeader_date(null);
-                basicInfomation.setFileHeader_inspector(null);
-                basicInfomation.setFileHeader_coNo(null);
-                basicInfomation.setFileHeader_colorNo(null);
-                basicInfomation.setFileHeader_itemNo(null);
-                basicInfomation.setFileHeader_customerNo(null);
-                basicInfomation.setFileHeader_mail(null);
-                Album.DETAIL_FILENAME = new String[100];
-                Album.DETAIL_BITMAP = new Bitmap[100];
-                Album.DETAIL_MEMO = new String[100];
-                startActivity(i);
-                modelList.clear();
-                finish();*/
 
             }
         });
@@ -319,6 +316,9 @@ public class Allfile extends AppCompatActivity {
         mAdapter = new RecyclerViewAdapter(Allfile.this, modelList);
 
         recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(2000);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         // use a linear layout manager
 
@@ -340,6 +340,7 @@ public class Allfile extends AppCompatActivity {
                 Album.DETAIL_FILENAME = new String[100];
                 Album.DETAIL_BITMAP = new Bitmap[100];
                 Album.DETAIL_MEMO = new String[100];
+                home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(home);
                 modelList.clear();
                 finish();
@@ -371,20 +372,6 @@ public class Allfile extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            /*Intent i = new Intent(Allfile.this,Home.class);
-            BasicInfomation basicInfomation = new BasicInfomation();
-            basicInfomation.setFileHeader_date(null);
-            basicInfomation.setFileHeader_inspector(null);
-            basicInfomation.setFileHeader_coNo(null);
-            basicInfomation.setFileHeader_colorNo(null);
-            basicInfomation.setFileHeader_itemNo(null);
-            basicInfomation.setFileHeader_customerNo(null);
-            basicInfomation.setFileHeader_mail(null);
-            Album.DETAIL_FILENAME = new String[100];
-            Album.DETAIL_BITMAP = new Bitmap[100];
-            Album.DETAIL_MEMO = new String[100];
-            startActivity(i);
-            modelList.clear();*/
             onBackPressed();
             finish();
             return false;
@@ -400,18 +387,6 @@ public class Allfile extends AppCompatActivity {
         System.runFinalization();
         Runtime.getRuntime().gc();
         System.gc();
-    }
-    private Date stringToDate(String dateStr) throws ParseException {
-        String str_date="11-June-07";
-        DateFormat formatter ;
-        Date date = null;
-        try {
-            formatter = new SimpleDateFormat("dd-MMM-yy");
-            date = formatter.parse(str_date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return date;
     }
 
 }
