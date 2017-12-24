@@ -227,8 +227,7 @@ public class Home extends AppCompatActivity  {
                         || basicInfomation.getFileHeader_customerNo().equals("")
                         || basicInfomation.getFileHeader_itemNo().equals("")
                         || basicInfomation.getFileHeader_colorNo().equals("")
-                        || basicInfomation.getFileHeader_coNo().equals("")
-                        || basicInfomation.getFileHeader_inspector().equals("")) {
+                        || basicInfomation.getFileHeader_coNo().equals("")) {
 
                     Toast.makeText(Home.this,"กรณากรอกข้อมูลสินค้าให้ครบถ้วน",Toast.LENGTH_SHORT).show();
 
@@ -269,8 +268,7 @@ public class Home extends AppCompatActivity  {
                         || basicInfomation.getFileHeader_customerNo().equals("")
                         || basicInfomation.getFileHeader_itemNo().equals("")
                         || basicInfomation.getFileHeader_colorNo().equals("")
-                        || basicInfomation.getFileHeader_coNo().equals("")
-                        || basicInfomation.getFileHeader_inspector().equals("")) {
+                        || basicInfomation.getFileHeader_coNo().equals("")) {
 
                     Toast.makeText(Home.this,R.string.alertInfo,Toast.LENGTH_SHORT).show();
 

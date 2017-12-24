@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
         accessPermission();
         createDB();
 
-        Log.d("IMEI",getDeviceImei(MainActivity.this));
+       // Log.d("IMEI",getDeviceImei(MainActivity.this));
 
     }
 
@@ -65,8 +65,6 @@ public class MainActivity extends Activity {
             passwordTxt = password.getText().toString();
 
             if (usernameTxt.matches("")){
-                Intent i = new Intent(MainActivity.this,Home.class);
-                startActivity(i);
                 Toast.makeText(MainActivity.this,"Please enter Username !!",Toast.LENGTH_LONG).show();
             } else if (passwordTxt.matches("")){
                 Toast.makeText(MainActivity.this,"Please enter Password !!",Toast.LENGTH_LONG).show();

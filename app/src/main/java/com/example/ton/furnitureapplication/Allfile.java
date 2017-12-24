@@ -160,39 +160,22 @@ public class Allfile extends AppCompatActivity {
                 positiveAction.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        try {
                             dateFromStr = dateFrom.getText().toString();
                             dateToStr = dateTo.getText().toString();
-                            Date dateFrom = stringToDate(dateFromStr);
-                            Date dateTo = stringToDate(dateToStr);
-                        if (dateFrom.before(dateTo)){
                             if (sentBox.isChecked() && notSentBox.isChecked()){
                                 statusStr = null;
-                                sent = true;
-                                notSent = true;
                             }else if (sentBox.isChecked()){
                                 statusStr = "Y";
-                                sent = true;
-                                notSent = false;
                             }else if (notSentBox.isChecked()){
                                 statusStr = "N";
-                                sent = false;
-                                notSent = true;
                             }else {
                                 statusStr = null;
-                                sent = false;
-                                notSent = false;
                             }
                         modelList.clear();
                         setAdapter(dateFromStr,dateToStr,statusStr);
                         mAdapter.notifyDataSetChanged();
                         dialog.dismiss();
-                        }else {
-                            Toast.makeText(Allfile.this,"Rang of Date Wrong",Toast.LENGTH_SHORT).show();
-                        }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+
 
                     }
                 });
@@ -217,22 +200,31 @@ public class Allfile extends AppCompatActivity {
                     dateTo.setText(sdf.format(myCalendar.getTime()));
                 }
                 //check Status Sent
-                if (sent && notSent){
-                    sentBox.setChecked(true);
-                    notSentBox.setChecked(true);
-                }else{
-                    if (sent){
-                        sentBox.setChecked(true);
-                        notSentBox.setChecked(false);
-                    }else if (notSent){
-                        sentBox.setChecked(false);
-                        notSentBox.setChecked(true);
-                    } else {
-                        sentBox.setChecked(false);
-                        notSentBox.setChecked(false);
-                    }
-
+                Log.d("sent Status",String.valueOf(sent));
+                Log.d("NotSent Status",String.valueOf(notSent));
+                // Toggling the show password CheckBox will mask or unmask the password input EditText
+                sentBox = dialog.getCustomView().findViewById(R.id.sent);
+                notSentBox = dialog.getCustomView().findViewById(R.id.notSent);
+                if(sent){
+                    sentBox.setChecked(sent);
                 }
+
+                if(notSent){
+                    notSentBox.setChecked(notSent);
+                }
+
+                sentBox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sent = sentBox.isChecked();
+                    }
+                });
+                notSentBox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        notSent = notSentBox.isChecked();
+                    }
+                });
 
                 datePickFrom = new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -259,9 +251,7 @@ public class Allfile extends AppCompatActivity {
 
                 };
 
-                // Toggling the show password CheckBox will mask or unmask the password input EditText
-                sentBox = dialog.getCustomView().findViewById(R.id.sent);
-                notSentBox = dialog.getCustomView().findViewById(R.id.notSent);
+
 
                 int widgetColor = ThemeSingleton.get().widgetColor;
                 MDTintHelper.setTint(
