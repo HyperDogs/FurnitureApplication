@@ -20,6 +20,7 @@ import com.example.ton.furnitureapplication.Home;
 import java.util.ArrayList;
 
 import Model.BranchCompanyCodeModel;
+import Model.EmployeesModel;
 import Model.TBUserLoginModel;
 
 public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
@@ -66,6 +67,8 @@ public class AsyncTaskLogin extends AsyncTask<String, Void, String> {
                         mHelper.getEmployee(getUser, getPassword, getDeviceImei(activity));
                         mHelper.getUserLogin(getUser, getPassword, getDeviceImei(activity));
                         mHelper.getBranchCompanyCode(getUser, getPassword, getDeviceImei(activity));
+
+                        Log.d("CURRENT EMP ID", EmployeesModel.id);
                         Intent intent = new Intent(activity, Home.class);
                         activity.startActivity(intent);
                     } else {

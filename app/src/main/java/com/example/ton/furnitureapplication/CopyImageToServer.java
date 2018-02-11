@@ -91,6 +91,8 @@ public class CopyImageToServer {
         String imageStorageFolder = File.separator + "DCIM" + File.separator + "Camera" + File.separator;
         Bitmap bitmap = resource.BitmapManager.decode(sdCard+imageStorageFolder+strSDPath, 1000, 1500);
         String imgString = BitmapManager.getEncoded64ImageStringFromBitmap(bitmap);
+        bitmap.recycle();
+        System.gc();
 
         FormBody.Builder params = new FormBody.Builder()
                 .add("image", imgString)

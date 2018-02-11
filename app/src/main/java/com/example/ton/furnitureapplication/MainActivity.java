@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
         accessPermission();
         createDB();
 
-       // Log.d("IMEI",getDeviceImei(MainActivity.this));
+      // Log.d("IMEI",getDeviceImei(MainActivity.this));
 
     }
 
@@ -110,7 +110,7 @@ public class MainActivity extends Activity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             new AlertDialog.Builder(MainActivity.this)
                     .setTitle("Exit")
-                    .setMessage("Do you want to exit ?")
+                    .setMessage("Would you like to exit ?")
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int whichButton) {

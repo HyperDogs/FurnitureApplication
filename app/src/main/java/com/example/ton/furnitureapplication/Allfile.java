@@ -84,16 +84,16 @@ public class Allfile extends AppCompatActivity {
 
         findViews();
         initToolbar();
-        progressDialog = ProgressDialog.show(Allfile.this, "",
-                "Loading...", true);
+        //progressDialog = ProgressDialog.show(Allfile.this, "",
+        //        "Loading...", true);
 
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        //mHandler.postDelayed(new Runnable() {
+        //    @Override
+         //   public void run() {
                 setAdapter(dateFromStr,dateToStr,statusStr);
-                progressDialog.dismiss();
-            }
-        }, 3000);
+         //       progressDialog.dismiss();
+        //    }
+        //}, 1200);
 
 
     }
@@ -111,16 +111,14 @@ public class Allfile extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             Intent home = new Intent(Allfile.this,Home.class);
-            BasicInfomation basicInfomation = new BasicInfomation();
-            basicInfomation.setFileHeader_date(null);
-            basicInfomation.setFileHeader_inspector(null);
-            basicInfomation.setFileHeader_coNo(null);
-            basicInfomation.setFileHeader_colorNo(null);
-            basicInfomation.setFileHeader_itemNo(null);
-            basicInfomation.setFileHeader_customerNo(null);
-            basicInfomation.setFileHeader_mail(null);
+            BasicInfomation.setFileHeader_date("");
+            BasicInfomation.setFileHeader_coNo("");
+            BasicInfomation.setFileHeader_colorNo("");
+            BasicInfomation.setFileHeader_itemNo("");
+            BasicInfomation.setFileHeader_customerNo("");
+            BasicInfomation.setFileHeader_mail("");
             Album.DETAIL_FILENAME = new String[100];
-            Album.DETAIL_BITMAP = new Bitmap[100];
+            //Album.DETAIL_BITMAP = new Bitmap[100];
             Album.DETAIL_MEMO = new String[100];
             home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(home);
@@ -133,13 +131,17 @@ public class Allfile extends AppCompatActivity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+                //onBackPressed();
+
+                Intent backIntent = new Intent(Allfile.this, Home.class);
+                startActivity(backIntent);
                 modelList.clear();
                 finish();
 
 
             }
         });
+
         search_btn=(Button)findViewById(R.id.search_btn);
         search_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,6 +187,7 @@ public class Allfile extends AppCompatActivity {
                 dateTo = dialog.getCustomView().findViewById(R.id.dateTo);
                 dateFrom.setOnClickListener(pickDateF);
                 dateTo.setOnClickListener(pickDateT);
+
                 //check Date
                 if(!dateFromStr.equals("")){
                     dateFrom.setText(dateFromStr);
@@ -338,7 +341,7 @@ public class Allfile extends AppCompatActivity {
                 Intent home = new Intent(Allfile.this,Home.class);
                 home.putExtra("docNo",String.valueOf(model.getDocNo()));
                 Album.DETAIL_FILENAME = new String[100];
-                Album.DETAIL_BITMAP = new Bitmap[100];
+                //Album.DETAIL_BITMAP = new Bitmap[100];
                 Album.DETAIL_MEMO = new String[100];
                 home.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(home);
@@ -372,8 +375,10 @@ public class Allfile extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            onBackPressed();
-            finish();
+           // onBackPressed();
+            Intent backIntent = new Intent(Allfile.this, Home.class);
+            startActivity(backIntent);
+           finish();
             return false;
         }
         return super.onKeyDown(keyCode, event);

@@ -7,6 +7,7 @@ package com.example.ton.furnitureapplication;
 public class ActionClass {
     public boolean onSwap = false;
     public boolean onRemove = false;
+    public String actionMode = "CREATE";
 
     public void setOnSwap(boolean swap){
         onSwap = swap;
@@ -20,5 +21,7 @@ public class ActionClass {
 
     public boolean getOnRemove(){return onRemove; }
 
+    public void setActionMode(String mode) {actionMode = mode;}
 
+    public String getActionMode(){return actionMode;}
 }

@@ -1,7 +1,6 @@
 package com.example.ton.furnitureapplication;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,12 +15,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import Model.EmployeesModel;
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 
-public class info extends AppCompatActivity {
+public class Infomation extends AppCompatActivity {
     //@BindView(R.id.date_edt)EditText date_edt;
     EditText date_edt,customer_no_edt,item_no_edt,color_no_edt,co_no_edt,inspector_edt;
 
@@ -31,12 +28,14 @@ public class info extends AppCompatActivity {
     private Calendar myCalendar;
     private DatePickerDialog.OnDateSetListener datePick;
     private BasicInfomation basicInfo;
+    private String mActionMode = "";
+    private Utility mUtil = new Utility();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ButterKnife.bind(this);
         // add back arrow to toolbar
@@ -46,7 +45,7 @@ public class info extends AppCompatActivity {
         }
         //Date
         myCalendar = Calendar.getInstance();
-        date_edt = (EditText)findViewById(R.id.date_edt);
+        date_edt = findViewById(R.id.date_edt);
         date_edt.setOnClickListener(pickDate);
         datePick = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -60,15 +59,16 @@ public class info extends AppCompatActivity {
             }
 
         };
+
         //edt
-        date_edt = (EditText)findViewById(R.id.date_edt);
-        customer_no_edt = (EditText)findViewById(R.id.customer_no_edt);
-        item_no_edt = (EditText)findViewById(R.id.item_no_edt);
-        color_no_edt = (EditText)findViewById(R.id.color_no_edt);
-        co_no_edt = (EditText)findViewById(R.id.co_no_edt);
-        inspector_edt = (EditText)findViewById(R.id.inspector_edt);
+        date_edt = findViewById(R.id.date_edt);
+        customer_no_edt = findViewById(R.id.customer_no_edt);
+        item_no_edt = findViewById(R.id.item_no_edt);
+        color_no_edt = findViewById(R.id.color_no_edt);
+        co_no_edt = findViewById(R.id.co_no_edt);
+        inspector_edt = findViewById(R.id.inspector_edt);
         //updateBtn
-        update_btn = (Button)findViewById(R.id.update_btn);
+        update_btn = findViewById(R.id.update_btn);
         update_btn.setOnClickListener(updateBtn);
 
         //Bundle
@@ -79,13 +79,17 @@ public class info extends AppCompatActivity {
         color_no_edt.setText(bundle.getString("colorNo"));
         co_no_edt.setText(bundle.getString("coNo"));
         inspector_edt.setText(EmployeesModel.employeeName);
+        mActionMode = bundle.getString("ACTION_MODE");
 
-
-
-
-
-
+        if(mActionMode.equals("CREATE")){
+            date_edt.setEnabled(false);
+            date_edt.setText(mUtil.getCurrentDateTime("dd-MM-yyyy"));
+            BasicInfomation.setFileHeader_date(mUtil.getCurrentDateTime("dd-MM-yyyy"));
+        } else if(mActionMode.equals("EDIT")){
+            date_edt.setEnabled(true);
+        }
     }
+
     private  View.OnClickListener updateBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -97,15 +101,14 @@ public class info extends AppCompatActivity {
                     alertMsg = getString(R.string.alertInfo);
 
             if (dateStr.equals("") || cusNoStr.equals("") || itemStr.equals("") || colorStr.equals("") || coNoStr.equals("")){
-                Toast.makeText(info.this,alertMsg,Toast.LENGTH_SHORT).show();
+                Toast.makeText(Infomation.this,alertMsg,Toast.LENGTH_SHORT).show();
             }else {
-                basicInfo = new BasicInfomation();
-                basicInfo.setFileHeader_date(date_edt.getText().toString().trim());
-                basicInfo.setFileHeader_customerNo(customer_no_edt.getText().toString().trim());
-                basicInfo.setFileHeader_itemNo(item_no_edt.getText().toString().trim());
-                basicInfo.setFileHeader_colorNo(color_no_edt.getText().toString().trim());
-                basicInfo.setFileHeader_coNo(co_no_edt.getText().toString().trim());
-                basicInfo.setFileHeader_inspector(inspector_edt.getText().toString().trim());
+                BasicInfomation.setFileHeader_date(date_edt.getText().toString().trim());
+                BasicInfomation.setFileHeader_customerNo(customer_no_edt.getText().toString().trim());
+                BasicInfomation.setFileHeader_itemNo(item_no_edt.getText().toString().trim());
+                BasicInfomation.setFileHeader_colorNo(color_no_edt.getText().toString().trim());
+                BasicInfomation.setFileHeader_coNo(co_no_edt.getText().toString().trim());
+                BasicInfomation.setFileHeader_inspector(inspector_edt.getText().toString().trim());
 
                 onBackPressed();
 
@@ -116,7 +119,7 @@ public class info extends AppCompatActivity {
     private View.OnClickListener pickDate = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            new DatePickerDialog(info.this, datePick, myCalendar
+            new DatePickerDialog(Infomation.this, datePick, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         }
@@ -125,10 +128,16 @@ public class info extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
+            BasicInfomation.FileHeader_date= "";
+            BasicInfomation.FileHeader_customerNo= "";
+            BasicInfomation.FileHeader_itemNo= "";
+            BasicInfomation.FileHeader_colorNo= "";
+            BasicInfomation.FileHeader_coNo = "";
             finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
 }

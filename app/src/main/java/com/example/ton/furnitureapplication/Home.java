@@ -1,20 +1,14 @@
 package com.example.ton.furnitureapplication;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,7 +17,6 @@ import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.FileProvider;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -35,7 +28,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -44,59 +36,46 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingDeque;
 
 import Model.EmployeesModel;
 import Model.ManuInspectImageModel;
 import Model.ManuInspectModel;
-import okhttp3.FormBody;
-import resource.AsyncTaskLogin;
 import resource.AsyncTaskSave;
-import resource.BitmapManager;
 import resource.CreateFile;
 
-public class Home extends AppCompatActivity  {
+public class Home extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private static AlbumsAdapter adapter;
     private List<Album> albumList;
-    private  ImageView mainPic,listFurnitureBtn;
-    private int headerImage = 1001,headerPickImage = 1002;
+    private ImageView mainPic, listFurnitureBtn;
+    private int headerImage = 1001, headerPickImage = 1002;
     private File file;
     private Uri uri;
     private LinearLayout basicInfo;
     private FloatingActionMenu menuFab;
-    private FloatingActionButton fabAdd,fabSwap,fabRemove;
-    private ImageButton saveBtn,saveAndSendBtn,pickImg;
-    private TextView dateV,cusNoV,itemV,colorV,coV,inspV,mailV;
-    private BasicInfomation basicInfomation;
+    private FloatingActionButton fabAdd, fabSwap, fabRemove, fabRemoveHeader;
+    private ImageButton saveBtn, saveAndSendBtn, pickImg;
+    private TextView dateV, cusNoV, itemV, colorV, coV, inspV, mailV;
     private ManuInspectModel manuInspectModel = new ManuInspectModel();
-    private ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
-    private Bitmap bitmap, bitmapDtl;
-    private String docNo,getFileNameHeader;
-    private RelativeLayout mainLayout,swapLayout,removeLayout;
+    public static Bitmap bitmap;
+    public String getFileNameHeader = "";
+    private String docNo;
+    private RelativeLayout mainLayout, swapLayout, removeLayout;
     private CollapsingToolbarLayout collapsingToolbar;
     private AppBarLayout appbar;
-    private Button doneswap,doneremove,onfirmRemove;
-    private boolean headImgStatus = false;
+    private Button doneswap, doneremove, onfirmRemove;
     private ActionClass actionClass;
     private ProgressDialog progressDialog;
     private Handler mHandler = new Handler();
@@ -109,26 +88,33 @@ public class Home extends AppCompatActivity  {
         Intent intent = getIntent();
         setView();
         initCollapsingToolbar();
-        if(intent.hasExtra("docNo")){
-            Bundle bundle  = getIntent().getExtras();
-            if(!bundle.getString("docNo").equals(null)){
+        actionClass = new ActionClass();
+
+        if (intent.hasExtra("docNo")) {
+            Bundle bundle = getIntent().getExtras();
+            if (!bundle.getString("docNo").equals(null)) {
                 docNo = bundle.getString("docNo");
 
+                MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                        .content("Loading...")
+                        .positiveText("");
 
-                progressDialog = ProgressDialog.show(Home.this, "",
-                        "Loading...", true);
+                final MaterialDialog dialog = builder.build();
+                dialog.show();
+
 
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         createGirdViewEdit(docNo);
-                        progressDialog.dismiss();
+                        actionClass.setActionMode("EDIT");
+                        dialog.dismiss();
                     }
-                }, 4500);
+                }, 1500);
 
             }
-        }else {
-
+        } else {
+            actionClass.setActionMode("CREATE");
             createGirdView();
         }
         //Header
@@ -142,29 +128,30 @@ public class Home extends AppCompatActivity  {
         fabAdd.setOnClickListener(onClickFabAdd);
         fabSwap.setOnClickListener(onClickFabSwap);
         fabRemove.setOnClickListener(onClickFabRemove);
+        fabRemoveHeader.setOnClickListener(onClickFabRemoveHeader);
         doneswap.setOnClickListener(onClickDoneSwap);
         doneremove.setOnClickListener(onClickDoneRemove);
         onfirmRemove.setOnClickListener(onClickConfirmRemove);
 
 
         //InfoHeader
-        dateV.setText(basicInfomation.getFileHeader_date());
-        cusNoV.setText(basicInfomation.getFileHeader_customerNo());
-        itemV.setText(basicInfomation.getFileHeader_itemNo());
-        colorV.setText(basicInfomation.getFileHeader_colorNo());
-        coV.setText(basicInfomation.getFileHeader_coNo());
+        dateV.setText(BasicInfomation.getFileHeader_date());
+        cusNoV.setText(BasicInfomation.getFileHeader_customerNo());
+        itemV.setText(BasicInfomation.getFileHeader_itemNo());
+        colorV.setText(BasicInfomation.getFileHeader_colorNo());
+        coV.setText(BasicInfomation.getFileHeader_coNo());
         inspV.setText(EmployeesModel.employeeName);
 
         String sentMailStatus = "";
 
-        if(basicInfomation.getFileHeader_mail() != null){
-            sentMailStatus = basicInfomation.getFileHeader_mail();
+        if (BasicInfomation.getFileHeader_mail() != null) {
+            sentMailStatus = BasicInfomation.getFileHeader_mail();
         }
 
 
         mailV.setText(sentMailStatus);
 
-        if(!sentMailStatus.equals("")) {
+        if (!sentMailStatus.equals("")) {
             if (sentMailStatus.equals("Sent")) {
                 mailV.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 mailV.setTextColor(Color.parseColor("#52b071"));
@@ -176,87 +163,102 @@ public class Home extends AppCompatActivity  {
             mailV.setBackgroundColor(Color.parseColor("#00000000"));
         }
 
-        actionClass = new ActionClass();
+
+        /*if(!CreateFile.headerFilePath.equals("")) {
+            file = new File(CreateFile.headerFilePath);
+            Picasso.with(Home.this).load(Uri.fromFile(file)).fit().centerCrop().into(mainPic);
+            Toast.makeText(getApplicationContext(),CreateFile.headerFilePath,Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(),"TEST",Toast.LENGTH_LONG).show();
+        }*/
     }
 
-    private void setView(){
+    private void setView() {
         mainLayout = findViewById(R.id.mainLayout);
         swapLayout = findViewById(R.id.swapLayout);
         removeLayout = findViewById(R.id.removeLayout);
         appbar = findViewById(R.id.appbar);
         collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        mainPic = (ImageView)findViewById(R.id.mainpic);
+        mainPic = (ImageView) findViewById(R.id.mainpic);
         basicInfo = (LinearLayout) findViewById(R.id.info);
         listFurnitureBtn = (ImageView) findViewById(R.id.listFunitueBtn);
-        menuFab = (FloatingActionMenu)findViewById(R.id.menu_red);
+        menuFab = (FloatingActionMenu) findViewById(R.id.menu_red);
         saveBtn = (ImageButton) findViewById(R.id.saveBth);
         saveAndSendBtn = (ImageButton) findViewById(R.id.saveAndSendBtn);
         pickImg = (ImageButton) findViewById(R.id.pickImage);
         fabAdd = findViewById(R.id.fabAdd);
         fabSwap = findViewById(R.id.fabSwap);
         fabRemove = findViewById(R.id.fabRemove);
-        doneswap =findViewById(R.id.swapdone);
+        fabRemoveHeader= findViewById(R.id.fabRemoveHeader);
+        doneswap = findViewById(R.id.swapdone);
         doneremove = findViewById(R.id.doneremove);
         onfirmRemove = findViewById(R.id.confirmRemove);
 
 
-        dateV = (TextView)findViewById(R.id.dateV);
-        cusNoV = (TextView)findViewById(R.id.cusNoV);
-        itemV = (TextView)findViewById(R.id.itemV);
-        colorV = (TextView)findViewById(R.id.colorV);
-        coV = (TextView)findViewById(R.id.coV);
-        inspV = (TextView)findViewById(R.id.inspV);
-        mailV = (TextView)findViewById(R.id.mailV);
+        dateV = (TextView) findViewById(R.id.dateV);
+        cusNoV = (TextView) findViewById(R.id.cusNoV);
+        itemV = (TextView) findViewById(R.id.itemV);
+        colorV = (TextView) findViewById(R.id.colorV);
+        coV = (TextView) findViewById(R.id.coV);
+        inspV = (TextView) findViewById(R.id.inspV);
+        mailV = (TextView) findViewById(R.id.mailV);
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        dateV.setText(basicInfomation.getFileHeader_date());
-        cusNoV.setText(basicInfomation.getFileHeader_customerNo());
-        itemV.setText(basicInfomation.getFileHeader_itemNo());
-        colorV.setText(basicInfomation.getFileHeader_colorNo());
-        coV.setText(basicInfomation.getFileHeader_coNo());
+        //Toast.makeText(getApplicationContext(), "RESUMED", Toast.LENGTH_SHORT).show();
+        dateV.setText(BasicInfomation.getFileHeader_date());
+        cusNoV.setText(BasicInfomation.getFileHeader_customerNo());
+        itemV.setText(BasicInfomation.getFileHeader_itemNo());
+        colorV.setText(BasicInfomation.getFileHeader_colorNo());
+        coV.setText(BasicInfomation.getFileHeader_coNo());
         inspV.setText(EmployeesModel.employeeName);
+
+
     }
 
     private View.OnClickListener onClickSaveBtn = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (bitmap != null || headImgStatus){
-                if (basicInfomation.getFileHeader_date().equals("")
-                        || basicInfomation.getFileHeader_customerNo().equals("")
-                        || basicInfomation.getFileHeader_itemNo().equals("")
-                        || basicInfomation.getFileHeader_colorNo().equals("")
-                        || basicInfomation.getFileHeader_coNo().equals("")) {
+            //if
+            // (bitmap != null) {
+            if (BasicInfomation.FileHeader_date.equals("")
+                    || BasicInfomation.FileHeader_customerNo.equals("")
+                    || BasicInfomation.FileHeader_itemNo.equals("")
+                    || BasicInfomation.FileHeader_colorNo.equals("")
+                    || BasicInfomation.FileHeader_coNo.equals("")) {
 
-                    Toast.makeText(Home.this,"กรณากรอกข้อมูลสินค้าให้ครบถ้วน",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Home.this, R.string.alertInfo, Toast.LENGTH_SHORT).show();
+            } else {
+                new AlertDialog.Builder(Home.this)
+                        .setTitle("Save")
+                        .setMessage("Would you like to save ?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                }else {
-                    new AlertDialog.Builder(Home.this)
-                            .setTitle("Save")
-                            .setMessage("Would you like to save ?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    if (docNo == null){
-                                        docNo = "0";
-                                    }
-                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this,manuInspectModel,basicInfomation,getDeviceImei(Home.this),albumList,getFileNameHeader,docNo, false);
-                                    atlLogin.execute();
-                                    dialog.dismiss();
-                                    if (bitmap != null){
-                                    bitmap.recycle();
-                                    }
-
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                if (docNo == null) {
+                                    docNo = "0";
                                 }
-                            })
-                            .setNegativeButton(android.R.string.no, null).show();
-                }
 
-            }else{
-                Toast.makeText(Home.this,R.string.alertInfo,Toast.LENGTH_LONG).show();
+
+                                AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this, manuInspectModel, getDeviceImei(Home.this), albumList, getFileNameHeader, docNo, false);
+                                atlLogin.execute();
+                                dialog.dismiss();
+                                if (bitmap != null) {
+                                    bitmap.recycle();
+                                }
+
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).show();
             }
+
+            //} else {
+            //    Toast.makeText(Home.this, R.string.alertInfo, Toast.LENGTH_LONG).show();
+            //}
 
         }
     };
@@ -264,37 +266,40 @@ public class Home extends AppCompatActivity  {
         @Override
         public void onClick(View v) {
 
-            if (bitmap != null){
-                if (basicInfomation.getFileHeader_date().equals("")
-                        || basicInfomation.getFileHeader_customerNo().equals("")
-                        || basicInfomation.getFileHeader_itemNo().equals("")
-                        || basicInfomation.getFileHeader_colorNo().equals("")
-                        || basicInfomation.getFileHeader_coNo().equals("")) {
+            //if (bitmap != null) {
+            if (BasicInfomation.getFileHeader_date().equals("")
+                    || BasicInfomation.getFileHeader_customerNo().equals("")
+                    || BasicInfomation.getFileHeader_itemNo().equals("")
+                    || BasicInfomation.getFileHeader_colorNo().equals("")
+                    || BasicInfomation.getFileHeader_coNo().equals("")) {
 
-                    Toast.makeText(Home.this,R.string.alertInfo,Toast.LENGTH_SHORT).show();
+                Toast.makeText(Home.this, R.string.alertInfo, Toast.LENGTH_SHORT).show();
 
-                }else {
-                    new AlertDialog.Builder(Home.this)
-                            .setTitle("Send Mail")
-                            .setMessage("Would you like to send E-Mail?")
-                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            } else {
+                new AlertDialog.Builder(Home.this)
+                        .setTitle("Send Mail")
+                        .setMessage("Would you like to send E-Mail?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    if (docNo == null){
-                                        docNo = "0";
-                                    }
-                                    AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this, manuInspectModel, basicInfomation, getDeviceImei(Home.this), albumList, getFileNameHeader, docNo, true);
-                                    atlLogin.execute();
-                                    dialog.dismiss();
-                                    bitmap.recycle();
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                if (docNo == null) {
+                                    docNo = "0";
                                 }
-                            })
-                            .setNegativeButton(android.R.string.no, null).show();
-                }
 
-            }else{
-                Toast.makeText(Home.this,R.string.alertInfo,Toast.LENGTH_LONG).show();
+
+
+                                AsyncTaskSave atlLogin = new AsyncTaskSave(Home.this, manuInspectModel, getDeviceImei(Home.this), albumList, getFileNameHeader, docNo, true);
+                                atlLogin.execute();
+                                dialog.dismiss();
+                                //bitmap.recycle();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).show();
             }
+
+            //} else {
+            //    Toast.makeText(Home.this, R.string.alertInfo, Toast.LENGTH_LONG).show();
+            //}
         }
     };
 
@@ -303,41 +308,109 @@ public class Home extends AppCompatActivity  {
         public void onClick(View view) {
             Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(pickPhoto , headerPickImage);
+            startActivityForResult(pickPhoto, headerPickImage);
         }
     };
+
+    private View.OnClickListener onClickFabRemoveHeader = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            new AlertDialog.Builder(Home.this)
+                    .setTitle("Remove Header Photo")
+                    .setMessage("Would you like to remove ?")
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.dismiss();
+                            getFileNameHeader = null;
+                            CreateFile.headerFilePath = "";
+                            Picasso.with(getApplicationContext()).load(R.drawable.camera2).noFade()
+                                    .fit().centerCrop().into(mainPic);
+                            menuFab.close(true);
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
+        }
+    };
+
+
     private View.OnClickListener onClickListFurniture = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent listFuniture = new Intent(Home.this,Allfile.class);
-            startActivity(listFuniture);
-            System.gc();
-            albumList.clear();
+            boolean detailExist = false;
+
+            for(int i=0; i<Album.DETAIL_FILENAME.length; i++){
+                if(Album.DETAIL_FILENAME[i] != null){
+                    detailExist = true;
+                }
+            }
+
+            if(detailExist
+                    || !BasicInfomation.FileHeader_date.equals("")
+                    || !BasicInfomation.FileHeader_customerNo.equals("")
+                    || !BasicInfomation.FileHeader_itemNo.equals("")
+                    || !BasicInfomation.FileHeader_colorNo.equals("")
+                    || !BasicInfomation.FileHeader_coNo.equals("")
+                    || !getFileNameHeader.equals("")) {
+
+
+                new AlertDialog.Builder(Home.this)
+                        .setTitle("Your data is not now saved !!")
+                        .setMessage("Would you like to view all files?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                BasicInfomation.setFileHeader_date("");
+                                BasicInfomation.setFileHeader_coNo("");
+                                BasicInfomation.setFileHeader_colorNo("");
+                                BasicInfomation.setFileHeader_itemNo("");
+                                BasicInfomation.setFileHeader_customerNo("");
+                                BasicInfomation.setFileHeader_mail("");
+                                Album.DETAIL_FILENAME = new String[100];
+                                //Album.DETAIL_BITMAP = new Bitmap[100];
+                                Album.DETAIL_MEMO = new String[100];
+                                getFileNameHeader = "";
+
+                                Intent listFuniture = new Intent(Home.this, Allfile.class);
+                                startActivity(listFuniture);
+                                System.gc();
+                                albumList.clear();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null).show();
+            } else {
+                Intent listFuniture = new Intent(Home.this, Allfile.class);
+                startActivity(listFuniture);
+                System.gc();
+                albumList.clear();
+            }
+
             //finish();
         }
     };
 
-    private  View.OnClickListener onClickBasicInfo = new View.OnClickListener() {
+    private View.OnClickListener onClickBasicInfo = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Intent i = new Intent(Home.this,info.class);
-            i.putExtra("date",basicInfomation.getFileHeader_date());
-            i.putExtra("cusNo",basicInfomation.getFileHeader_customerNo());
-            i.putExtra("itemNo",basicInfomation.getFileHeader_itemNo());
-            i.putExtra("colorNo",basicInfomation.getFileHeader_colorNo());
-            i.putExtra("coNo",basicInfomation.getFileHeader_coNo());
-            i.putExtra("inspector",basicInfomation.getFileHeader_inspector());
+            Intent i = new Intent(Home.this, Infomation.class);
+            i.putExtra("date", BasicInfomation.getFileHeader_date());
+            i.putExtra("cusNo", BasicInfomation.getFileHeader_customerNo());
+            i.putExtra("itemNo", BasicInfomation.getFileHeader_itemNo());
+            i.putExtra("colorNo", BasicInfomation.getFileHeader_colorNo());
+            i.putExtra("coNo", BasicInfomation.getFileHeader_coNo());
+            i.putExtra("inspector", BasicInfomation.getFileHeader_inspector());
+            i.putExtra("ACTION_MODE", actionClass.getActionMode());
             startActivity(i);
-
         }
     };
+
     private View.OnClickListener onClickTakePic = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             file = CreateFile.createUnique();
-            uri = FileProvider.getUriForFile(Home.this,BuildConfig.APPLICATION_ID + ".provider",file);
+            uri = FileProvider.getUriForFile(Home.this, BuildConfig.APPLICATION_ID + ".provider", file);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             startActivityForResult(intent, headerImage);
 
@@ -347,19 +420,34 @@ public class Home extends AppCompatActivity  {
     private View.OnClickListener onClickFabAdd = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Intent home = new Intent(Home.this,Home.class);
-            BasicInfomation basicInfomation = new BasicInfomation();
-            basicInfomation.setFileHeader_date(null);
-            basicInfomation.setFileHeader_coNo(null);
-            basicInfomation.setFileHeader_colorNo(null);
-            basicInfomation.setFileHeader_itemNo(null);
-            basicInfomation.setFileHeader_customerNo(null);
-            basicInfomation.setFileHeader_mail(null);
+            //Intent home = new Intent(Home.this, Home.class);
+            BasicInfomation.setFileHeader_date("");
+            BasicInfomation.setFileHeader_coNo("");
+            BasicInfomation.setFileHeader_colorNo("");
+            BasicInfomation.setFileHeader_itemNo("");
+            BasicInfomation.setFileHeader_customerNo("");
+            BasicInfomation.setFileHeader_mail("");
+
             Album.DETAIL_FILENAME = new String[100];
-            Album.DETAIL_BITMAP = new Bitmap[100];
+            //Album.DETAIL_BITMAP = new Bitmap[100];
             Album.DETAIL_MEMO = new String[100];
-            startActivity(home);
-            finish();
+            //startActivity(home);
+            //finish();
+
+            getFileNameHeader = "";
+            CreateFile.headerFilePath = "";
+            Picasso.with(getApplicationContext()).load(R.drawable.camera2).noFade()
+                    .fit().centerCrop().into(mainPic);
+
+            dateV.setText("");
+            cusNoV.setText("");
+            itemV.setText("");
+            colorV.setText("");
+            coV.setText("");
+            mailV.setText("");
+
+            adapter.notifyItemRangeChanged(0, 99);
+            menuFab.close(true);
         }
     };
 
@@ -367,18 +455,17 @@ public class Home extends AppCompatActivity  {
         @SuppressLint("WrongConstant")
         @Override
         public void onClick(View view) {
-            appbar.setExpanded(true);
             swapLayout.setVisibility(RelativeLayout.ABOVE);
             mainLayout.setVisibility(RelativeLayout.GONE);
             removeLayout.setVisibility(RelativeLayout.GONE);
-            recyclerView.setNestedScrollingEnabled(false);
             menuFab.hideMenu(true);
             menuFab.close(true);
 
 
             actionClass.setOnSwap(true);
             adapter.setOnSwap(actionClass.getOnSwap());
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeChanged(0, 99);
         }
     };
 
@@ -386,17 +473,16 @@ public class Home extends AppCompatActivity  {
         @SuppressLint("WrongConstant")
         @Override
         public void onClick(View view) {
-            appbar.setExpanded(true);
             removeLayout.setVisibility(RelativeLayout.ABOVE);
             mainLayout.setVisibility(RelativeLayout.GONE);
             swapLayout.setVisibility(RelativeLayout.GONE);
-            recyclerView.setNestedScrollingEnabled(false);
             menuFab.hideMenu(true);
             menuFab.close(true);
 
             actionClass.setOnRemove(true);
             adapter.setOnRemove(actionClass.getOnRemove());
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeChanged(0, 99);
         }
     };
 
@@ -407,17 +493,14 @@ public class Home extends AppCompatActivity  {
             swapLayout.setVisibility(RelativeLayout.GONE);
             mainLayout.setVisibility(RelativeLayout.ABOVE);
             removeLayout.setVisibility(RelativeLayout.GONE);
-            appbar.setExpanded(false);
-            recyclerView.setNestedScrollingEnabled(true);
             menuFab.showMenu(true);
 
             actionClass.setOnSwap(false);
             adapter.setOnSwap(actionClass.getOnSwap());
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeChanged(0, 99);
         }
     };
-
-
 
 
     private View.OnClickListener onClickConfirmRemove = new View.OnClickListener() {
@@ -432,34 +515,23 @@ public class Home extends AppCompatActivity  {
 
                         public void onClick(DialogInterface dialog, int whichButton) {
                             dialog.dismiss();
+                            swapLayout.setVisibility(RelativeLayout.GONE);
+                            mainLayout.setVisibility(RelativeLayout.ABOVE);
+                            removeLayout.setVisibility(RelativeLayout.GONE);
+                            menuFab.showMenu(true);
 
-                            progressDialog = ProgressDialog.show(Home.this, "",
-                                    "Removing. Please wait...", true);
+                            for (int i = 0; i < Album.DETAIL_REMOVED_INDEX.size(); i++) {
+                                //Album.DETAIL_BITMAP[Album.DETAIL_REMOVED_INDEX.get(i)] = null;
+                                Album.DETAIL_MEMO[Album.DETAIL_REMOVED_INDEX.get(i)] = null;
+                                Album.DETAIL_FILENAME[Album.DETAIL_REMOVED_INDEX.get(i)] = null;
+                            }
 
-                            mHandler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    swapLayout.setVisibility(RelativeLayout.GONE);
-                                    mainLayout.setVisibility(RelativeLayout.ABOVE);
-                                    removeLayout.setVisibility(RelativeLayout.GONE);
-                                    appbar.setExpanded(false);
-                                    recyclerView.setNestedScrollingEnabled(true);
-                                    menuFab.showMenu(true);
+                            Album.DETAIL_REMOVED_INDEX = new ArrayList<Integer>();
 
-                                    for(int i=0; i<Album.DETAIL_REMOVED_INDEX.size(); i++){
-                                        Album.DETAIL_BITMAP[Album.DETAIL_REMOVED_INDEX.get(i)] = null;
-                                    }
-                                    Album.DETAIL_REMOVED_INDEX = new ArrayList<Integer>();
-
-                                    actionClass.setOnRemove(false);
-                                    adapter.setOnRemove(actionClass.getOnRemove());
-                                    adapter.notifyDataSetChanged();
-
-                                    progressDialog.dismiss();
-                                }
-                            }, 500);
-
-
+                            actionClass.setOnRemove(false);
+                            adapter.setOnRemove(actionClass.getOnRemove());
+                            //adapter.notifyDataSetChanged();
+                            adapter.notifyItemRangeChanged(0, 99);
                         }
                     })
                     .setNegativeButton(android.R.string.no, null).show();
@@ -474,107 +546,94 @@ public class Home extends AppCompatActivity  {
             swapLayout.setVisibility(RelativeLayout.GONE);
             mainLayout.setVisibility(RelativeLayout.ABOVE);
             removeLayout.setVisibility(RelativeLayout.GONE);
-            appbar.setExpanded(false);
-            recyclerView.setNestedScrollingEnabled(true);
             menuFab.showMenu(true);
 
             actionClass.setOnRemove(false);
             adapter.setOnRemove(actionClass.getOnRemove());
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeChanged(0, 99);
         }
     };
 
 
-
-    public static void updateView(){
-        adapter.notifyDataSetChanged();
+    public static void updateView() {
+        adapter.notifyItemRangeChanged(0, 99);
+        //adapter.notifyDataSetChanged();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == headerImage) {
 
             try {
-                if (file !=null && resultCode == RESULT_OK) {
-                    bitmap = BitmapManager.decode(file.getPath(),300,350);
-                    //BitmapFactory.decodeFile(file.getPath());
+                if (file != null && resultCode == RESULT_OK) {
+                    //bitmap = BitmapManager.decode(file.getPath(), 300, 350);
                     getFileNameHeader = CreateFile.getFileName();
-                    Picasso.with(Home.this).load(Utility.getImageUri(Home.this, bitmap)).fit().centerCrop().into(mainPic);
-                    //Picasso.with(Home.this).load(file.getPath()).fit().centerCrop().into(mainPic);
+                    //CreateFile.headerFilePath = CreateFile.getFilePath();
+                    Picasso.with(Home.this).load(Uri.fromFile(file)).fit().centerCrop().into(mainPic);
                     mainPic.setAlpha((float) 1.0);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else if (requestCode == headerPickImage){
-            Uri selectedImage = data.getData();
-            Picasso.with(Home.this).load(selectedImage).fit().centerCrop().into(mainPic);
-            mainPic.setAlpha((float) 1.0);
 
+        } else if (requestCode == 1003 || requestCode == headerPickImage) {
+            if (resultCode == RESULT_OK) {
+                Uri selectedImage = data.getData();
 
-        }else if (requestCode == 1003){
-            Uri selectedImage = data.getData();
+                Bitmap bitmap2 = null;
 
-            Bitmap bitmap2 = null;
-
-            try {
-                bitmap2 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            //create a file to write bitmap data
-            /*file = CreateFile.createUnique();
-
-            OutputStream os = null;
-            try {
-                os = new BufferedOutputStream(new FileOutputStream(file));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            bitmap2.compress(Bitmap.CompressFormat.JPEG, 60, os);
-            try {
-                os.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
-
-            progressDialog = ProgressDialog.show(Home.this, "",
-                    "Loading...", true);
-
-            final Bitmap finalBitmap = bitmap2;
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    headImgStatus = true;
-                    CreateFileFromBitmap createFileFromBitmap = new CreateFileFromBitmap(finalBitmap,getApplicationContext());
-                    createFileFromBitmap.execute();
-                    progressDialog.dismiss();
+                try {
+                    bitmap2 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }, 3500);
 
+                progressDialog = ProgressDialog.show(Home.this, "",
+                        "Loading...", true);
 
+                final Bitmap finalBitmap = bitmap2;
+                mHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-        }else {
+                        ImageView setImgView = null;
+                        if (requestCode == headerPickImage) {
+                            setImgView = mainPic;
+                        }
+
+                        CreateFileFromBitmap createFileFromBitmap = new CreateFileFromBitmap(Home.this, finalBitmap, getApplicationContext(), setImgView);
+                        createFileFromBitmap.execute();
+                        progressDialog.dismiss();
+                    }
+                }, 2500);
+            }
+
+        } else {
             if (Album.DETAIL_FILE != null) {
-                Log.d("POSITION : ", String.valueOf(requestCode));
-                Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 1000, 1500);
-                Album.DETAIL_BITMAP[requestCode] = bitmap;
-                Album.DETAIL_FILENAME[requestCode] = CreateFile.getFileName();
-                updateView();
+                if (resultCode == RESULT_OK) {
+                    Log.d("POSITION : ", String.valueOf(requestCode));
+                    //Bitmap bitmap = BitmapManager.decode(Album.DETAIL_FILE.getPath(), 1000, 1500);
+                    //Album.DETAIL_BITMAP[requestCode] = bitmap;
+                    Album.DETAIL_FILENAME[requestCode] = CreateFile.getFileName();
+                    updateView();
+                }
             }
         }
+    }
+
+    public void setFileHeader(String fileName){
+        getFileNameHeader = fileName;
     }
 
     private void initCollapsingToolbar() {
         collapsingToolbar.setTitle("");
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        appBarLayout.setExpanded(true);
+        ///appBarLayout.setExpanded(true);
 
-        // hiding & showing the title when toolbar expanded & collapsed
+
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             boolean isShow = false;
             int scrollRange = -1;
@@ -594,7 +653,8 @@ public class Home extends AppCompatActivity  {
             }
         });
     }
-    private void createGirdViewEdit(String docNo){
+
+    private void createGirdViewEdit(String docNo) {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         albumList = new ArrayList<>();
         adapter = new AlbumsAdapter(this, albumList);
@@ -606,6 +666,9 @@ public class Home extends AppCompatActivity  {
         recyclerView.setItemViewCacheSize(2000);
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        appbar.setExpanded(true);
+        recyclerView.setNestedScrollingEnabled(false);
 
         // Extend the Callback class Drag Card View
         ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
@@ -625,7 +688,7 @@ public class Home extends AppCompatActivity  {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 //TODO
-                Toast.makeText(Home.this,"direction"+direction,Toast.LENGTH_LONG).show();
+                Toast.makeText(Home.this, "direction" + direction, Toast.LENGTH_LONG).show();
             }
 
             //defines the enabled move directions in each state (idle, swiping, dragging).
@@ -646,7 +709,8 @@ public class Home extends AppCompatActivity  {
             @Override
             public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 super.clearView(recyclerView, viewHolder);
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
+                adapter.notifyItemRangeChanged(0, 99);
             }
         };
 
@@ -658,84 +722,86 @@ public class Home extends AppCompatActivity  {
 
 
     }
+
     private void prepareAlbumsEdit(String docNo) {
         String status;
         DatabaseHelper helper = new DatabaseHelper(Home.this);
         int no = Integer.parseInt(docNo);
-        ManuInspectModel manuInspectModel =  helper.getDataForUpdate(no);
+        ManuInspectModel manuInspectModel = helper.getDataForUpdate(no);
         getFileNameHeader = manuInspectModel.getMpImagePath();
-        File file = new File(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
+        File file = new File(Environment.getExternalStorageDirectory() + File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
         //Bitmap bitmapEdit = BitmapManager.decode(file.getPath(),300,350);
-        Bitmap bitmapEdit = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
+        //Bitmap bitmapEdit = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory() + File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectModel.getMpImagePath());
 
-        if (manuInspectModel.getMpImagePath() !=null) {
-            bitmap = bitmapEdit;
+        if (manuInspectModel.getMpImagePath() != null) {
+            //bitmap = bitmapEdit;
             //Picasso.with(Home.this).load(Uri.fromFile(file)).fit().centerCrop().into(mainPic);
-            Glide.with(Home.this).load(Uri.fromFile(file)).override(mainPic.getDrawable().getIntrinsicWidth(),mainPic.getDrawable().getIntrinsicHeight()).fitCenter().centerCrop().into(mainPic);
+            Glide.with(Home.this).load(Uri.fromFile(file)).override(mainPic.getDrawable().getIntrinsicWidth(), mainPic.getDrawable().getIntrinsicHeight()).fitCenter().centerCrop().into(mainPic);
             //mainPic.setImageBitmap(bitmapEdit);
-            mainPic.setAlpha((float)1.0);
-            bitmapEdit = null;
-        }else{
-            ImageView mainPicEdt  = (ImageView)findViewById(R.id.mainpic);
-            Picasso.with(Home.this).load(R.drawable.camera2).fit().centerCrop().into(mainPicEdt);
+            mainPic.setAlpha((float) 1.0);
+            //bitmapEdit = null;
+        } else {
+            ImageView mainPicEdt = (ImageView) findViewById(R.id.mainpic);
+            Picasso.with(Home.this).load(R.drawable.camera2).fit().centerCrop().noFade().into(mainPicEdt);
         }
-        if (manuInspectModel.getMpLastSendmailByUserName() != null){
+        if (manuInspectModel.getMpLastSendmailByUserName() != null) {
             status = "Sent";
-        }else {
+        } else {
             status = "Not Sent";
         }
-        Log.d("XXXXXX",manuInspectModel.getMpDocDate().toString());
-        basicInfomation.setFileHeader_date(manuInspectModel.getMpDocDate().toString());
-        basicInfomation.setFileHeader_customerNo(manuInspectModel.getMpCustomerNo());
-        basicInfomation.setFileHeader_itemNo(manuInspectModel.getMpItemNo());
-        basicInfomation.setFileHeader_colorNo(manuInspectModel.getMpColorNo());
-        basicInfomation.setFileHeader_coNo(manuInspectModel.getMpCoNo());
-        basicInfomation.setFileHeader_inspector(EmployeesModel.employeeName);
-        basicInfomation.setFileHeader_mail(status);
+        Log.d("XXXXXX", manuInspectModel.getMpDocDate().toString());
+        BasicInfomation.setFileHeader_date(manuInspectModel.getMpDocDate().toString());
+        BasicInfomation.setFileHeader_customerNo(manuInspectModel.getMpCustomerNo());
+        BasicInfomation.setFileHeader_itemNo(manuInspectModel.getMpItemNo());
+        BasicInfomation.setFileHeader_colorNo(manuInspectModel.getMpColorNo());
+        BasicInfomation.setFileHeader_coNo(manuInspectModel.getMpCoNo());
+        BasicInfomation.setFileHeader_inspector(EmployeesModel.employeeName);
+        BasicInfomation.setFileHeader_mail(status);
 
 
         //InfoHeader
-        dateV.setText(basicInfomation.getFileHeader_date());
-        cusNoV.setText(basicInfomation.getFileHeader_customerNo());
-        itemV.setText(basicInfomation.getFileHeader_itemNo());
-        colorV.setText(basicInfomation.getFileHeader_colorNo());
-        coV.setText(basicInfomation.getFileHeader_coNo());
-        inspV.setText(basicInfomation.getFileHeader_inspector());
-        mailV.setText(basicInfomation.getFileHeader_mail());
+        dateV.setText(BasicInfomation.getFileHeader_date());
+        cusNoV.setText(BasicInfomation.getFileHeader_customerNo());
+        itemV.setText(BasicInfomation.getFileHeader_itemNo());
+        colorV.setText(BasicInfomation.getFileHeader_colorNo());
+        coV.setText(BasicInfomation.getFileHeader_coNo());
+        inspV.setText(BasicInfomation.getFileHeader_inspector());
+        mailV.setText(BasicInfomation.getFileHeader_mail());
 
-            if (mailV.getText().toString().equals("Sent")) {
-                mailV.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                mailV.setTextColor(Color.parseColor("#52b071"));
-            } else {
-                mailV.setTextColor(Color.parseColor("#C3333A"));
-                mailV.setBackgroundColor(Color.parseColor("#FFFFFF"));
-            }
+        if (mailV.getText().toString().equals("Sent")) {
+            mailV.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            mailV.setTextColor(Color.parseColor("#52b071"));
+        } else {
+            mailV.setTextColor(Color.parseColor("#C3333A"));
+            mailV.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        }
 
         Album b;
         String coverStr = "xxx";
-        int[] cover = new int[100];
-        for (int i=0;i<cover.length;i++){
+        int[] cover = new int[99];
+        for (int i = 0; i < cover.length; i++) {
             cover[i] = R.drawable.camera2;
-            b = new Album(coverStr,i,cover[i]);
+            b = new Album(coverStr, i, cover[i]);
             albumList.add(b);
         }
 
         List<ManuInspectImageModel> dtlList = new ArrayList();
         dtlList = manuInspectModel.getManuInspectImageModelList();
-        for (int i = 0;i<dtlList.size();i++){
+        for (int i = 0; i < dtlList.size(); i++) {
             ManuInspectImageModel manuInspectImageModel = dtlList.get(i);
-            File fileIm = new File(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectImageModel.getMpgImagePath());
-            Bitmap bitmap = BitmapManager.decode(fileIm.getPath(),1000,1500);
+            File fileIm = new File(Environment.getExternalStorageDirectory() + File.separator + "DCIM" + File.separator + "Camera" + File.separator + manuInspectImageModel.getMpgImagePath());
+            //Bitmap bitmap = BitmapManager.decode(fileIm.getPath(), 1000, 1500);
             //Drawable d = new BitmapDrawable(getResources(), bitmap);
             int reqCode = Integer.parseInt(manuInspectImageModel.getMpgDocSeq());
-            Album.DETAIL_BITMAP[reqCode] = bitmap;
+            //Album.DETAIL_BITMAP[reqCode] = bitmap;
             Album.DETAIL_FILENAME[reqCode] = manuInspectImageModel.getMpgImagePath();
             Album.DETAIL_MEMO[reqCode] = manuInspectImageModel.getMpgMemo();
         }
-        adapter.notifyDataSetChanged();
+
+        adapter.notifyItemRangeChanged(0, dtlList.size());
     }
 
-    private void createGirdView(){
+    private void createGirdView() {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         albumList = new ArrayList<>();
         adapter = new AlbumsAdapter(this, albumList);
@@ -747,9 +813,11 @@ public class Home extends AppCompatActivity  {
         recyclerView.setItemViewCacheSize(2000);
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        appbar.setExpanded(true);
+        recyclerView.setNestedScrollingEnabled(false);
 
         // Extend the Callback class Drag Card View
-        ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
+        /*ItemTouchHelper.Callback ithCallback = new ItemTouchHelper.Callback() {
 
             //and in your imlpementaion of
 
@@ -766,7 +834,7 @@ public class Home extends AppCompatActivity  {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 //TODO
-                Toast.makeText(Home.this,"direction"+direction,Toast.LENGTH_LONG).show();
+                Toast.makeText(Home.this, "direction" + direction, Toast.LENGTH_LONG).show();
             }
 
             //defines the enabled move directions in each state (idle, swiping, dragging).
@@ -788,28 +856,31 @@ public class Home extends AppCompatActivity  {
             public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 super.clearView(recyclerView, viewHolder);
                 adapter.notifyDataSetChanged();
-            }
-        };
 
-        ItemTouchHelper ith = new ItemTouchHelper(ithCallback);
-        ith.attachToRecyclerView(recyclerView);
+            }
+        };*/
+
+        //ItemTouchHelper ith = new ItemTouchHelper(ithCallback);
+        //ith.attachToRecyclerView(recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);
         prepareAlbums();
     }
+
     private void prepareAlbums() {
 
         Album b;
         String coverStr = "Test";
-        int[] cover = new int[100];
-        for (int i=0;i<cover.length;i++){
+        int[] cover = new int[99];
+        for (int i = 0; i < cover.length; i++) {
             cover[i] = R.drawable.camera2;
-            b = new Album(coverStr,i,cover[i]);
+            b = new Album(coverStr, i, cover[i]);
             albumList.add(b);
         }
 
-        adapter.notifyDataSetChanged();
+        adapter.notifyItemRangeChanged(0, cover.length);
     }
+
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;
@@ -854,10 +925,22 @@ public class Home extends AppCompatActivity  {
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int whichButton) {
-
-                            Intent i = new Intent(Home.this,MainActivity.class);
+                            Intent i = getBaseContext().getPackageManager()
+                                    .getLaunchIntentForPackage(getBaseContext().getPackageName());
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            BasicInfomation.setFileHeader_date("");
+                            BasicInfomation.setFileHeader_inspector("");
+                            BasicInfomation.setFileHeader_coNo("");
+                            BasicInfomation.setFileHeader_colorNo("");
+                            BasicInfomation.setFileHeader_itemNo("");
+                            BasicInfomation.setFileHeader_customerNo("");
+                            BasicInfomation.setFileHeader_mail("");
+                            Album.DETAIL_FILENAME = new String[100];
+                            //Album.DETAIL_BITMAP = new Bitmap[100];
+                            Album.DETAIL_MEMO = new String[100];
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(i);
-
+                            finish();
                         }
                     })
                     .setNegativeButton(android.R.string.no, null).show();
@@ -873,7 +956,10 @@ public class Home extends AppCompatActivity  {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
-    /** IMEI*/
+
+    /**
+     * IMEI
+     */
     @SuppressLint("MissingPermission")
     public static String getDeviceImei(Context ctx) {
         TelephonyManager telephonyManager = (TelephonyManager) ctx.getSystemService(Context.TELEPHONY_SERVICE);
@@ -886,7 +972,8 @@ public class Home extends AppCompatActivity  {
         freeMemory();
         super.onDestroy();
     }
-    public void freeMemory(){
+
+    public void freeMemory() {
         System.runFinalization();
         Runtime.getRuntime().gc();
         System.gc();

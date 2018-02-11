@@ -12,6 +12,7 @@ import java.util.Calendar;
 public class CreateFile {
     private static String path="";
     private static String name="";
+    public static String headerFilePath="";
     public static String setPath="";
 
     public static File createUnique(){

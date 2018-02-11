@@ -13,7 +13,8 @@ public class Album {
     private int numOfSongs;
     private int thumbnail;
     public static File DETAIL_FILE;
-    public static Bitmap[] DETAIL_BITMAP = new Bitmap[100];
+    public static File HEADER_FILE = null;
+    //public static Bitmap[] DETAIL_BITMAP = new Bitmap[100];
     public static String[] DETAIL_MEMO = new String[100];
     public static String[] DETAIL_FILENAME = new String[100];
     public static ArrayList<Integer> DETAIL_REMOVED_INDEX = new ArrayList<Integer>();

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,19 +57,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         try {
-        //Here you can fill your row view
-        if (holder instanceof ViewHolder) {
-
+            if (holder instanceof ViewHolder) {
                 final AbstractModel model = getItem(position);
                 ViewHolder genericViewHolder = (ViewHolder) holder;
                 File file = new File(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + model.getImage());
-                Bitmap bitmap = BitmapManager.decode(file.getPath(),300,350);
+                Log.i("LIST HEADER IMG",model.getImage());
+                //Bitmap bitmap = BitmapManager.decode(file.getPath(),300,350);
                 //Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory()+File.separator + "DCIM" + File.separator + "Camera" + File.separator + model.getImage());
-                if (bitmap != null) {
+                if (model.getImage().equals("")) {
+                    Picasso.with(mContext).load(R.drawable.noimg).fit().centerCrop().into(genericViewHolder.imgUser);
+                } else {
                     Picasso.with(mContext).load(Uri.fromFile(file)).fit().centerCrop().into(genericViewHolder.imgUser);
-                }else {
-                    Picasso.with(mContext).load(R.drawable.camera2).fit().centerCrop().into(genericViewHolder.imgUser);
+                    //Picasso.with(mContext).load(Utility.getImageUri(mContext,bitmap)).fit().centerCrop().into(genericViewHolder.imgUser);
+
                 }
+
                 genericViewHolder.dateV.setText(model.getDate());
                 genericViewHolder.cusNoV.setText(model.getCusNo());
                 genericViewHolder.itemV.setText(model.getItemNo());

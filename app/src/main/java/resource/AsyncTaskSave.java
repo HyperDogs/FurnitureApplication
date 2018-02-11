@@ -46,16 +46,15 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     private WebServiceURL mWebServiceURL;
     private CopyImageToServer mUploadPhoto;
     private int mNewDocumentNo = 0;
-
+    private BasicInfomation basicInfomation;
+    
     ManuInspectModel manuInspectModel;
-    BasicInfomation basicInfomation;
     List<Album> albumList;
 
 
-    public AsyncTaskSave(Activity a, ManuInspectModel manuInspectModel, BasicInfomation basicInfomation,String Imei,List<Album> albumList,String imgName,String docNo, boolean sendMail){
+    public AsyncTaskSave(Activity a, ManuInspectModel manuInspectModel,String Imei,List<Album> albumList,String imgName,String docNo, boolean sendMail){
         this.activity = a;
         this.manuInspectModel = manuInspectModel;
-        this.basicInfomation = basicInfomation;
         this.albumList = albumList;
         this.Imei = Imei;
         this.imgName = imgName;
@@ -70,7 +69,7 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         progressDialog = ProgressDialog.show(activity, "",
-                "Loading. Please wait...", true);
+                "Saving... ", true);
     }
 
     protected String doInBackground(String... urls)   {
@@ -118,12 +117,16 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                         manuInspectModel.setMpLastSendmailByUserNo(TBUserLoginModel.ulUserLoginId);
                         manuInspectModel.setMpLastSendmailByUserName(TBUserLoginModel.ulName);
                         errDesc = sendHeaderToServer();
+
+                        Log.d("ERRDESC1",errDesc);
                     }
+
 
                     //Detail
                     for (int i = 0; i < albumList.size(); i++) {
                         Album album = albumList.get(i);
-                        if (album.DETAIL_BITMAP[i] != null) {
+                        //if (album.DETAIL_BITMAP[i] != null) {
+                        if((Album.DETAIL_FILENAME[i] != null) && !Album.DETAIL_FILENAME[i].equals("")){
                             ManuInspectImageModel manuInspectImageModel = new ManuInspectImageModel();
                             manuInspectImageModel.setMpgDoccode(manuInspectModel.getMpDocCode());
                             manuInspectImageModel.setMpgDocumentno(manuInspectModel.getMpDocumentNo());
@@ -160,6 +163,15 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                         }
                     }
 
+                    Log.d("ERR DESC 2",errDesc);
+
+                    if(sendMail == true){
+                        errDesc = sendEmail();
+                        Log.d("SEND E-MAIL",errDesc);
+                    }
+
+                    Log.d("ERR DESC 3",errDesc);
+
                     DatabaseHelper dbHelper = new DatabaseHelper(activity);
                     dbHelper.save(manuInspectModel);
                     SAVE_STATUS = true;
@@ -182,6 +194,16 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
                         });
 
                         // ให้ไปยังหน้าหลัก
+                        BasicInfomation.setFileHeader_date("");
+                        BasicInfomation.setFileHeader_coNo("");
+                        BasicInfomation.setFileHeader_colorNo("");
+                        BasicInfomation.setFileHeader_itemNo("");
+                        BasicInfomation.setFileHeader_customerNo("");
+                        BasicInfomation.setFileHeader_mail("");
+                        Album.DETAIL_FILENAME = new String[100];
+                        //Album.DETAIL_BITMAP = new Bitmap[100];
+                        Album.DETAIL_MEMO = new String[100];
+
                         Intent intent = new Intent(activity, Allfile.class);
                         activity.startActivity(intent);
                         //activity.finish();
@@ -218,34 +240,36 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
     }
 
     private String sendHeaderToServer(){
-        mUploadPhoto.sendFileToServer(imgName, mWebServiceURL.URL_uploadFile,"HEADER");
+        if(!imgName.equals("")) {
+            mUploadPhoto.sendFileToServer(imgName, mWebServiceURL.URL_uploadFile, "HEADER");
+        }
 
         FormBody params = new FormBody.Builder()
-                .add("ACTION_MODE","HEADER")
+                .add("ACTION_MODE", "HEADER")
                 .add("DOC_CODE", "IN01")
                 .add("DOCUMENT", Imei)
                 .add("DOC_BRANCH", "01")
-                .add("DEC_SEQ","0")
-                .add("DOC_DATE",basicInfomation.getFileHeader_date())
-                .add("CUTOMER_NO",basicInfomation.getFileHeader_customerNo())
-                .add("ITEM_NO",basicInfomation.getFileHeader_itemNo())
-                .add("COLOR_NO",basicInfomation.getFileHeader_colorNo())
-                .add("CO_NO",basicInfomation.getFileHeader_coNo())
-                .add("EMPLOYEE_NO",EmployeesModel.id)
-                .add("EMPLOYEE_NAME",EmployeesModel.employeeName)
-                .add("IMG_PATH",imgName)
-                .add("USER_NO",TBUserLoginModel.ulUserLoginId)
-                .add("USERNAME",TBUserLoginModel.ulName)
+                .add("DEC_SEQ", "0")
+                .add("DOC_DATE", basicInfomation.getFileHeader_date())
+                .add("CUTOMER_NO", basicInfomation.getFileHeader_customerNo())
+                .add("ITEM_NO", basicInfomation.getFileHeader_itemNo())
+                .add("COLOR_NO", basicInfomation.getFileHeader_colorNo())
+                .add("CO_NO", basicInfomation.getFileHeader_coNo())
+                .add("EMPLOYEE_NO", EmployeesModel.id)
+                .add("EMPLOYEE_NAME", EmployeesModel.employeeName)
+                .add("IMG_PATH", imgName)
+                .add("USER_NO", TBUserLoginModel.ulUserLoginId)
+                .add("USERNAME", TBUserLoginModel.ulName)
                 .build();
 
 
         try {
-            JSONArray data = new JSONArray(mOkHttpHelper.serverRequest(mWebServiceURL.URL_createNew,params));
+            JSONArray data = new JSONArray(mOkHttpHelper.serverRequest(mWebServiceURL.URL_createNew, params));
             JSONObject c = data.getJSONObject(0);
 
-            Log.d("NEW_DOCUMENT_NO",String.valueOf(c.getInt("NEW_DOCNO")));
+            Log.d("NEW_DOCUMENT_NO", String.valueOf(c.getInt("NEW_DOCNO")));
             mNewDocumentNo = c.getInt("NEW_DOCNO");
-            if(c.getInt("STATUS") == 0){
+            if (c.getInt("STATUS") == 0) {
                 return c.getString("DESCRIPTION");
             } else {
                 return "";
@@ -259,7 +283,6 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
         FormBody params = new FormBody.Builder()
                 .add("ACTION_MODE","DETAIL")
                 .add("NEW_DOCUMENT_NO",String.valueOf(mNewDocumentNo))
-                .add("DOC_CODE", "IN01")
                 .add("DOC_CODE", "IN01")
                 .add("DOCUMENT", Imei)
                 .add("DOC_BRANCH", "01")
@@ -276,6 +299,28 @@ public class AsyncTaskSave extends AsyncTask<String, Void, String> {
 
         try {
             JSONArray data = new JSONArray(mOkHttpHelper.serverRequest(mWebServiceURL.URL_createNew,params));
+            JSONObject c = data.getJSONObject(0);
+
+
+            if(c.getInt("STATUS") == 0){
+                return c.getString("DESCRIPTION");
+            } else {
+                return "";
+            }
+        } catch (JSONException e) {
+            return e.getMessage().toString();
+        }
+    }
+
+    private String sendEmail(){
+        FormBody params = new FormBody.Builder()
+                .add("NEW_DOCUMENT_NO",String.valueOf(mNewDocumentNo))
+                .add("DOC_CODE", "IN01")
+                .add("DOCUMENT", Imei)
+                .build();
+
+        try {
+            JSONArray data = new JSONArray(mOkHttpHelper.serverRequest(mWebServiceURL.URL_createPDF,params));
             JSONObject c = data.getJSONObject(0);
 
 

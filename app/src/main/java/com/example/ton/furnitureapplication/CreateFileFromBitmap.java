@@ -2,8 +2,12 @@ package com.example.ton.furnitureapplication;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,10 +26,15 @@ public class CreateFileFromBitmap extends AsyncTask<Void, Integer, String> {
 
         Context context;
         Bitmap bitmap;
-        File file;
-        public CreateFileFromBitmap(Bitmap bitmap, Context context) {
+        File mFile;
+        ImageView mImgView;
+        private Home mHomeClass;
+
+        public CreateFileFromBitmap(Home homeClass, Bitmap bitmap, Context context, ImageView imgView) {
             this.bitmap = bitmap;
             this.context= context;
+            this.mImgView = imgView;
+            this.mHomeClass = homeClass;
         }
 
         @Override
@@ -38,10 +47,9 @@ public class CreateFileFromBitmap extends AsyncTask<Void, Integer, String> {
 
         @Override
         protected String doInBackground(Void... params) {
-            File file = CreateFile.createUnique();
+            mFile = CreateFile.createUnique();
             String filePath = CreateFile.getFilePath();
 
-            Album.DETAIL_FILENAME[Album.CURRENT_PICK_IMG_POSITION]  = CreateFile.getFileName();
 
             FileOutputStream fileOutputStream = null;
             try {
@@ -62,9 +70,12 @@ public class CreateFileFromBitmap extends AsyncTask<Void, Integer, String> {
                 e.printStackTrace();
             }
 
-            Album.DETAIL_BITMAP[Album.CURRENT_PICK_IMG_POSITION] = bitmap;
-
-
+            if(mImgView == null) {
+                //Album.DETAIL_BITMAP[Album.CURRENT_PICK_IMG_POSITION] = bitmap;
+                Album.DETAIL_FILENAME[Album.CURRENT_PICK_IMG_POSITION] = CreateFile.getFileName();
+            } else {
+                Home.bitmap = bitmap;
+            }
             return null;
         }
 
@@ -75,6 +86,12 @@ public class CreateFileFromBitmap extends AsyncTask<Void, Integer, String> {
             // back to main thread after finishing doInBackground
             // update your UI or take action after
             // exp; make progressbar gone
+            if(mImgView != null) {
+                Picasso.with(context).load(Uri.fromFile(mFile)).fit().centerCrop().into(mImgView);
+                //Picasso.with(context).load(Utility.getImageUri(context, bitmap)).fit().centerCrop().into(mImgView);
+                mImgView.setAlpha((float) 1.0);
+                mHomeClass.setFileHeader(CreateFile.getFileName());
+            }
 
             Home.updateView();
         }

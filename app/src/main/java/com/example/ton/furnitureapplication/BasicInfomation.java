@@ -10,7 +10,9 @@ import java.util.ArrayList;
 
 public class BasicInfomation {
     public static String FileHeader_date="", FileHeader_customerNo="", FileHeader_itemNo="",
-            FileHeader_colorNo="", FileHeader_coNo, FileHeader_inspector="",FileHeader_mail="";
+            FileHeader_colorNo="", FileHeader_coNo="", FileHeader_inspector="",FileHeader_mail="";
+    //public static String / = "";
+
     public static ArrayList<String> FileDetail_memo_list = new ArrayList<>();
     public static Bitmap[] FileDetail_images;
     public static Bitmap FileHeader_image;

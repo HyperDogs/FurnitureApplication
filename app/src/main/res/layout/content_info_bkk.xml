@@ -16,19 +16,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingRight="20dp"
         android:paddingLeft="20dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="1"
             android:text="@string/dateInfo" />
 
         <TextView
-            android:layout_width="45dp"
+            android:layout_width="20dp"
             android:layout_height="50dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text=":"
             android:textColor="@color/colorHeader"
             android:textSize="18dp"
@@ -36,14 +35,13 @@
 
         <EditText
             android:id="@+id/date_edt"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:backgroundTint="#000000"
             android:editable="false"
             android:focusable="false"
-            android:gravity="left"
+            android:gravity="center_vertical"
             android:text=""
-            android:layout_weight="0.25"
             android:textColor="@color/colorHeader"
             android:textColorHint="#000000"
             android:textSize="18dp" />
@@ -53,19 +51,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingRight="20dp"
         android:paddingLeft="20dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="1"
             android:text="@string/cus_noInfo" />
 
         <TextView
-            android:layout_width="45dp"
+            android:layout_width="20dp"
             android:layout_height="50dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text=":"
             android:textColor="@color/colorHeader"
             android:textSize="18dp"
@@ -73,12 +70,11 @@
 
         <EditText
             android:id="@+id/customer_no_edt"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:backgroundTint="#000000"
-            android:gravity="left"
+            android:gravity="center_vertical"
             android:text=""
-            android:layout_weight="0.25"
             android:textColor="@color/colorHeader"
             android:textColorHighlight="#000000"
             android:textColorHint="#000000"
@@ -89,19 +85,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingRight="20dp"
         android:paddingLeft="20dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="1"
             android:text="@string/item_noInfo" />
 
         <TextView
-            android:layout_width="45dp"
+            android:layout_width="20dp"
             android:layout_height="50dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text=":"
             android:textColor="@color/colorHeader"
             android:textSize="18dp"
@@ -109,12 +104,11 @@
 
         <EditText
             android:id="@+id/item_no_edt"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:backgroundTint="#000000"
-            android:gravity="left"
+            android:gravity="center_vertical"
             android:text=""
-            android:layout_weight="0.25"
             android:textColor="@color/colorHeader"
             android:textColorHighlight="#000000"
             android:textColorHint="#000000"
@@ -125,19 +119,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingRight="20dp"
         android:paddingLeft="20dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="1"
             android:text="@string/color_noInfo" />
 
         <TextView
-            android:layout_width="45dp"
+            android:layout_width="20dp"
             android:layout_height="50dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text=":"
             android:textColor="@color/colorHeader"
             android:textSize="18dp"
@@ -145,11 +138,10 @@
 
         <EditText
             android:id="@+id/color_no_edt"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:backgroundTint="#000000"
-            android:gravity="left"
-            android:layout_weight="0.25"
+            android:gravity="center_vertical"
             android:text=""
             android:textColor="@color/colorHeader"
             android:textColorHighlight="#000000"
@@ -161,19 +153,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingLeft="20dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="1"
             android:text="@string/co_noInfo" />
 
         <TextView
-            android:layout_width="45dp"
+            android:layout_width="20dp"
             android:layout_height="50dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text=":"
             android:textColor="@color/colorHeader"
             android:textSize="18dp"
@@ -181,12 +172,11 @@
 
         <EditText
             android:id="@+id/co_no_edt"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:backgroundTint="#000000"
-            android:gravity="left"
+            android:gravity="center_vertical"
             android:text=""
-            android:layout_weight="0.25"
             android:textColor="@color/colorHeader"
             android:textColorHighlight="#000000"
             android:textColorHint="#000000"
@@ -197,19 +187,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingLeft="20dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="1"
             android:text="@string/inspectorInfo" />
 
         <TextView
-            android:layout_width="45dp"
+            android:layout_width="20dp"
             android:layout_height="50dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text=":"
             android:textColor="@color/colorHeader"
             android:textSize="18dp"
@@ -217,12 +206,11 @@
 
         <EditText
             android:id="@+id/inspector_edt"
-            android:layout_width="match_parent"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:backgroundTint="#000000"
             android:enabled="false"
-            android:gravity="left"
-            android:layout_weight="0.25"
+            android:gravity="center_vertical"
             android:text=""
             android:textColor="@color/colorHeader"
             android:textColorHighlight="#000000"
@@ -231,29 +219,18 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
         android:gravity="right"
         android:orientation="horizontal"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"></View>
-        <View
-            android:layout_width="45dp"
-            android:layout_height="50dp" />
+        android:paddingLeft="40dp">
 
         <Button
             android:id="@+id/update_btn"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.25"
-            android:text="Confirm" />
-
-
+            android:layout_weight="1"
+            android:text="Update" />
     </LinearLayout>
 </LinearLayout>

@@ -27,7 +27,7 @@ import Model.TBUserLoginModel;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase database;
     private static final String DATABASE_NAME = "SQLiteDatabase.db";
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 12;
     public static final String TABLE_USERLOGIN = "TBUserLogin";
     public static final String TABLE_MANUINSPECT = "ManuInspect";
     public static final String TABLE_MANUINSPECTIMAGE = "ManuInspectImage";
@@ -173,7 +173,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO " + TABLE_USERLOGIN + " (" + COL_ULUSERLOGINID + ", " + COL_ULNAME + ", " + COL_ULPASS + ", " + COL_ULDESC + ", "+ COL_ULEMPLOYEEID +", " + COL_ULBRANCHID +" ) " +
                    "VALUES " +
         "('admin', 'admin', '1234', '867007020839046', '01', '01'), " +
-                "('party', '1589', 'Party Suwit', '867007020839046', '04', '01'), " +
+                "('party', 'Party Suwit', '1589', '862501034539670', '04', '01'), " +
                 "('2', 'admin', 'admin', '357220073447263', '02', '01'), " +
                 "('3', 'admin', 'admin', '357221073447261', '03', '01'), " +
                 "('4', 'admin', 'admin', '000000000000000', '01', '01');");
@@ -269,7 +269,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + ") ";
         db.execSQL(CREATE_EMPLOYEES_TABLE);
         db.execSQL("INSERT INTO " + TABLE_EMPLOYEES + " (" + COL_ID + ", " + COL_EMPLOYEENAME + " ) " +
-                   "VALUES ('01', 'admin'), ('02', 'admin'), ('03', 'admin');");
+                   "VALUES ('01', 'admin'), ('02', 'party'), ('03', '2'), ('04', '3'), ('05', '4');");
     }
 
     private void createTABLE_BRANCHCOMPANYCODE(SQLiteDatabase db){

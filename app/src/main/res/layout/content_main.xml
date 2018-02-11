@@ -8,7 +8,8 @@
     android:background="@color/viewBg"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Home"
-    tools:showIn="@layout/activity_main">
+    tools:showIn="@layout/activity_main"
+    android:paddingBottom="10dp">
 
 
     <android.support.v7.widget.RecyclerView
